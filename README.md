@@ -1,10 +1,7 @@
-# OpenAPI Definition Starter
+# CareerOS OpenAPI Specification
 
-## How to use this starter
 
-![Click use template button](https://user-images.githubusercontent.com/3975738/92927304-12e35d80-f446-11ea-9bd3-a0f8a69792d0.png)
-
-## Working on your OpenAPI Definition
+## Working with this repo
 
 ### Install
 
@@ -19,20 +16,10 @@ Starts the reference docs preview server.
 #### `npm run build`
 Bundles the definition to the dist folder.
 
-#### `npm test`
-Validates the definition.
+#### `npm run lint`
+Runs lint on the definition.
 
-## Contribution Guide
-
-Below is a sample contribution guide. The tools
-in the repository don't restrict you to any
-specific structure. Adjust the contribution guide
-to match your own structure. However, if you
-don't have a structure in mind, this is a
-good place to start.
-
-Update this contribution guide if you
-adjust the file/folder organization.
+## Configuration
 
 The `.redocly.yaml` controls settings for various
 tools including the lint tool and the reference
