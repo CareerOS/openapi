@@ -1,0 +1,33 @@
+type: object
+properties:
+  company_id:
+    type: string
+  company_name:
+    type: string
+    example: Career OS
+  description:
+    type: string
+    example: Bachelor's degree or equivalent practical experience
+  id:
+    type: string
+  linkedin_url:
+    type: string
+    example: https://www.linkedin.com/jobs/search/?currentJobId=123456
+  location:
+    type: string
+    example: Barcelona, Spain
+  note:
+    type: string
+  source:
+    type: string
+    example: ChromeExtension
+  title:
+    type: string
+    example: Cloud Engineer
+required:
+  - company_name
+  - description
+  - linkedin_url
+  - location
+  - source
+  - title

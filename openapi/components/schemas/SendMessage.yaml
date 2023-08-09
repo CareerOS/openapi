@@ -1,0 +1,20 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Message ID
+  conversation_id:
+    type: string
+    description: ID of the conversation to which the message belongs
+  text:
+    type: string
+    description: Text content of the message
+  sent_at_timestamp:
+    type: string
+    format: date-time
+    description: Timestamp when the message was sent
+required:
+  - conversation_id
+  - text
+  - sent_at_timestamp

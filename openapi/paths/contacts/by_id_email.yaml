@@ -1,0 +1,50 @@
+post:
+  tags:
+    - Contacts
+  summary: Set emails by contactID
+  description: Set emails by contactID
+  operationId: setEmailsByContactID
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: ID of the contact for whom to set emails
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            secondary_email:
+              type: string
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Success message
+    '400':
+      description: Failed to parse ID as UUID or bind JSON body
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../../components/schemas/errors/IDValidationFailedError.yaml
+              - $ref: ../../components/schemas/errors/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

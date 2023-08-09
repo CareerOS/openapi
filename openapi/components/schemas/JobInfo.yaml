@@ -1,0 +1,11 @@
+type: object
+properties:
+  title:
+    type: string
+    description: Job title
+  linkedin_url:
+    type: string
+    format: uri
+    description: LinkedIn URL
+required:
+  - title

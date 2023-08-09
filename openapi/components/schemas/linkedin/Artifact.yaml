@@ -1,0 +1,10 @@
+type: object
+properties:
+  width:
+    type: integer
+  fileIdentifyingUrlPathSegment:
+    type: string
+  expiresAt:
+    type: integer
+  height:
+    type: integer

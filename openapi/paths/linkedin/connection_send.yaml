@@ -1,0 +1,36 @@
+post:
+  tags:
+    - LinkedIn Messaging
+  summary: Send connection
+  description: Send a connection request to a contact
+  operationId: sendConnection
+  security:
+    - ApiKeyAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            to_contact_id:
+              type: string
+              format: uuid
+            text:
+              type: string
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    '400':
+      $ref: ../../components/responses/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

@@ -1,0 +1,8 @@
+type: object
+properties:
+  miniProfile:
+    $ref: ./MiniProfile.yaml
+  entityUrn:
+    type: string
+  nameInitials:
+    type: string

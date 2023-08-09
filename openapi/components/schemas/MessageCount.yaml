@@ -1,0 +1,8 @@
+type: object
+properties:
+  messages_sent:
+    type: integer
+    description: Number of messages sent
+  messages_received:
+    type: integer
+    description: Number of messages received

@@ -1,0 +1,5 @@
+description: Failed to parse ID as UUID
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/errors/IDValidationFailedError.yaml

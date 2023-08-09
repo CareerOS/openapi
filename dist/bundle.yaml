@@ -1,0 +1,2124 @@
+openapi: 3.0.1
+info:
+  title: CareerOS API
+  description: The Career OS API
+  contact: {}
+  version: 1.0.0
+  license:
+    name: ''
+    url: ''
+servers:
+  - url: /
+tags:
+  - name: Careers
+    description: Careers endpoint
+  - name: Applications
+    description: Kanban tiles
+paths:
+  /api/v1/applications/{studentId}:
+    get:
+      tags:
+        - Careers
+      operationId: getApplicationForStudent
+      summary: Get application details for a student
+      description: Returns application details for a student
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the student for whom to retrieve the application details
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/applications:
+    get:
+      tags:
+        - Applications
+      operationId: getApplications
+      summary: Returns all applications
+      description: Returns applications
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Application'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - Applications
+      summary: Change Application Status
+      operationId: changeApplicationStatus
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        description: Tile's data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tile'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/applications/archive:
+    get:
+      tags:
+        - Applications
+      summary: Application For User
+      description: Returns applications
+      operationId: getArchivedApplications
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Application'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/companies:
+    get:
+      tags:
+        - Companies
+      summary: Get companies
+      description: Returns companies
+      operationId: getCompanies
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: Page number for pagination
+        - name: industry
+          in: query
+          schema:
+            type: string
+          description: Filter by industry
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: Filter by category
+        - name: tag
+          in: query
+          schema:
+            type: string
+          description: Filter by tag
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Company'
+        '400':
+          description: Bad request - Invalid page or parameter format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Companies
+      summary: Save Company
+      description: Saving Company to DB & current user's favorite companies
+      operationId: saveCompany
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        description: Company data required to save to DB
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Company'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  companyID:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/companies/{id}:
+    get:
+      tags:
+        - Companies
+      summary: Get Company by ID
+      description: Get Company with Jobs by company_id
+      operationId: getCompanyById
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Company ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyWithJobs'
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/companies/explore:
+    get:
+      tags:
+        - Companies
+      summary: Get explore companies
+      description: Get companies by industry
+      operationId: getExploreCompanies
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: industry
+          in: query
+          description: Company industry
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Company'
+        '204':
+          description: No content
+          content: {}
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/companies/search/{name}:
+    get:
+      tags:
+        - Companies
+      summary: Get companies by name
+      description: Search companies by name
+      operationId: searchCompaniesByName
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: name
+          in: path
+          description: Company name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Company'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/companies/search/company/{name}:
+    get:
+      tags:
+        - Companies
+      summary: Check company in DB
+      description: Check exists company in DB or not
+      operationId: checkCompanyInDB
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: name
+          in: path
+          description: Company name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  linkedin_identifier:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/contacts:
+    post:
+      tags:
+        - Contacts
+      summary: Save contact
+      description: Save a contact to DB & for current user
+      operationId: saveContact
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        description: Contact's data from chrome extension
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/contacts/issaved:
+    post:
+      tags:
+        - Contacts
+      summary: Validate contact
+      description: Validate a contact
+      operationId: validateContact
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contact_linkedin_url:
+                  type: string
+                  description: LinkedIn URL of the contact
+                company_name:
+                  type: string
+                  description: Company name
+      responses:
+        '200':
+          description: Contact validation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Company not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message indicating company not found
+        '409':
+          description: Contact conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  company_id:
+                    type: string
+                    description: ID of the conflicting company
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/contacts/{id}:
+    get:
+      tags:
+        - Contacts
+      summary: Get contact by ID
+      description: Get contact by ID
+      operationId: getContactByID
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Contact ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Contacts
+      summary: Delete contact
+      description: Delete a contact from DB & for current user by ID
+      operationId: deleteContact
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Contact ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/contacts/{id}/email:
+    post:
+      tags:
+        - Contacts
+      summary: Set emails by contactID
+      description: Set emails by contactID
+      operationId: setEmailsByContactID
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the contact for whom to set emails
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                secondary_email:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        '400':
+          description: Failed to parse ID as UUID or bind JSON body
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/IDValidationFailedError'
+                  - $ref: '#/components/schemas/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/contacts/{id}/chat:
+    get:
+      tags:
+        - Contacts
+      summary: Get contact with chatID
+      description: Get contact with chatID
+      operationId: getContactWithChatID
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the chat for which to retrieve contact information
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/contacts/bycompany/{id}:
+    get:
+      tags:
+        - Contacts
+      summary: Get contacts by company ID
+      description: Returns all contacts that have relations with the given company
+      operationId: getContactsByCompanyID
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Company ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/contacts/bycompany/{id}/byuser/{userID}:
+    get:
+      tags:
+        - Contacts
+      summary: Get contacts by companyID and userID
+      description: Returns all contacts that have relations with the given company and user
+      operationId: getContactsByCompanyIDAndUserID
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the company to filter contacts
+        - name: userID
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the user for whom to retrieve contacts
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/linkedin/messages:
+    post:
+      tags:
+        - LinkedIn Messaging
+      summary: Create Messages
+      description: Create LinkedIn messages for the authenticated user
+      operationId: createLinkedInMessages
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/linkedin/messages/{studentID}:
+    get:
+      tags:
+        - LinkedIn Messaging
+      summary: Get messages count for student
+      description: Get the count of messages for a specific student
+      operationId: getMessagesCountForStudent
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: studentID
+          in: path
+          description: The ID of the student
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages_sent:
+                    type: integer
+                  messages_received:
+                    type: integer
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/linkedin/message/send:
+    post:
+      tags:
+        - LinkedIn Messaging
+      summary: Send message
+      description: Send a LinkedIn message
+      operationId: sendMessage
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                conversation_id:
+                  type: string
+                  format: uuid
+                message:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/linkedin/conversations:
+    post:
+      tags:
+        - LinkedIn Messaging
+      summary: Create or update conversations
+      description: Create or update conversations
+      operationId: createOrUpdateConversations
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                elements:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/LinkedInConversation'
+      responses:
+        '200':
+          description: Successfully created or updated conversations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated_chats:
+                    type: array
+                    items:
+                      type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/linkedin/conversations/updateall:
+    post:
+      tags:
+        - LinkedIn Messaging
+      summary: Force update message history
+      description: Force update the message history for the authenticated user
+      operationId: forceUpdateMessageHistory
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/linkedin/connection/send:
+    post:
+      tags:
+        - LinkedIn Messaging
+      summary: Send connection
+      description: Send a connection request to a contact
+      operationId: sendConnection
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                to_contact_id:
+                  type: string
+                  format: uuid
+                text:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/companies/favorite:
+    get:
+      tags:
+        - Favorite Companies
+      summary: Get favorite companies
+      description: Get user's favorite (saved) companies by current userID
+      operationId: getFavoriteCompanies
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Company'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/companies/favorite/{id}:
+    get:
+      tags:
+        - Favorite Companies
+      summary: Toggle favorite company
+      description: Adding & removing company by ID and current userID
+      operationId: toggleFavoriteCompany
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Company ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  action:
+                    type: string
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/linkedin/fcm/token:
+    get:
+      tags:
+        - FCM Token
+      summary: Get extension FCM token
+      description: Get the FCM token for the extension
+      operationId: getExtensionFCMToken
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - FCM Token
+      summary: Register extension FCM token
+      description: Register the FCM token for the extension
+      operationId: registerExtensionFCM
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/firebase/token:
+    get:
+      tags:
+        - Firestore Auth
+      summary: Issue firestore access token for user
+      description: Issue a firestore token for the authenticated user
+      operationId: getFirestoreToken
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/industries:
+    get:
+      tags:
+        - Industries
+      summary: Get industries
+      description: Get all industries
+      operationId: getIndustries
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Industry'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/jobs:
+    get:
+      tags:
+        - Jobs
+      summary: Get Jobs
+      description: Get a list of jobs
+      operationId: getJobs
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: limit
+          in: query
+          description: The maximum number of jobs to retrieve
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - name: offset
+          in: query
+          description: The offset for pagination
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Jobs
+      summary: Save job
+      description: Save a job to DB & for current user
+      operationId: saveJob
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        description: Job's data from Chrome Extension
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobWithCompanyName'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/jobs/issaved:
+    post:
+      tags:
+        - Jobs
+      summary: Validate job
+      description: Validate job details for the authenticated user
+      operationId: validateJob
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job_linkedin_url:
+                  type: string
+                company_name:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                  - type: object
+                    properties:
+                      company_id:
+                        type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/outlook/messages:
+    get:
+      tags:
+        - Outlook Messaging
+      summary: Get outlook messages
+      description: Get Outlook messages for the authenticated user
+      operationId: getOutlookMessages
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/outlook/message/send:
+    post:
+      tags:
+        - Outlook Messaging
+      summary: Send outlook message
+      description: Send an Outlook message to a recipient
+      operationId: sendOutlookMessage
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                to_email:
+                  type: string
+                subject:
+                  type: string
+                message:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/templates:
+    get:
+      tags:
+        - Templates
+      summary: Get templates
+      description: Returns all templates
+      operationId: getTemplates
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/templates/prefill/{id}:
+    get:
+      tags:
+        - Templates
+      summary: Populate template for user
+      description: Returns prefill templates for user
+      operationId: populateTemplatesForContact
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Contact ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/login:
+    post:
+      tags:
+        - Users
+      summary: User login
+      description: Logs in a user using the provided token (Authorization header)
+      operationId: loginUser
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: header
+          name: Authorization
+          description: Access token for authentication
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/enroll:
+    post:
+      tags:
+        - Users
+      summary: Enroll user to university
+      description: Enrolls the authenticated user to a university
+      operationId: enrollUser
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                university:
+                  type: string
+              required:
+                - university
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/users/{id}:
+    delete:
+      tags:
+        - Users
+      summary: Delete user
+      description: Removes a user
+      operationId: deleteUser
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/users/self:
+    get:
+      tags:
+        - Users
+      summary: Get self user info
+      description: Returns a self user info
+      operationId: getSelfUserInfo
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/self/university:
+    get:
+      tags:
+        - Users
+      summary: Get self university ID
+      description: Get the university ID associated with the authenticated user
+      operationId: getSelfUniversityID
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  university_id:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/universities/{universityID}/students:
+    get:
+      tags:
+        - Users
+      summary: Get students by university ID
+      description: Get students associated with a specific university
+      operationId: getStudentsByUniversityID
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: universityID
+          description: ID of the university
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/users/contacts:
+    get:
+      tags:
+        - Users
+      summary: Get user contacts
+      description: Returns a user's favorite (saved) contacts
+      operationId: getUserContacts
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/users/users/conversations:
+    get:
+      tags:
+        - Users
+      summary: Get user conversations
+      description: Get conversations for the authenticated user
+      operationId: getUserConversations
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/users/self/lid:
+    post:
+      tags:
+        - Users
+      summary: Set self user URN
+      description: Set self user URN and LinkedIn ID for the authenticated user
+      operationId: setSelfUserURN
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                urn:
+                  type: string
+                linkedin_id:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      description: Bearer JWT auth
+      name: Authorization
+      in: header
+  schemas:
+    JobInfo:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Job title
+        linkedin_url:
+          type: string
+          format: uri
+          description: LinkedIn URL
+      required:
+        - title
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Application ID
+        status:
+          type: string
+          enum:
+            - saved
+            - networking
+            - applying
+            - applied
+            - interviewing
+            - offer
+            - archive
+          description: Application status
+        company_id:
+          type: string
+          description: Company ID
+        company_name:
+          type: string
+          description: Company name
+        industry:
+          type: string
+          description: Industry
+        logo_url:
+          type: string
+          format: uri
+          description: Logo URL
+        linkedin_url:
+          type: string
+          format: uri
+          description: LinkedIn URL
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobInfo'
+          description: List of jobs associated with the application
+      required:
+        - status
+        - company_id
+        - company_name
+        - industry
+        - logo_url
+        - linkedin_url
+        - jobs
+    IDValidationFailedError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - The supplied ID format is invalid
+          description: ID validation failed (not UUID)
+      required:
+        - error
+    UnauthorizedError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - Failed to validate JWT token
+          description: JWT token validation failed (expired, invalid, etc.)
+      required:
+        - error
+    InternalServerError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - An internal server error has occurred
+          description: Internal server error message
+      required:
+        - error
+    Tile:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+    JSONValidationFailedError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - The supplied JSON is not correctly formatted
+          description: Failed to bind request body to JSON schema
+      required:
+        - error
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Company ID
+        name:
+          type: string
+          description: Company name
+        short_description:
+          type: string
+          nullable: true
+          description: Short description of the company
+        overview:
+          type: string
+          description: Company overview
+        hq_location:
+          type: string
+          description: Headquarters location of the company
+        company_size:
+          type: string
+          description: Company size
+        company_url:
+          type: string
+          format: uri
+          description: Company website URL
+        logo_url:
+          type: string
+          format: uri
+          description: URL of the company's logo
+        linkedin_url:
+          type: string
+          format: uri
+          description: LinkedIn profile URL of the company
+        twitter_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Twitter profile URL of the company
+        industry:
+          type: string
+          description: Industry of the company as on LinkedIn
+        careeros_industry:
+          type: string
+          nullable: true
+          description: Industry of the company as on CareerOs
+        application_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: ID of the associated application (if any)
+        application_status:
+          type: string
+          nullable: true
+          description: Status of the associated application (if any)
+        source:
+          type: string
+          nullable: true
+          description: Source of the company information
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags associated with the company
+      required:
+        - name
+        - overview
+        - size
+        - url
+        - logo_url
+        - linkedin_url
+        - industry
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+      required:
+        - error
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Job ID
+        company_id:
+          type: string
+          format: uuid
+          description: ID of the company associated with the job
+        title:
+          type: string
+          description: Job title
+        location:
+          type: string
+          description: Job location
+        description:
+          type: string
+          description: Job description
+        note:
+          type: string
+          description: Additional note for the job
+        linkedin_url:
+          type: string
+          format: uri
+          description: LinkedIn URL of the job posting
+        source:
+          type: string
+          description: Source of the job posting
+      required:
+        - title
+        - location
+        - description
+        - linkedin_url
+        - source
+    CompanyWithJobs:
+      required:
+        - company_size
+        - company_url
+        - industry
+        - linkedin_url
+        - logo_url
+        - name
+        - overview
+      type: object
+      properties:
+        application_id:
+          type: string
+        application_status:
+          type: string
+        careeros_industry:
+          type: string
+          example: Tech
+        company_size:
+          type: string
+          example: 2-10 employees
+        company_url:
+          type: string
+        hq_location:
+          type: string
+          example: Barcelona, Spain
+        id:
+          type: string
+        industry:
+          type: string
+          example: Software Development
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+        linkedin_url:
+          type: string
+        logo_url:
+          type: string
+        name:
+          type: string
+          example: Career OS
+        overview:
+          type: string
+        short_description:
+          type: string
+        source:
+          type: string
+          example: ChromeExtension
+        tags:
+          type: array
+          items:
+            type: string
+        twitter_url:
+          type: string
+    CurrentPosition:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Current position ID
+        title:
+          type: string
+          description: Title of the current position
+        company:
+          type: string
+          description: Company of the current position
+        location:
+          type: string
+          description: Location of the current position
+        company_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: ID of the company of the current position
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Contact ID
+        first_name:
+          type: string
+          description: First name of the contact
+        last_name:
+          type: string
+          description: Last name of the contact
+        email:
+          type: string
+          description: Email address of the contact
+        secondary_email:
+          type: string
+          description: Secondary email address of the contact
+        phone:
+          type: string
+          description: Phone number of the contact
+        current_position:
+          $ref: '#/components/schemas/CurrentPosition'
+        career_summary:
+          type: object
+          description: Career summary of the contact
+        location:
+          type: string
+          description: Location of the contact
+        linkedin_url:
+          type: string
+          format: uri
+          description: LinkedIn profile URL of the contact
+        linkedin_urn:
+          type: string
+          format: uri
+          nullable: true
+          description: LinkedIn profile URN of the contact
+        is_active:
+          type: boolean
+          description: Indicates whether the contact is active or not
+        source:
+          type: string
+          description: Source of the contact information
+      required:
+        - first_name
+        - last_name
+        - current_position
+        - career_summary
+        - linkedin_url
+        - source
+    AttributedBody:
+      type: object
+      properties:
+        attributes:
+          type: array
+          items: {}
+        text:
+          type: string
+    MessageEvent:
+      type: object
+      properties:
+        messageBodyRenderFormat:
+          type: string
+        body:
+          type: string
+        attributedBody:
+          $ref: '#/components/schemas/AttributedBody'
+    Artifact:
+      type: object
+      properties:
+        width:
+          type: integer
+        fileIdentifyingUrlPathSegment:
+          type: string
+        expiresAt:
+          type: integer
+        height:
+          type: integer
+    VectorImage:
+      type: object
+      properties:
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artifact'
+    Picture:
+      type: object
+      properties:
+        vectorImage:
+          $ref: '#/components/schemas/VectorImage'
+    MiniProfile:
+      type: object
+      properties:
+        memorialized:
+          type: boolean
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dashEntityUrn:
+          type: string
+        occupation:
+          type: string
+        objectUrn:
+          type: string
+        entityUrn:
+          type: string
+        publicIdentifier:
+          type: string
+        picture:
+          $ref: '#/components/schemas/Picture'
+        trackingId:
+          type: string
+        backgroundImage:
+          $ref: '#/components/schemas/Picture'
+    MessagingMember:
+      type: object
+      properties:
+        miniProfile:
+          $ref: '#/components/schemas/MiniProfile'
+        entityUrn:
+          type: string
+        nameInitials:
+          type: string
+    Event:
+      type: object
+      properties:
+        createdAt:
+          type: integer
+        reactionSummaries:
+          type: array
+          items: {}
+        dashEntityUrn:
+          type: string
+        quickReplyRecommendations:
+          type: array
+          items: {}
+        entityUrn:
+          type: string
+        eventContent:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/MessageEvent'
+        subtype:
+          type: string
+        from:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/MessagingMember'
+        previousEventInConversation:
+          type: string
+        backendUrn:
+          type: string
+    LinkedInConversation:
+      type: object
+      properties:
+        dashEntityUrn:
+          type: string
+        inboxType:
+          type: string
+        notificationStatus:
+          type: string
+        read:
+          type: boolean
+        groupChat:
+          type: boolean
+        totalEventCount:
+          type: integer
+        unreadCount:
+          type: integer
+        lastActivityAt:
+          type: integer
+        firstMessageUrn:
+          type: string
+        backendUrn:
+          type: string
+        receipts:
+          type: array
+          items: {}
+        lastReadAt:
+          type: integer
+        archived:
+          type: boolean
+        blocked:
+          type: boolean
+        starred:
+          type: boolean
+        entityUrn:
+          type: string
+        sdkEntityUrn:
+          type: string
+        viewerCurrentParticipant:
+          type: boolean
+        featureTypes:
+          type: array
+          items:
+            type: string
+        withNonConnection:
+          type: boolean
+        muted:
+          type: boolean
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessagingMember'
+    Industry:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the industry
+        icon:
+          type: string
+          description: URL of the industry icon
+      required:
+        - name
+    JobWithCompanyName:
+      required:
+        - company_name
+        - description
+        - linkedin_url
+        - location
+        - source
+        - title
+      type: object
+      properties:
+        company_id:
+          type: string
+        company_name:
+          type: string
+          example: Career OS
+        description:
+          type: string
+          example: Bachelor's degree or equivalent practical experience
+        id:
+          type: string
+        linkedin_url:
+          type: string
+          example: https://www.linkedin.com/jobs/search/?currentJobId=123456
+        location:
+          type: string
+          example: Barcelona, Spain
+        note:
+          type: string
+        source:
+          type: string
+          example: ChromeExtension
+        title:
+          type: string
+          example: Cloud Engineer
+    Template:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Template ID
+        type:
+          type: string
+          description: Type of the template
+        outreach_type:
+          type: string
+          description: Outreach type of the template
+        name:
+          type: string
+          description: Template name
+        email_subject:
+          type: string
+          nullable: true
+          description: Email subject of the template
+        message:
+          type: string
+          description: Template message
+        email_subject_template:
+          type: string
+          nullable: true
+          description: Email subject template of the template
+        message_template:
+          type: string
+          description: Template message template
+        ordering:
+          type: integer
+          description: Ordering of the template
+      required:
+        - type
+        - outreach_type
+        - name
+        - message
+        - message_template
+        - ordering
+  responses:
+    IDValidationFailedError:
+      description: Failed to parse ID as UUID
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IDValidationFailedError'
+    UnauthorizedError:
+      description: Failed to validate JWT token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerError'
+    JSONValidationFailedError:
+      description: Failed to parse request body to JSON schema
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/JSONValidationFailedError'

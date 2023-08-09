@@ -1,0 +1,72 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Company ID
+  name:
+    type: string
+    description: Company name
+  short_description:
+    type: string
+    nullable: true
+    description: Short description of the company
+  overview:
+    type: string
+    description: Company overview
+  hq_location:
+    type: string
+    description: Headquarters location of the company
+  company_size:
+    type: string
+    description: Company size
+  company_url:
+    type: string
+    format: uri
+    description: Company website URL
+  logo_url:
+    type: string
+    format: uri
+    description: URL of the company's logo
+  linkedin_url:
+    type: string
+    format: uri
+    description: LinkedIn profile URL of the company
+  twitter_url:
+    type: string
+    format: uri
+    nullable: true
+    description: Twitter profile URL of the company
+  industry:
+    type: string
+    description: Industry of the company as on LinkedIn
+  careeros_industry:
+    type: string
+    nullable: true
+    description: Industry of the company as on CareerOs
+  application_id:
+    type: string
+    format: uuid
+    nullable: true
+    description: ID of the associated application (if any)
+  application_status:
+    type: string
+    nullable: true
+    description: Status of the associated application (if any)
+  source:
+    type: string
+    nullable: true
+    description: Source of the company information
+  tags:
+    type: array
+    items:
+      type: string
+    description: Tags associated with the company
+required:
+  - name
+  - overview
+  - size
+  - url
+  - logo_url
+  - linkedin_url
+  - industry

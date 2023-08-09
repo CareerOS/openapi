@@ -1,0 +1,33 @@
+post:
+  tags:
+    - LinkedIn Messaging
+  summary: Create Messages
+  description: Create LinkedIn messages for the authenticated user
+  operationId: createLinkedInMessages
+  security:
+    - ApiKeyAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: ../../components/schemas/linkedin/Event.yaml
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+    '400':
+      $ref: ../../components/responses/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

@@ -1,0 +1,58 @@
+post:
+  tags:
+    - Contacts
+  summary: Validate contact
+  description: Validate a contact
+  operationId: validateContact
+  security:
+    - ApiKeyAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            contact_linkedin_url:
+              type: string
+              description: LinkedIn URL of the contact
+            company_name:
+              type: string
+              description: Company name
+  responses:
+    '200':
+      description: Contact validation successful
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Success message
+    '400':
+      $ref: ../../components/responses/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      description: Company not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Error message indicating company not found
+    '409':
+      description: Contact conflict
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              company_id:
+                type: string
+                description: ID of the conflicting company
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

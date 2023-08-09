@@ -1,0 +1,9 @@
+type: object
+properties:
+  error:
+    type: string
+    enum:
+      - Failed to validate JWT token
+    description: JWT token validation failed (expired, invalid, etc.)
+required:
+  - error

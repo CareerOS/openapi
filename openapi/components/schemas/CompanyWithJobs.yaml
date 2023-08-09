@@ -1,0 +1,54 @@
+type: object
+properties:
+  application_id:
+    type: string
+  application_status:
+    type: string
+  careeros_industry:
+    type: string
+    example: Tech
+  company_size:
+    type: string
+    example: 2-10 employees
+  company_url:
+    type: string
+  hq_location:
+    type: string
+    example: Barcelona, Spain
+  id:
+    type: string
+  industry:
+    type: string
+    example: Software Development
+  jobs:
+    type: array
+    items:
+      $ref: ./Job.yaml
+  linkedin_url:
+    type: string
+  logo_url:
+    type: string
+  name:
+    type: string
+    example: Career OS
+  overview:
+    type: string
+  short_description:
+    type: string
+  source:
+    type: string
+    example: ChromeExtension
+  tags:
+    type: array
+    items:
+      type: string
+  twitter_url:
+    type: string
+required:
+  - company_size
+  - company_url
+  - industry
+  - linkedin_url
+  - logo_url
+  - name
+  - overview

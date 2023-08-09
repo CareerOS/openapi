@@ -1,0 +1,59 @@
+get:
+  tags:
+    - Contacts
+  summary: Get contact by ID
+  description: Get contact by ID
+  operationId: getContactByID
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: id
+      in: path
+      description: Contact ID
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Contact.yaml
+    '400':
+      $ref: ../../components/responses/IDValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+delete:
+  tags:
+    - Contacts
+  summary: Delete contact
+  description: Delete a contact from DB & for current user by ID
+  operationId: deleteContact
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: id
+      in: path
+      description: Contact ID
+      required: true
+      schema:
+        type: string
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    '400':
+      $ref: ../../components/responses/IDValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

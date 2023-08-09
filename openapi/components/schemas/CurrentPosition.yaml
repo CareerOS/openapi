@@ -1,0 +1,19 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Current position ID
+  title:
+    type: string
+    description: Title of the current position
+  company:
+    type: string
+    description: Company of the current position
+  location:
+    type: string
+    description: Location of the current position
+  company_id:
+    type: string
+    format: uuid
+    nullable: true
+    description: ID of the company of the current position

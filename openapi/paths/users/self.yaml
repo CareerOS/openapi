@@ -1,0 +1,19 @@
+get:
+  tags:
+    - Users
+  summary: Get self user info
+  description: Returns a self user info
+  operationId: getSelfUserInfo
+  security:
+    - ApiKeyAuth: []
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Contact.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

@@ -1,0 +1,10 @@
+type: object
+properties:
+  name:
+    type: string
+    description: Name of the industry
+  icon:
+    type: string
+    description: URL of the industry icon
+required:
+  - name

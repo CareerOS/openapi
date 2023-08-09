@@ -1,0 +1,29 @@
+get:
+  tags:
+    - Contacts
+  summary: Get contact with chatID
+  description: Get contact with chatID
+  operationId: getContactWithChatID
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: ID of the chat for which to retrieve contact information
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Contact.yaml
+    '400':
+      $ref: ../../components/responses/IDValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

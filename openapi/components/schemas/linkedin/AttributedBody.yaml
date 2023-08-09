@@ -1,0 +1,7 @@
+type: object
+properties:
+  attributes:
+    type: array
+    items: {}
+  text:
+    type: string
