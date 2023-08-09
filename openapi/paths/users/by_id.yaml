@@ -1,0 +1,30 @@
+delete:
+  tags:
+    - Users
+  summary: Delete user
+  description: Removes a user
+  operationId: deleteUser
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: id
+      in: path
+      description: User ID
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+    '400':
+      $ref: ../../components/responses/IDValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

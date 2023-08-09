@@ -1,0 +1,37 @@
+post:
+  tags:
+    - LinkedIn Messaging
+  summary: Create or update conversations
+  description: Create or update conversations
+  operationId: createOrUpdateConversations
+  security:
+    - ApiKeyAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            elements:
+              type: array
+              items:
+                $ref: ../../components/schemas/linkedin/LinkedInConversation.yaml
+  responses:
+    '200':
+      description: Successfully created or updated conversations
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              updated_chats:
+                type: array
+                items:
+                  type: string
+    '400':
+      $ref: ../../components/responses/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

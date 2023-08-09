@@ -1,0 +1,18 @@
+type: object
+properties:
+  urn:
+    type: string
+  read:
+    type: boolean
+  isDmAndActive:
+    type: boolean
+  withNonConnection:
+    type: boolean
+  unreadCount:
+    type: integer
+  lastMessage:
+    type: string
+  lastActivityAt:
+    type: string
+  toUser:
+    $ref: ./Profile.yaml

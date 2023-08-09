@@ -1,0 +1,136 @@
+openapi: 3.0.1
+
+info:
+  title: CareerOS API
+  description: The Career OS API
+  contact: {}
+  version: 1.0.0
+  license:
+    name: ''
+    url: ''
+
+servers:
+  - url: /
+
+tags:
+  - name: Careers
+    description: Careers endpoint
+  - name: Applications
+    description: Kanban tiles
+
+paths:
+  #  Careers
+  /api/v1/applications/{studentId}:
+    $ref: paths/careers/applications_by_studentID.yaml
+
+  #  Applications
+  /api/v1/applications:
+    $ref: paths/applications/index.yaml
+  /api/v1/applications/archive:
+    $ref: paths/applications/archive.yaml
+
+  #  Companies
+  /api/v1/companies:
+    $ref: paths/companies/index.yaml
+  /api/v1/companies/{id}:
+    $ref: paths/companies/by_id.yaml
+  /api/v1/companies/explore:
+    $ref: paths/companies/explore.yaml
+  /api/v1/companies/search/{name}:
+    $ref: paths/companies/search_by_name.yaml
+  /api/v1/companies/search/company/{name}:
+    $ref: paths/companies/search_company_by_name.yaml
+
+  #  Contacts
+  /api/v1/contacts:
+    $ref: paths/contacts/index.yaml
+  /api/v1/contacts/issaved:
+    $ref: paths/contacts/issaved.yaml
+  /api/v1/contacts/{id}:
+    $ref: paths/contacts/by_id.yaml
+  /api/v1/contacts/{id}/email:
+    $ref: paths/contacts/by_id_email.yaml
+  /api/v1/contacts/{id}/chat:
+    $ref: paths/contacts/by_id_chat.yaml
+  /api/v1/contacts/bycompany/{id}:
+    $ref: paths/contacts/bycompany_id.yaml
+  /api/v1/contacts/bycompany/{id}/byuser/{userID}:
+    $ref: paths/contacts/bycompany_id_byuser_id.yaml
+
+  #  LinkedIn Messaging
+  /api/v1/linkedin/messages:
+    $ref: paths/linkedin/messages.yaml
+  /api/v1/linkedin/messages/{studentID}:
+    $ref: paths/linkedin/messages_by_studentID.yaml
+  /api/v1/linkedin/message/send:
+    $ref: paths/linkedin/message_send.yaml
+  /api/v1/linkedin/conversations:
+    $ref: paths/linkedin/conversations.yaml
+  /api/v1/linkedin/conversations/updateall:
+    $ref: paths/linkedin/conversations_updateall.yaml
+  /api/v1/linkedin/connection/send:
+    $ref: paths/linkedin/connection_send.yaml
+
+  #  Favorite Companies
+  /api/v1/companies/favorite:
+    $ref: paths/favorite/index.yaml
+  /api/v1/companies/favorite/{id}:
+    $ref: paths/favorite/by_id.yaml
+
+  #  FCM Token
+  /api/v1/linkedin/fcm/token:
+    $ref: paths/fcm/token.yaml
+
+  #  Firestore Token
+  /api/v1/firebase/token:
+    $ref: paths/firestore/token.yaml
+
+  #  Industries
+  /api/v1/industries:
+    $ref: paths/industries/index.yaml
+
+  #  Jobs
+  /api/v1/jobs:
+    $ref: paths/jobs/index.yaml
+  /api/v1/jobs/issaved:
+    $ref: paths/jobs/issaved.yaml
+
+  #  Outlook Messaging
+  /api/v1/outlook/messages:
+    $ref: paths/outlook/messages.yaml
+  /api/v1/outlook/message/send:
+    $ref: paths/outlook/message_send.yaml
+
+  #  Templates
+  /api/v1/templates:
+    $ref: paths/templates/index.yaml
+  /api/v1/templates/prefill/{id}:
+    $ref: paths/templates/prefill_by_id.yaml
+
+  #  Users
+  /api/v1/login:
+    $ref: paths/users/login.yaml
+  /api/v1/enroll:
+    $ref: paths/users/enroll.yaml
+  /api/v1/users/{id}:
+    $ref: paths/users/by_id.yaml
+  /api/v1/users/self:
+    $ref: paths/users/self.yaml
+  /api/v1/self/university:
+    $ref: paths/users/self_university.yaml
+  /api/v1/universities/{universityID}/students:
+    $ref: paths/users/universities_by_id_students.yaml
+  /api/v1/users/contacts:
+    $ref: paths/users/contacts.yaml
+  /api/v1/users/users/conversations:
+    $ref: paths/users/conversations.yaml
+  /api/v1/users/self/lid:
+    $ref: paths/users/self_lid.yaml
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      description: Bearer JWT auth
+      name: Authorization
+      in: header

@@ -1,0 +1,9 @@
+type: object
+properties:
+  error:
+    type: string
+    enum:
+      - The supplied JSON is not correctly formatted
+    description: Failed to bind request body to JSON schema
+required:
+  - error

@@ -1,0 +1,81 @@
+get:
+  tags:
+    - Companies
+  summary: Get companies
+  description: Returns companies
+  operationId: getCompanies
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: page
+      in: query
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      description: Page number for pagination
+    - name: industry
+      in: query
+      schema:
+        type: string
+      description: Filter by industry
+    - name: category
+      in: query
+      schema:
+        type: string
+      description: Filter by category
+    - name: tag
+      in: query
+      schema:
+        type: string
+      description: Filter by tag
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/Company.yaml
+    '400':
+      description: Bad request - Invalid page or parameter format
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/ErrorResponse.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+post:
+  tags:
+    - Companies
+  summary: Save Company
+  description: Saving Company to DB & current user's favorite companies
+  operationId: saveCompany
+  security:
+    - ApiKeyAuth: []
+  requestBody:
+    description: Company data required to save to DB
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Company.yaml
+    required: true
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              companyID:
+                type: string
+    '400':
+      $ref: ../../components/responses/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

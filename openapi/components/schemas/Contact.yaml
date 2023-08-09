@@ -1,0 +1,50 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Contact ID
+  first_name:
+    type: string
+    description: First name of the contact
+  last_name:
+    type: string
+    description: Last name of the contact
+  email:
+    type: string
+    description: Email address of the contact
+  secondary_email:
+    type: string
+    description: Secondary email address of the contact
+  phone:
+    type: string
+    description: Phone number of the contact
+  current_position:
+    $ref: ./CurrentPosition.yaml
+  career_summary:
+    type: object
+    description: Career summary of the contact
+  location:
+    type: string
+    description: Location of the contact
+  linkedin_url:
+    type: string
+    format: uri
+    description: LinkedIn profile URL of the contact
+  linkedin_urn:
+    type: string
+    format: uri
+    nullable: true
+    description: LinkedIn profile URN of the contact
+  is_active:
+    type: boolean
+    description: Indicates whether the contact is active or not
+  source:
+    type: string
+    description: Source of the contact information
+required:
+  - first_name
+  - last_name
+  - current_position
+  - career_summary
+  - linkedin_url
+  - source

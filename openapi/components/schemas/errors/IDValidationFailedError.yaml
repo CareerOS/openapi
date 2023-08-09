@@ -1,0 +1,9 @@
+type: object
+properties:
+  error:
+    type: string
+    enum:
+      - The supplied ID format is invalid
+    description: ID validation failed (not UUID)
+required:
+  - error

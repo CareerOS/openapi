@@ -1,0 +1,24 @@
+type: object
+properties:
+  memorialized:
+    type: boolean
+  firstName:
+    type: string
+  lastName:
+    type: string
+  dashEntityUrn:
+    type: string
+  occupation:
+    type: string
+  objectUrn:
+    type: string
+  entityUrn:
+    type: string
+  publicIdentifier:
+    type: string
+  picture:
+    $ref: ./Picture.yaml
+  trackingId:
+    type: string
+  backgroundImage:
+    $ref: ./Picture.yaml

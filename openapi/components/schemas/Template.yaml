@@ -1,0 +1,39 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Template ID
+  type:
+    type: string
+    description: Type of the template
+  outreach_type:
+    type: string
+    description: Outreach type of the template
+  name:
+    type: string
+    description: Template name
+  email_subject:
+    type: string
+    nullable: true
+    description: Email subject of the template
+  message:
+    type: string
+    description: Template message
+  email_subject_template:
+    type: string
+    nullable: true
+    description: Email subject template of the template
+  message_template:
+    type: string
+    description: Template message template
+  ordering:
+    type: integer
+    description: Ordering of the template
+required:
+  - type
+  - outreach_type
+  - name
+  - message
+  - message_template
+  - ordering

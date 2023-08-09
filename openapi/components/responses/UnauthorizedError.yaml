@@ -1,0 +1,5 @@
+description: Failed to validate JWT token
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/errors/UnauthorizedError.yaml

@@ -1,0 +1,29 @@
+post:
+  tags:
+    - Users
+  summary: User login
+  description: Logs in a user using the provided token (Authorization header)
+  operationId: loginUser
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - in: header
+      name: Authorization
+      description: Access token for authentication
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

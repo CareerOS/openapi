@@ -1,0 +1,4 @@
+type: object
+properties:
+  vectorImage:
+    $ref: ./VectorImage.yaml

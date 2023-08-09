@@ -1,0 +1,21 @@
+get:
+  tags:
+    - Users
+  summary: Get user contacts
+  description: Returns a user's favorite (saved) contacts
+  operationId: getUserContacts
+  security:
+    - ApiKeyAuth: []
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/Contact.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

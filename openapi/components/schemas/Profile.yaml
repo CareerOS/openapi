@@ -1,0 +1,6 @@
+type: object
+properties:
+  linkedInID:
+    type: string
+  linkedInUrn:
+    type: string

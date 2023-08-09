@@ -1,0 +1,38 @@
+get:
+  tags:
+    - Contacts
+  summary: Get contacts by companyID and userID
+  description: Returns all contacts that have relations with the given company and user
+  operationId: getContactsByCompanyIDAndUserID
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: ID of the company to filter contacts
+    - name: userID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: ID of the user for whom to retrieve contacts
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/Contact.yaml
+    '400':
+      $ref: ../../components/responses/IDValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

@@ -1,0 +1,9 @@
+type: object
+properties:
+  error:
+    type: string
+    enum:
+      - An internal server error has occurred
+    description: Internal server error message
+required:
+  - error

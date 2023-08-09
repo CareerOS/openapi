@@ -1,0 +1,37 @@
+get:
+  tags:
+    - Companies
+  summary: Check company in DB
+  description: Check exists company in DB or not
+  operationId: checkCompanyInDB
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: name
+      in: path
+      description: Company name
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              linkedin_identifier:
+                type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/ErrorResponse.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

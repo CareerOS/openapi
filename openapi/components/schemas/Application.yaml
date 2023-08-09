@@ -1,0 +1,46 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Application ID
+  status:
+    type: string
+    enum:
+      - saved
+      - networking
+      - applying
+      - applied
+      - interviewing
+      - offer
+      - archive
+    description: Application status
+  company_id:
+    type: string
+    description: Company ID
+  company_name:
+    type: string
+    description: Company name
+  industry:
+    type: string
+    description: Industry
+  logo_url:
+    type: string
+    format: uri
+    description: Logo URL
+  linkedin_url:
+    type: string
+    format: uri
+    description: LinkedIn URL
+  jobs:
+    type: array
+    items:
+      $ref: ./JobInfo.yaml
+    description: List of jobs associated with the application
+required:
+  - status
+  - company_id
+  - company_name
+  - industry
+  - logo_url
+  - linkedin_url
+  - jobs

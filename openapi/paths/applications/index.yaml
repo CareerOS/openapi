@@ -1,0 +1,51 @@
+get:
+  tags:
+    - Applications
+  operationId: getApplications
+  summary: Returns all applications
+  description: Returns applications
+  security:
+    - ApiKeyAuth: []
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/Application.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+patch:
+  tags:
+    - Applications
+  summary: Change Application Status
+  operationId: changeApplicationStatus
+  security:
+    - ApiKeyAuth: []
+  requestBody:
+    description: Tile's data
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Tile.yaml
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+    '400':
+      $ref: ../../components/responses/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

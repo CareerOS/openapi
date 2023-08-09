@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Users
+  summary: Get self university ID
+  description: Get the university ID associated with the authenticated user
+  operationId: getSelfUniversityID
+  security:
+    - ApiKeyAuth: []
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              university_id:
+                type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
