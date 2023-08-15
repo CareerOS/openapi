@@ -62,6 +62,9 @@ post:
             properties:
               message:
                 type: string
+                enum:
+                  - Success
+                description: FCM token registered successfully
     '202':
       description: Successful operation (FCM token already exists)
       content:
