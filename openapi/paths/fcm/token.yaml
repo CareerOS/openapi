@@ -19,7 +19,7 @@ get:
     '401':
       $ref: ../../components/responses/UnauthorizedError.yaml
     '404':
-      description: Not found
+      description: Token not found
       content:
         application/json:
           schema:
