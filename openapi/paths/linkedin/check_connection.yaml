@@ -1,9 +1,9 @@
-post:
+get:
   tags:
     - LinkedIn Messaging
-  summary: Update connection
-  description: Update connection request to a contact
-  operationId: updateConnection
+  summary: Check connection
+  description: Check status of connection to a contact
+  operationId: checkConnection
   security:
     - ApiKeyAuth: []
   requestBody:
