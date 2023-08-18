@@ -1,23 +1,17 @@
 get:
   tags:
     - LinkedIn Messaging
-  summary: Check connection
-  description: Check status of connection to a contact
+  summary: Check status of connection to a contact
+  description: This endpoint checks status of connection between user and contact on linkedin
   operationId: checkConnection
   security:
     - ApiKeyAuth: []
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            to_contact_id:
-              type: string
-              format: uuid
-            text:
-              type: string
+  parameters:
+    - name: id
+      in: path
+      description: Contact ID
+      required: true
+      type: string
   responses:
     '200':
       description: Successful operation
@@ -28,6 +22,10 @@ get:
             properties:
               message:
                 type: string
+                enum:
+                  - Connection exists
+                  - Connection does not exist
+                  - Connection is pending
     '400':
       $ref: ../../components/responses/JSONValidationFailedError.yaml
     '401':
