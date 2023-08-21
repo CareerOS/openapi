@@ -641,7 +641,7 @@ paths:
     post:
       tags:
         - LinkedIn Messaging
-      summary: Create Messages
+      summary: Create messages
       description: Create LinkedIn messages for the authenticated user
       operationId: createLinkedInMessages
       security:
@@ -845,7 +845,7 @@ paths:
     get:
       tags:
         - LinkedIn Messaging
-      summary: Check connection status between user and contact
+      summary: Check connection status
       description: This endpoint checks connection status between user and contact on LinkedIn
       operationId: checkConnection
       security:
