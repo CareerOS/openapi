@@ -867,8 +867,8 @@ paths:
                   message:
                     type: string
                     enum:
-                      - Connection exists
-                      - Connection does not exist
+                      - Connected
+                      - Not connected
                       - Connection is pending
         '400':
           $ref: '#/components/responses/JSONValidationFailedError'
