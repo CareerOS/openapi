@@ -71,7 +71,7 @@ paths:
   /api/v1/linkedin/connection/send:
     $ref: paths/linkedin/connection_send.yaml
   /api/v1/linkedin/connection/check/{contactID}:
-    $ref: paths/linkedin/connection_check.yaml
+    $ref: paths/linkedin/connection_check_{id}.yaml
 
   #  Favorite Companies
   /api/v1/companies/favorite:

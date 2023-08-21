@@ -845,15 +845,15 @@ paths:
     get:
       tags:
         - LinkedIn Messaging
-      summary: Check status of connection to a contact
-      description: This endpoint checks status of connection between user and contact on linkedin
+      summary: Check connection status between user and contact
+      description: This endpoint checks connection status between user and contact on LinkedIn
       operationId: checkConnection
       security:
         - ApiKeyAuth: []
       parameters:
-        - name: id
+        - name: contactID
           in: path
-          description: Contact ID
+          description: ID of contact to check connection status with
           required: true
           type: string
       responses:
@@ -864,12 +864,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  connection_status:
                     type: string
                     enum:
-                      - Connected
-                      - Not connected
-                      - Connection is pending
+                      - connected
+                      - not_connected
+                      - connection_requested
         '400':
           $ref: '#/components/responses/JSONValidationFailedError'
         '401':
