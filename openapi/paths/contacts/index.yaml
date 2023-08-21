@@ -23,6 +23,9 @@ post:
             properties:
               message:
                 type: string
+              id:
+                type: string
+                format: uuid
     '400':
       $ref: ../../components/responses/JSONValidationFailedError.yaml
     '401':
