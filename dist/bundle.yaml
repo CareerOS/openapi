@@ -641,7 +641,7 @@ paths:
     post:
       tags:
         - LinkedIn Messaging
-      summary: Create Messages
+      summary: Create messages
       description: Create LinkedIn messages for the authenticated user
       operationId: createLinkedInMessages
       security:
@@ -841,6 +841,41 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/linkedin/connection/check/{contactID}:
+    get:
+      tags:
+        - LinkedIn Messaging
+      summary: Check connection status
+      description: This endpoint checks connection status between user and contact on LinkedIn
+      operationId: checkConnection
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: contactID
+          in: path
+          description: ID of contact to check connection status with
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  connection_status:
+                    type: string
+                    enum:
+                      - connected
+                      - not_connected
+                      - connection_requested
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/v1/companies/favorite:
     get:
       tags:
@@ -916,6 +951,20 @@ paths:
                     type: string
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Token not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - FCM token not found
+                    description: FCM token not found for extension user (extension must register and send FCM token first)
+                required:
+                  - error
         '500':
           $ref: '#/components/responses/InternalServerError'
     post:
@@ -945,6 +994,21 @@ paths:
                 properties:
                   message:
                     type: string
+                    enum:
+                      - Success
+                    description: FCM token registered successfully
+        '202':
+          description: Successful operation (FCM token already exists)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    enum:
+                      - Token already registered
+                    description: FCM token already registered for given extension user
         '400':
           $ref: '#/components/responses/JSONValidationFailedError'
         '401':
@@ -1728,14 +1792,6 @@ components:
         - linkedin_url
         - source
     CompanyWithJobs:
-      required:
-        - company_size
-        - company_url
-        - industry
-        - linkedin_url
-        - logo_url
-        - name
-        - overview
       type: object
       properties:
         application_id:
@@ -1782,6 +1838,14 @@ components:
             type: string
         twitter_url:
           type: string
+      required:
+        - company_size
+        - company_url
+        - industry
+        - linkedin_url
+        - logo_url
+        - name
+        - overview
     CurrentPosition:
       type: object
       properties:
@@ -2024,13 +2088,6 @@ components:
       required:
         - name
     JobWithCompanyName:
-      required:
-        - company_name
-        - description
-        - linkedin_url
-        - location
-        - source
-        - title
       type: object
       properties:
         company_id:
@@ -2057,6 +2114,13 @@ components:
         title:
           type: string
           example: Cloud Engineer
+      required:
+        - company_name
+        - description
+        - linkedin_url
+        - location
+        - source
+        - title
     Template:
       type: object
       properties:

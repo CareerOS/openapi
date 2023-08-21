@@ -70,6 +70,8 @@ paths:
     $ref: paths/linkedin/conversations_updateall.yaml
   /api/v1/linkedin/connection/send:
     $ref: paths/linkedin/connection_send.yaml
+  /api/v1/linkedin/connection/check/{contactID}:
+    $ref: paths/linkedin/connection_check_{contactID}.yaml
 
   #  Favorite Companies
   /api/v1/companies/favorite:
