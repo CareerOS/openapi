@@ -1,0 +1,22 @@
+post:
+  tags:
+    - Applications
+  summary: Application For User
+  description: Adds Comments to User Application
+  operationId: postCommentApplications
+  security:
+    - ApiKeyAuth: []
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

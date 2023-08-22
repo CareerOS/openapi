@@ -1,0 +1,22 @@
+patch:
+  tags:
+    - Comments
+  summary: Comments For User
+  description: Resolves Comments to User Application
+  operationId: patchCommentApplications
+  security:
+    - ApiKeyAuth: []
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
