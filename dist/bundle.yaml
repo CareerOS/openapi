@@ -12,6 +12,8 @@ servers:
     description: Development server
   - url: https://backend-prod-tsalqjuvda-oc.a.run.app
     description: Production server
+security:
+  - BearerAuth: []
 tags:
   - name: Careers
     description: Careers endpoint
@@ -25,8 +27,6 @@ paths:
       operationId: getApplicationForStudent
       summary: Get application details for a student
       description: Returns application details for a student
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: studentId
           in: path
@@ -55,8 +55,6 @@ paths:
       operationId: getApplications
       summary: Returns all applications
       description: Returns applications
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -75,8 +73,6 @@ paths:
         - Applications
       summary: Change Application Status
       operationId: changeApplicationStatus
-      security:
-        - ApiKeyAuth: []
       requestBody:
         description: Tile's data
         required: true
@@ -107,8 +103,6 @@ paths:
       summary: Application For User
       description: Returns applications
       operationId: getArchivedApplications
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -129,8 +123,6 @@ paths:
       summary: Get companies
       description: Returns companies
       operationId: getCompanies
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: page
           in: query
@@ -179,8 +171,6 @@ paths:
       summary: Save Company
       description: Saving Company to DB & current user's favorite companies
       operationId: saveCompany
-      security:
-        - ApiKeyAuth: []
       requestBody:
         description: Company data required to save to DB
         content:
@@ -211,8 +201,6 @@ paths:
       summary: Get Company by ID
       description: Get Company with Jobs by company_id
       operationId: getCompanyById
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -246,8 +234,6 @@ paths:
       summary: Get explore companies
       description: Get companies by industry
       operationId: getExploreCompanies
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: industry
           in: query
@@ -278,8 +264,6 @@ paths:
       summary: Get companies by name
       description: Search companies by name
       operationId: searchCompaniesByName
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: name
           in: path
@@ -307,8 +291,6 @@ paths:
       summary: Check company in DB
       description: Check exists company in DB or not
       operationId: checkCompanyInDB
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: name
           in: path
@@ -345,8 +327,6 @@ paths:
       summary: Save contact
       description: Save a contact to DB & for current user
       operationId: saveContact
-      security:
-        - ApiKeyAuth: []
       requestBody:
         description: Contact's data from chrome extension
         content:
@@ -380,8 +360,6 @@ paths:
       summary: Validate contact
       description: Validate a contact
       operationId: validateContact
-      security:
-        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -439,8 +417,6 @@ paths:
       summary: Get contact by ID
       description: Get contact by ID
       operationId: getContactByID
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -467,8 +443,6 @@ paths:
       summary: Delete contact
       description: Delete a contact from DB & for current user by ID
       operationId: deleteContact
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -499,8 +473,6 @@ paths:
       summary: Set emails by contactID
       description: Set emails by contactID
       operationId: setEmailsByContactID
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -550,8 +522,6 @@ paths:
       summary: Get contact with chatID
       description: Get contact with chatID
       operationId: getContactWithChatID
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -580,8 +550,6 @@ paths:
       summary: Get contacts by company ID
       description: Returns all contacts that have relations with the given company
       operationId: getContactsByCompanyID
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -611,8 +579,6 @@ paths:
       summary: Get contacts by companyID and userID
       description: Returns all contacts that have relations with the given company and user
       operationId: getContactsByCompanyIDAndUserID
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -650,8 +616,6 @@ paths:
       summary: Create messages
       description: Create LinkedIn messages for the authenticated user
       operationId: createLinkedInMessages
-      security:
-        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -684,8 +648,6 @@ paths:
       summary: Get messages count for student
       description: Get the count of messages for a specific student
       operationId: getMessagesCountForStudent
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: studentID
           in: path
@@ -719,8 +681,6 @@ paths:
       summary: Send message
       description: Send a LinkedIn message
       operationId: sendMessage
-      security:
-        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -756,8 +716,6 @@ paths:
       summary: Create or update conversations
       description: Create or update conversations
       operationId: createOrUpdateConversations
-      security:
-        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -794,8 +752,6 @@ paths:
       summary: Force update message history
       description: Force update the message history for the authenticated user
       operationId: forceUpdateMessageHistory
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -817,8 +773,6 @@ paths:
       summary: Send connection
       description: Send a connection request to a contact
       operationId: sendConnection
-      security:
-        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -854,8 +808,6 @@ paths:
       summary: Check connection status
       description: This endpoint checks connection status between user and contact on LinkedIn
       operationId: checkConnection
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: contactID
           in: path
@@ -889,8 +841,6 @@ paths:
       summary: Get favorite companies
       description: Get user's favorite (saved) companies by current userID
       operationId: getFavoriteCompanies
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -911,8 +861,6 @@ paths:
       summary: Toggle favorite company
       description: Adding & removing company by ID and current userID
       operationId: toggleFavoriteCompany
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -943,8 +891,6 @@ paths:
       summary: Get extension FCM token
       description: Get the FCM token for the extension
       operationId: getExtensionFCMToken
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -979,8 +925,6 @@ paths:
       summary: Register extension FCM token
       description: Register the FCM token for the extension
       operationId: registerExtensionFCM
-      security:
-        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -1028,8 +972,6 @@ paths:
       summary: Issue firestore access token for user
       description: Issue a firestore token for the authenticated user
       operationId: getFirestoreToken
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -1051,8 +993,6 @@ paths:
       summary: Get industries
       description: Get all industries
       operationId: getIndustries
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -1073,8 +1013,6 @@ paths:
       summary: Get Jobs
       description: Get a list of jobs
       operationId: getJobs
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: limit
           in: query
@@ -1115,8 +1053,6 @@ paths:
       summary: Save job
       description: Save a job to DB & for current user
       operationId: saveJob
-      security:
-        - ApiKeyAuth: []
       requestBody:
         description: Job's data from Chrome Extension
         content:
@@ -1156,8 +1092,6 @@ paths:
       summary: Validate job
       description: Validate job details for the authenticated user
       operationId: validateJob
-      security:
-        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -1206,8 +1140,6 @@ paths:
       summary: Get outlook messages
       description: Get Outlook messages for the authenticated user
       operationId: getOutlookMessages
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -1229,8 +1161,6 @@ paths:
       summary: Send outlook message
       description: Send an Outlook message to a recipient
       operationId: sendOutlookMessage
-      security:
-        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -1267,8 +1197,6 @@ paths:
       summary: Get templates
       description: Returns all templates
       operationId: getTemplates
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -1293,8 +1221,6 @@ paths:
       summary: Populate template for user
       description: Returns prefill templates for user
       operationId: populateTemplatesForContact
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -1324,8 +1250,6 @@ paths:
       summary: User login
       description: Logs in a user using the provided token (Authorization header)
       operationId: loginUser
-      security:
-        - ApiKeyAuth: []
       parameters:
         - in: header
           name: Authorization
@@ -1354,8 +1278,6 @@ paths:
       summary: Enroll user to university
       description: Enrolls the authenticated user to a university
       operationId: enrollUser
-      security:
-        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -1389,8 +1311,6 @@ paths:
       summary: Delete user
       description: Removes a user
       operationId: deleteUser
-      security:
-        - ApiKeyAuth: []
       parameters:
         - name: id
           in: path
@@ -1420,8 +1340,6 @@ paths:
       summary: Get self user info
       description: Returns a self user info
       operationId: getSelfUserInfo
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -1440,8 +1358,6 @@ paths:
       summary: Get self university ID
       description: Get the university ID associated with the authenticated user
       operationId: getSelfUniversityID
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -1463,8 +1379,6 @@ paths:
       summary: Get students by university ID
       description: Get students associated with a specific university
       operationId: getStudentsByUniversityID
-      security:
-        - ApiKeyAuth: []
       parameters:
         - in: path
           name: universityID
@@ -1494,8 +1408,6 @@ paths:
       summary: Get user contacts
       description: Returns a user's favorite (saved) contacts
       operationId: getUserContacts
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -1516,8 +1428,6 @@ paths:
       summary: Get user conversations
       description: Get conversations for the authenticated user
       operationId: getUserConversations
-      security:
-        - ApiKeyAuth: []
       responses:
         '200':
           description: Successful operation
@@ -1538,8 +1448,6 @@ paths:
       summary: Set self user URN
       description: Set self user URN and LinkedIn ID for the authenticated user
       operationId: setSelfUserURN
-      security:
-        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -1569,11 +1477,10 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      description: Bearer JWT auth
-      name: Authorization
-      in: header
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     JobInfo:
       type: object
