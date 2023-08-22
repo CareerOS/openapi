@@ -6,8 +6,8 @@ info:
   contact: {}
   version: 1.0.0
   license:
-    name: ''
-    url: ''
+    name: 'CareerOS internal usage license'
+    url: 'https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS'
 
 servers:
   - url: /
