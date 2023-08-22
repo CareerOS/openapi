@@ -8,10 +8,10 @@ info:
     name: CareerOS internal usage license
     url: https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS
 servers:
-  - url: https://backend-prod-tsalqjuvda-oc.a.run.app
-    description: Production server
   - url: https://backend-00001-tuf-diofvmfqga-oc.a.run.app
     description: Development server
+  - url: https://backend-prod-tsalqjuvda-oc.a.run.app
+    description: Production server
 tags:
   - name: Careers
     description: Careers endpoint
