@@ -4,8 +4,6 @@ post:
   summary: User login
   description: Logs in a user using the provided token (Authorization header)
   operationId: loginUser
-  security:
-    - ApiKeyAuth: []
   parameters:
     - in: header
       name: Authorization

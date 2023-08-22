@@ -4,8 +4,6 @@ post:
   summary: Save contact
   description: Save a contact to DB & for current user
   operationId: saveContact
-  security:
-    - ApiKeyAuth: []
   requestBody:
     description: Contact's data from chrome extension
     content:

@@ -4,8 +4,6 @@ get:
   operationId: getApplications
   summary: Returns all applications
   description: Returns applications
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation
@@ -24,8 +22,6 @@ patch:
     - Applications
   summary: Change Application Status
   operationId: changeApplicationStatus
-  security:
-    - ApiKeyAuth: []
   requestBody:
     description: Tile's data
     required: true

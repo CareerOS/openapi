@@ -4,8 +4,6 @@ post:
   summary: Enroll user to university
   description: Enrolls the authenticated user to a university
   operationId: enrollUser
-  security:
-    - ApiKeyAuth: []
   requestBody:
     content:
       application/json:

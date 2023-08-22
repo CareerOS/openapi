@@ -4,8 +4,6 @@ get:
   summary: Get outlook messages
   description: Get Outlook messages for the authenticated user
   operationId: getOutlookMessages
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation

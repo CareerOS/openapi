@@ -4,8 +4,6 @@ post:
   summary: Validate contact
   description: Validate a contact
   operationId: validateContact
-  security:
-    - ApiKeyAuth: []
   requestBody:
     required: true
     content:

@@ -4,8 +4,6 @@ get:
   summary: Application For User
   description: Returns applications
   operationId: getArchivedApplications
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation

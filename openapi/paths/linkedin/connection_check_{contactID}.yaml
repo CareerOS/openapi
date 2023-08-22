@@ -4,8 +4,6 @@ get:
   summary: Check connection status
   description: This endpoint checks connection status between user and contact on LinkedIn
   operationId: checkConnection
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: contactID
       in: path

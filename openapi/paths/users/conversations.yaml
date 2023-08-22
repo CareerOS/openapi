@@ -4,8 +4,6 @@ get:
   summary: Get user conversations
   description: Get conversations for the authenticated user
   operationId: getUserConversations
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation

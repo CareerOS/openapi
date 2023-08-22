@@ -4,8 +4,6 @@ get:
   summary: Check company in DB
   description: Check exists company in DB or not
   operationId: checkCompanyInDB
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: name
       in: path

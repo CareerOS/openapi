@@ -4,8 +4,6 @@ get:
   summary: Get companies by name
   description: Search companies by name
   operationId: searchCompaniesByName
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: name
       in: path

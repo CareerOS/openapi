@@ -4,8 +4,6 @@ post:
   summary: Create messages
   description: Create LinkedIn messages for the authenticated user
   operationId: createLinkedInMessages
-  security:
-    - ApiKeyAuth: []
   requestBody:
     required: true
     content:

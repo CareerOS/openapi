@@ -4,8 +4,6 @@ post:
   summary: Create or update conversations
   description: Create or update conversations
   operationId: createOrUpdateConversations
-  security:
-    - ApiKeyAuth: []
   requestBody:
     required: true
     content:

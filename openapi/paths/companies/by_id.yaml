@@ -4,8 +4,6 @@ get:
   summary: Get Company by ID
   description: Get Company with Jobs by company_id
   operationId: getCompanyById
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: id
       in: path

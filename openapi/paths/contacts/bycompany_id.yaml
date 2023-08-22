@@ -4,8 +4,6 @@ get:
   summary: Get contacts by company ID
   description: Returns all contacts that have relations with the given company
   operationId: getContactsByCompanyID
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: id
       in: path

@@ -4,8 +4,6 @@ post:
   summary: Send outlook message
   description: Send an Outlook message to a recipient
   operationId: sendOutlookMessage
-  security:
-    - ApiKeyAuth: []
   requestBody:
     required: true
     content:

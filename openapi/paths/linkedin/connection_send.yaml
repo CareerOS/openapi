@@ -4,8 +4,6 @@ post:
   summary: Send connection
   description: Send a connection request to a contact
   operationId: sendConnection
-  security:
-    - ApiKeyAuth: []
   requestBody:
     required: true
     content:
