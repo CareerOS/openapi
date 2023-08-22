@@ -4,8 +4,6 @@ get:
   summary: Issue firestore access token for user
   description: Issue a firestore token for the authenticated user
   operationId: getFirestoreToken
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation

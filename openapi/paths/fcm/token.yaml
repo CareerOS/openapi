@@ -4,8 +4,6 @@ get:
   summary: Get extension FCM token
   description: Get the FCM token for the extension
   operationId: getExtensionFCMToken
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation
@@ -41,8 +39,6 @@ post:
   summary: Register extension FCM token
   description: Register the FCM token for the extension
   operationId: registerExtensionFCM
-  security:
-    - ApiKeyAuth: []
   requestBody:
     required: true
     content:

@@ -4,8 +4,6 @@ get:
   summary: Get self university ID
   description: Get the university ID associated with the authenticated user
   operationId: getSelfUniversityID
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation

@@ -4,8 +4,6 @@ get:
   summary: Get contact by ID
   description: Get contact by ID
   operationId: getContactByID
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: id
       in: path
@@ -32,8 +30,6 @@ delete:
   summary: Delete contact
   description: Delete a contact from DB & for current user by ID
   operationId: deleteContact
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: id
       in: path

@@ -4,8 +4,6 @@ get:
   summary: Populate template for user
   description: Returns prefill templates for user
   operationId: populateTemplatesForContact
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: id
       in: path

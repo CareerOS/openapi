@@ -4,8 +4,6 @@ get:
   summary: Get explore companies
   description: Get companies by industry
   operationId: getExploreCompanies
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: industry
       in: query

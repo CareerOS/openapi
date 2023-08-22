@@ -4,8 +4,6 @@ get:
   summary: Get self user info
   description: Returns a self user info
   operationId: getSelfUserInfo
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation

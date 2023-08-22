@@ -4,8 +4,6 @@ get:
   summary: Toggle favorite company
   description: Adding & removing company by ID and current userID
   operationId: toggleFavoriteCompany
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: id
       in: path

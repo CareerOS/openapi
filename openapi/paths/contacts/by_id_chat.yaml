@@ -4,8 +4,6 @@ get:
   summary: Get contact with chatID
   description: Get contact with chatID
   operationId: getContactWithChatID
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: id
       in: path

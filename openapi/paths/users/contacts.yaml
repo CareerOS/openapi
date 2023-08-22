@@ -4,8 +4,6 @@ get:
   summary: Get user contacts
   description: Returns a user's favorite (saved) contacts
   operationId: getUserContacts
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation

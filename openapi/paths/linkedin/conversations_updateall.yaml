@@ -4,8 +4,6 @@ post:
   summary: Force update message history
   description: Force update the message history for the authenticated user
   operationId: forceUpdateMessageHistory
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation

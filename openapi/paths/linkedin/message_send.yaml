@@ -4,8 +4,6 @@ post:
   summary: Send message
   description: Send a LinkedIn message
   operationId: sendMessage
-  security:
-    - ApiKeyAuth: []
   requestBody:
     required: true
     content:

@@ -4,8 +4,6 @@ get:
   summary: Get students by university ID
   description: Get students associated with a specific university
   operationId: getStudentsByUniversityID
-  security:
-    - ApiKeyAuth: []
   parameters:
     - in: path
       name: universityID

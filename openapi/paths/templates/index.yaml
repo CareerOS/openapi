@@ -4,8 +4,6 @@ get:
   summary: Get templates
   description: Returns all templates
   operationId: getTemplates
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation

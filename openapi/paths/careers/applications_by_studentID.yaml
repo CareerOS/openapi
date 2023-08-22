@@ -4,8 +4,6 @@ get:
   operationId: getApplicationForStudent
   summary: Get application details for a student
   description: Returns application details for a student
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: studentId
       in: path

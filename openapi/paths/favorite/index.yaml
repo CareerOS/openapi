@@ -4,8 +4,6 @@ get:
   summary: Get favorite companies
   description: Get user's favorite (saved) companies by current userID
   operationId: getFavoriteCompanies
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation

@@ -4,8 +4,6 @@ get:
   summary: Get companies
   description: Returns companies
   operationId: getCompanies
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: page
       in: query
@@ -54,8 +52,6 @@ post:
   summary: Save Company
   description: Saving Company to DB & current user's favorite companies
   operationId: saveCompany
-  security:
-    - ApiKeyAuth: []
   requestBody:
     description: Company data required to save to DB
     content:

@@ -4,8 +4,6 @@ post:
   summary: Set emails by contactID
   description: Set emails by contactID
   operationId: setEmailsByContactID
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: id
       in: path

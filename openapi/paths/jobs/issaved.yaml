@@ -4,8 +4,6 @@ post:
   summary: Validate job
   description: Validate job details for the authenticated user
   operationId: validateJob
-  security:
-    - ApiKeyAuth: []
   requestBody:
     required: true
     content:

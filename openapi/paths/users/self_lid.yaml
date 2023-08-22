@@ -4,8 +4,6 @@ post:
   summary: Set self user URN
   description: Set self user URN and LinkedIn ID for the authenticated user
   operationId: setSelfUserURN
-  security:
-    - ApiKeyAuth: []
   requestBody:
     required: true
     content:

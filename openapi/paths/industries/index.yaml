@@ -4,8 +4,6 @@ get:
   summary: Get industries
   description: Get all industries
   operationId: getIndustries
-  security:
-    - ApiKeyAuth: []
   responses:
     '200':
       description: Successful operation

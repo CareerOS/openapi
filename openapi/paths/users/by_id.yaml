@@ -4,8 +4,6 @@ delete:
   summary: Delete user
   description: Removes a user
   operationId: deleteUser
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: id
       in: path

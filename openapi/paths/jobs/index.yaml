@@ -4,8 +4,6 @@ get:
   summary: Get Jobs
   description: Get a list of jobs
   operationId: getJobs
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: limit
       in: query
@@ -46,8 +44,6 @@ post:
   summary: Save job
   description: Save a job to DB & for current user
   operationId: saveJob
-  security:
-    - ApiKeyAuth: []
   requestBody:
     description: Job's data from Chrome Extension
     content:

@@ -4,8 +4,6 @@ get:
   summary: Get messages count for student
   description: Get the count of messages for a specific student
   operationId: getMessagesCountForStudent
-  security:
-    - ApiKeyAuth: []
   parameters:
     - name: studentID
       in: path
