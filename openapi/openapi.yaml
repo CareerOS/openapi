@@ -71,11 +71,13 @@ paths:
     $ref: paths/linkedin/conversations.yaml
   /api/v1/linkedin/conversations/updateall:
     $ref: paths/linkedin/conversations_updateall.yaml
-  /api/v1/linkedin/connection/send:
-    $ref: paths/linkedin/connection_send.yaml
   /api/v1/linkedin/connection/check/{contactID}:
     $ref: paths/linkedin/connection_check_{contactID}.yaml
-
+  /api/v1/linkedin/connection/update/{contactID}:
+    $ref: paths/linkedin/connection_update_{contactID}.yaml
+  /api/v1/linkedin/connection/send:
+    $ref: paths/linkedin/connection_send.yaml
+ 
   #  Favorite Companies
   /api/v1/companies/favorite:
     $ref: paths/favorite/index.yaml
