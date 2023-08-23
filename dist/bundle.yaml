@@ -813,7 +813,9 @@ paths:
           in: path
           description: ID of contact to check connection status with
           required: true
-          type: string
+          schema:
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successful operation

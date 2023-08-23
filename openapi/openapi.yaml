@@ -64,7 +64,7 @@ paths:
   /api/v1/linkedin/messages:
     $ref: paths/linkedin/messages.yaml
   /api/v1/linkedin/messages/{studentID}:
-    $ref: paths/linkedin/messages_by_studentID.yaml
+    $ref: paths/linkedin/messages_{studentID}.yaml
   /api/v1/linkedin/message/send:
     $ref: paths/linkedin/message_send.yaml
   /api/v1/linkedin/conversations:
