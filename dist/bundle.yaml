@@ -261,7 +261,7 @@ paths:
     get:
       tags:
         - Companies
-      summary: Get companies by name
+      summary: Search companies by name
       description: Search companies by name
       operationId: searchCompaniesByName
       parameters:
@@ -280,24 +280,55 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Company'
+        '400':
+          description: Company name too short
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - The company name is too short, it must be longer than 2 characters
+                    description: The company name is too short, it must be longer than two characters to search for
+                required:
+                  - error
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - The requested company does not exist
+                    description: The requested company does not exist in CareerOS database
+                required:
+                  - error
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/companies/search/company/{name}:
-    get:
+  /api/v1/companies/search/company/linkedin:
+    post:
       tags:
         - Companies
-      summary: Check company in DB
-      description: Check exists company in DB or not
+      summary: Check company existence in database
+      description: Check if company exists in CareerOS database. Currently is used by chrome extension as validation check.
       operationId: checkCompanyInDB
-      parameters:
-        - name: name
-          in: path
-          description: Company name
-          required: true
-          schema:
-            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Company name to search for
       responses:
         '200':
           description: Successful operation
@@ -306,10 +337,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  name:
+                  companyID:
                     type: string
-                  linkedin_identifier:
-                    type: string
+                    format: uuid
+                    description: Company ID in CareerOS database
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '404':
@@ -317,7 +350,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                properties:
+                  message:
+                    type: string
+                    enum:
+                      - The requested company does not exist
+                    description: The requested company does not exist in CareerOS database
+                required:
+                  - message
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/contacts:

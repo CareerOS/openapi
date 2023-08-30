@@ -14,7 +14,6 @@ post:
             name:
               type: string
               description: Company name to search for
-              required: true
 #            linkedin_identifier:
 #              type: string
 #              description: LinkedIn identifier to search for
