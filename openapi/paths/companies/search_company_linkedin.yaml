@@ -1,0 +1,52 @@
+post:
+  tags:
+    - Companies
+  summary: Check company existence in database
+  description: Check if company exists in CareerOS database. Currently is used by chrome extension as validation check.
+  operationId: checkCompanyInDB
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Company name to search for
+              required: true
+#            linkedin_identifier:
+#              type: string
+#              description: LinkedIn identifier to search for
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              companyID:
+                type: string
+                format: uuid
+                description: Company ID in CareerOS database
+    '400':
+      $ref: ../../components/responses/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - The requested company does not exist
+                description: The requested company does not exist in CareerOS database
+            required:
+              - message
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

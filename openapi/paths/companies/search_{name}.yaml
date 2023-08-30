@@ -1,0 +1,54 @@
+get:
+  tags:
+    - Companies
+  summary: Search companies by name
+  description: Search companies by name
+  operationId: searchCompaniesByName
+  parameters:
+    - name: name
+      in: path
+      description: Company name
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/Company.yaml
+    '400':
+      description: Company name too short
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - The company name is too short, it must be longer than 2 characters
+                description: The company name is too short, it must be longer than two characters to search for
+            required:
+              - error
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - The requested company does not exist
+                description: The requested company does not exist in CareerOS database
+            required:
+              - error
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

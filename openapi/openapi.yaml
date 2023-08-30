@@ -36,13 +36,13 @@ paths:
   /api/v1/companies:
     $ref: paths/companies/index.yaml
   /api/v1/companies/{id}:
-    $ref: paths/companies/by_id.yaml
+    $ref: paths/companies/{id}.yaml
   /api/v1/companies/explore:
     $ref: paths/companies/explore.yaml
   /api/v1/companies/search/{name}:
-    $ref: paths/companies/search_by_name.yaml
-  /api/v1/companies/search/company/{name}:
-    $ref: paths/companies/search_company_by_name.yaml
+    $ref: paths/companies/search_{name}.yaml
+  /api/v1/companies/search/company/linkedin:
+    $ref: paths/companies/search_company_linkedin.yaml
 
   #  Contacts
   /api/v1/contacts:
@@ -77,7 +77,7 @@ paths:
     $ref: paths/linkedin/connection_update_{contactID}.yaml
   /api/v1/linkedin/connection/send:
     $ref: paths/linkedin/connection_send.yaml
- 
+
   #  Favorite Companies
   /api/v1/companies/favorite:
     $ref: paths/favorite/index.yaml
