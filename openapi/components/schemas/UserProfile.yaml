@@ -1,0 +1,21 @@
+# UserProfile is a custome model provided by CareerOS extension.
+type: object
+properties:
+  linkedInID:
+    type: string
+  linkedInUrn:
+    type: string
+  firstName:
+    type: string
+  lastName:
+    type: string
+  headline:
+    type: string
+  position:
+    type: string
+  linkedInConnectionStatus:
+    type: string
+    enum:
+      - connected
+      - notConnected
+      - pending

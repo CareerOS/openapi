@@ -609,6 +609,52 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/contacts/{contactID}/linkedin:
+    put:
+      tags:
+        - Contacts
+      summary: Update contact information
+      description: This endpoint updates the contact's information
+      operationId: updateContact
+      parameters:
+        - name: contactID
+          in: path
+          description: ID of contact to update contact information
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    enum:
+                      - Contact updated successfully
+        '400':
+          description: |
+            Invalid input data format: contactID or JSON
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/JSONValidationFailedError'
+                  - $ref: '#/components/schemas/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/v1/linkedin/messages:
     post:
       tags:
@@ -1865,6 +1911,27 @@ components:
         - career_summary
         - linkedin_url
         - source
+    UserProfile:
+      type: object
+      properties:
+        linkedInID:
+          type: string
+        linkedInUrn:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        headline:
+          type: string
+        position:
+          type: string
+        linkedInConnectionStatus:
+          type: string
+          enum:
+            - connected
+            - notConnected
+            - pending
     AttributedBody:
       type: object
       properties:
