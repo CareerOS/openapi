@@ -59,6 +59,8 @@ paths:
     $ref: paths/contacts/bycompany_id.yaml
   /api/v1/contacts/bycompany/{id}/byuser/{userID}:
     $ref: paths/contacts/bycompany_id_byuser_id.yaml
+  /api/v1/contacts/{contactID}/linkedin:
+    $ref: paths/contacts/{contactID}_linkedin.yaml
 
   #  LinkedIn Messaging
   /api/v1/linkedin/messages:
