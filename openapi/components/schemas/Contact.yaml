@@ -35,16 +35,24 @@ properties:
     format: uri
     nullable: true
     description: LinkedIn profile URN of the contact
+  linkedin_connection_status:
+    type: string
+    enum:
+      - connected
+      - notConnected
+      - pending
   is_active:
     type: boolean
     description: Indicates whether the contact is active or not
   source:
     type: string
     description: Source of the contact information
+  linkedin_connection_status:
+    type: string
+    enum:
+      - connected
+      - notConnected
+      - pending
 required:
   - first_name
   - last_name
-  - current_position
-  - career_summary
-  - linkedin_url
-  - source
