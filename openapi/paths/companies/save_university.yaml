@@ -21,6 +21,7 @@ post:
             properties:
               universityID:
                 type: string
+                format: uuid
     '400':
       $ref: ../../components/responses/JSONValidationFailedError.yaml
     '401':
