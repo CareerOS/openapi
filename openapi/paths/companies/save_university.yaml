@@ -2,7 +2,7 @@ post:
   tags:
     - Universities
   summary: Save University
-  description: Saving University to DB & current user's favorite universities
+  description: Saving university to db and current user's favorite universities
   operationId: saveUniversity
   requestBody:
     description: University data required to save to DB
