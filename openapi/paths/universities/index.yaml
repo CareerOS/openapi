@@ -1,0 +1,30 @@
+post:
+  tags:
+    - Universities
+  summary: Save university
+  description: Saving university to db and current user's favorite universities
+  operationId: saveUniversity
+  requestBody:
+    description: University data required to save to DB
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Company.yaml
+    required: true
+  responses:
+    '201':
+      description: Successfully created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              universityID:
+                type: string
+                format: uuid
+    '400':
+      $ref: ../../components/responses/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
