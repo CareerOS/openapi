@@ -1202,7 +1202,7 @@ paths:
         - Jobs
       summary: Delete a job
       description: Soft delete a job for the current user.
-      operationId: deleteUserJob
+      operationId: deleteJob
       parameters:
         - name: id
           in: path
