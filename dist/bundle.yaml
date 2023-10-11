@@ -1432,9 +1432,9 @@ paths:
     get:
       tags:
         - Users
-      summary: Get self university ID
-      description: Get the university ID associated with the authenticated user
-      operationId: getSelfUniversityID
+      summary: Get self university
+      description: Get the university object associated with the authenticated user
+      operationId: getSelfUniversity
       responses:
         '200':
           description: Successful operation
@@ -1443,7 +1443,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  university_id:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  domain:
+                    type: string
+                  created_at:
                     type: string
         '401':
           $ref: '#/components/responses/UnauthorizedError'
