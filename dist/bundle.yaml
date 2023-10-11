@@ -843,41 +843,6 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/linkedin/connection/check/{contactID}:
-    get:
-      tags:
-        - LinkedIn Messaging
-      summary: Check connection status
-      description: This endpoint checks connection status between user and contact on LinkedIn
-      operationId: checkConnection
-      parameters:
-        - name: contactID
-          in: path
-          description: ID of contact to check connection status with
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  connection_status:
-                    type: string
-                    enum:
-                      - connected
-                      - not_connected
-                      - connection_requested
-        '400':
-          $ref: '#/components/responses/JSONValidationFailedError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
   /api/v1/linkedin/connection/update/{contactID}:
     get:
       tags:
