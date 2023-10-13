@@ -1,0 +1,37 @@
+get:
+  tags:
+    - Users
+  summary: Get self user statistics 
+  description: | 
+    The endpoint computes and provides statistics for the gamification user interface: Weekly Goals, Challenges, etc. 
+    It utilizes a user ID from the JWT to retrieve and deliver data specific to the logged-in user.
+  operationId: getUsageStatisticsForUser
+  parameters:
+    - name: date 
+      in: query
+      description: | 
+        The date is used for calculating statistics.
+      required: true
+      schema:
+        type: string
+        format: date
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/UsageStatistics.yaml
+    '400':
+      description: | 
+        The date parameter is invalid or empty. It is required and should have the correct format: YYYY-MM-DD.
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../../components/schemas/errors/DateParamValidatoinFailed.yaml
+              - $ref: ../../components/schemas/errors/DataParamIsEmptyError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

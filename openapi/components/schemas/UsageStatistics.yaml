@@ -1,0 +1,9 @@
+type: object
+properties:
+  weekly_goals:
+    type: object
+    properties:
+      saved_contacts_per_week:
+        type: integer
+      sent_linkedin_invatations_per_week:
+        type: integer

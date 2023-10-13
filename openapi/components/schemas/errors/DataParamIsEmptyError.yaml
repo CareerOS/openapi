@@ -1,0 +1,10 @@
+type: object
+properties:
+  error:
+    type: string
+    enum:
+      - The date parameter must be supplied and cannot be empty
+    description: | 
+      The date parameter must be supplied and cannot be empty.
+required:
+  - error
