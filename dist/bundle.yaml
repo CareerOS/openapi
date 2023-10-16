@@ -2242,6 +2242,15 @@ components:
               type: integer
             sent_linkedin_invatations_per_week:
               type: integer
+        challanges:
+          type: object
+          properties:
+            saved_companies:
+              type: integer
+            saved_contacts:
+              type: integer
+            sent_linkedin_invatations:
+              type: integer
     DateParamValidatoinFailed:
       type: object
       properties:
