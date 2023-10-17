@@ -1606,7 +1606,7 @@ paths:
         - name: date
           in: query
           description: |
-            The date is used for calculating statistics.
+            The provided date parameter is utilized to determine the specific week for which the server calculates and returns the statistics
           required: true
           schema:
             type: string
@@ -1625,7 +1625,7 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/DateParamValidatoinFailed'
+                  - $ref: '#/components/schemas/DateParamValidationFailed'
                   - $ref: '#/components/schemas/DataParamIsEmptyError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
@@ -2238,9 +2238,9 @@ components:
         weekly_goals:
           type: object
           properties:
-            saved_contacts_per_week:
+            saved_contacts:
               type: integer
-            sent_linkedin_invatations_per_week:
+            sent_linkedin_invitations:
               type: integer
         challanges:
           type: object
@@ -2249,9 +2249,9 @@ components:
               type: integer
             saved_contacts:
               type: integer
-            sent_linkedin_invatations:
+            sent_linkedin_invitations:
               type: integer
-    DateParamValidatoinFailed:
+    DateParamValidationFailed:
       type: object
       properties:
         error:

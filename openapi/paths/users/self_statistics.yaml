@@ -10,7 +10,7 @@ get:
     - name: date 
       in: query
       description: | 
-        The date is used for calculating statistics.
+        The provided date parameter is utilized to determine the specific week for which the server calculates and returns the statistics
       required: true
       schema:
         type: string
@@ -29,7 +29,7 @@ get:
         application/json:
           schema:
             oneOf:
-              - $ref: ../../components/schemas/errors/DateParamValidatoinFailed.yaml
+              - $ref: ../../components/schemas/errors/DateParamValidationFailed.yaml
               - $ref: ../../components/schemas/errors/DataParamIsEmptyError.yaml
     '401':
       $ref: ../../components/responses/UnauthorizedError.yaml

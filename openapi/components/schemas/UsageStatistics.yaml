@@ -3,9 +3,9 @@ properties:
   weekly_goals:
     type: object
     properties:
-      saved_contacts_per_week:
+      saved_contacts:
         type: integer
-      sent_linkedin_invatations_per_week:
+      sent_linkedin_invitations:
         type: integer
   challanges:
     type: object
@@ -14,5 +14,5 @@ properties:
         type: integer
       saved_contacts:
         type: integer
-      sent_linkedin_invatations:
+      sent_linkedin_invitations:
         type: integer
