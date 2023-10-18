@@ -9,7 +9,7 @@ get:
     - name: date 
       in: query
       description: | 
-        The provided date parameter is utilized to determine the specific week for which the server calculates and returns the statistics
+        The date and time from which aggregation should begin. The frontend client is expected to send time.Now(), the parameter is only used because of the time difference between the user and the server 
       required: true
       schema:
         type: string
