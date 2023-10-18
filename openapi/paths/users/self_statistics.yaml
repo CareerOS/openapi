@@ -3,7 +3,7 @@ get:
     - Users
   summary: Get app usage statistics for current user
   description: | 
-    The endpoint computes and provides statistics for the gamification user interface: Weekly Goals, Challenges, etc. 
+    The endpoint aggregates and returns usage statistics for the dashboard pages. It returns weekly goals and challenges info. 
     It utilizes a user ID from the JWT to retrieve and deliver data specific to the logged-in user.
   operationId: getUsageStatisticsForUser
   parameters:
