@@ -1597,16 +1597,15 @@ paths:
     get:
       tags:
         - Users
-      summary: Get self user statistics
+      summary: Get app usage statistics for current user
       description: |
-        The endpoint computes and provides statistics for the gamification user interface: Weekly Goals, Challenges, etc. 
-        It utilizes a user ID from the JWT to retrieve and deliver data specific to the logged-in user.
+        The endpoint aggregates and returns usage statistics for the dashboard pages. It returns weekly goals and challenges info. 
       operationId: getUsageStatisticsForUser
       parameters:
         - name: date
           in: query
           description: |
-            The provided date parameter is utilized to determine the specific week for which the server calculates and returns the statistics
+            The date and time from which aggregation should begin. The frontend client is expected to send time.Now(), the parameter is only used because of the time difference between the user and the server 
           required: true
           schema:
             type: string
@@ -2242,7 +2241,7 @@ components:
               type: integer
             sent_linkedin_invitations:
               type: integer
-        challanges:
+        challenges:
           type: object
           properties:
             saved_companies:
