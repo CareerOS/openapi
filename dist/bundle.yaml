@@ -1593,6 +1593,43 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/users/self/statistics:
+    get:
+      tags:
+        - Users
+      summary: Get app usage statistics for current user
+      description: |
+        The endpoint aggregates and returns usage statistics for the dashboard pages. It returns weekly goals and challenges info. 
+      operationId: getUsageStatisticsForUser
+      parameters:
+        - name: date
+          in: query
+          description: |
+            The date and time from which aggregation should begin. The frontend client is expected to send time.Now(), the parameter is only used because of the time difference between the user and the server 
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageStatistics'
+        '400':
+          description: |
+            The date parameter is invalid or empty. It is required and should have the correct format: YYYY-MM-DD.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/DateParamValidationFailed'
+                  - $ref: '#/components/schemas/DataParamIsEmptyError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     BearerAuth:
@@ -2194,6 +2231,46 @@ components:
         - message
         - message_template
         - ordering
+    UsageStatistics:
+      type: object
+      properties:
+        weekly_goals:
+          type: object
+          properties:
+            saved_contacts:
+              type: integer
+            sent_linkedin_invitations:
+              type: integer
+        challenges:
+          type: object
+          properties:
+            saved_companies:
+              type: integer
+            saved_contacts:
+              type: integer
+            sent_linkedin_invitations:
+              type: integer
+    DateParamValidationFailed:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - The date parameter is invalid
+          description: The date parameter has an invalid format. It should be YYYY-MM-DD.
+      required:
+        - error
+    DataParamIsEmptyError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - The date parameter must be supplied and cannot be empty
+          description: |
+            The date parameter must be supplied and cannot be empty.
+      required:
+        - error
   responses:
     IDValidationFailedError:
       description: Failed to parse ID as UUID
