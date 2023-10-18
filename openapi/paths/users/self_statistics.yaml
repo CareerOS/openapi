@@ -1,7 +1,7 @@
 get:
   tags:
     - Users
-  summary: Get self user statistics 
+  summary: Get app usage statistics for current user
   description: | 
     The endpoint computes and provides statistics for the gamification user interface: Weekly Goals, Challenges, etc. 
     It utilizes a user ID from the JWT to retrieve and deliver data specific to the logged-in user.
