@@ -7,7 +7,7 @@ properties:
         type: integer
       sent_linkedin_invitations:
         type: integer
-  challanges:
+  challenges:
     type: object
     properties:
       saved_companies:
