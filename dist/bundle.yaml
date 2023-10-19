@@ -2202,6 +2202,8 @@ components:
         weekly_goals:
           type: object
           properties:
+            saved_companies:
+              type: integer
             saved_contacts:
               type: integer
             sent_linkedin_invitations:
