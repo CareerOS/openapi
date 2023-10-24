@@ -12,8 +12,11 @@ post:
           properties:
             university:
               type: string
+            cohort:
+              type: string
           required:
             - university
+            - cohort
   responses:
     '200':
       description: Successful operation

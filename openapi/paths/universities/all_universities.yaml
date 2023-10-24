@@ -1,0 +1,20 @@
+get:
+  tags:
+    - Users
+    - Universities
+  summary: Get all universities
+  description: Get all the universities in the system
+  operationId: getAllUniversities
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

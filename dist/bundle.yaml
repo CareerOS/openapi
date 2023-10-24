@@ -116,7 +116,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/universities:
+  /api/v1/linkedin-universities:
     post:
       tags:
         - Universities
@@ -143,6 +143,183 @@ paths:
                     format: uuid
         '400':
           $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/universities:
+    get:
+      tags:
+        - Users
+        - Universities
+      summary: Get all universities
+      description: Get all the universities in the system
+      operationId: getAllUniversities
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/enroll:
+    post:
+      tags:
+        - Users
+      summary: Enroll user to university
+      description: Enrolls the authenticated user to a university
+      operationId: enrollUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                university:
+                  type: string
+                cohort:
+                  type: string
+              required:
+                - university
+                - cohort
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/self/university:
+    get:
+      tags:
+        - Users
+        - Universities
+      summary: Get self university
+      description: Get the university object associated with the authenticated user
+      operationId: getSelfUniversity
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  domain:
+                    type: string
+                  created_at:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/universities/{universityID}/students:
+    get:
+      tags:
+        - Users
+        - Universities
+      summary: Get students by university ID
+      description: Get students associated with a specific university
+      operationId: getStudentsByUniversityID
+      parameters:
+        - in: path
+          name: universityID
+          description: ID of the university
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/cohort/{cohortID}/students:
+    get:
+      tags:
+        - Users
+        - Universities
+        - Cohorts
+      summary: Get students by cohort ID
+      description: Get students associated with a specific cohort
+      operationId: getStudentsByCohortID
+      parameters:
+        - in: path
+          name: cohortID
+          description: ID of the cohort
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/university/{universityID}/cohorts:
+    get:
+      tags:
+        - Users
+        - Universities
+        - Cohorts
+      summary: Get cohorts by university ID
+      description: Get cohorts associated with a specific university
+      operationId: getCohortbyUniversityID
+      parameters:
+        - in: path
+          name: universityID
+          description: ID of the university
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -1348,39 +1525,6 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/enroll:
-    post:
-      tags:
-        - Users
-      summary: Enroll user to university
-      description: Enrolls the authenticated user to a university
-      operationId: enrollUser
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                university:
-                  type: string
-              required:
-                - university
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '400':
-          $ref: '#/components/responses/JSONValidationFailedError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
   /api/v1/users/{id}:
     delete:
       tags:
@@ -1424,62 +1568,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/self/university:
-    get:
-      tags:
-        - Users
-      summary: Get self university
-      description: Get the university object associated with the authenticated user
-      operationId: getSelfUniversity
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  domain:
-                    type: string
-                  created_at:
-                    type: string
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/universities/{universityID}/students:
-    get:
-      tags:
-        - Users
-      summary: Get students by university ID
-      description: Get students associated with a specific university
-      operationId: getStudentsByUniversityID
-      parameters:
-        - in: path
-          name: universityID
-          description: ID of the university
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-        '400':
-          $ref: '#/components/responses/IDValidationFailedError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':

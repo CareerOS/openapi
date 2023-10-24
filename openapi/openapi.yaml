@@ -32,9 +32,23 @@ paths:
   /api/v1/applications/archive:
     $ref: paths/applications/archive.yaml
 
+  #  Linkedin Universities
+  /api/v1/linkedin-universities:
+    $ref: paths/linkedin-universities/index.yaml
+
   #  Universities
   /api/v1/universities:
-    $ref: paths/universities/index.yaml
+    $ref: paths/universities/all_universities.yaml
+  /api/v1/enroll:
+    $ref: paths/universities/enroll.yaml
+  /api/v1/self/university:
+    $ref: paths/universities/self_university.yaml
+  /api/v1/universities/{universityID}/students:
+    $ref: paths/universities/universities_by_id_students.yaml
+  /api/v1/cohort/{cohortID}/students:
+    $ref: paths/universities/cohorts_by_id_students.yaml
+  /api/v1/university/{universityID}/cohorts:
+    $ref: paths/universities/cohorts_by_university_id.yaml
 
   #  Companies
   /api/v1/companies:
@@ -121,16 +135,11 @@ paths:
   #  Users
   /api/v1/login:
     $ref: paths/users/login.yaml
-  /api/v1/enroll:
-    $ref: paths/users/enroll.yaml
+ 
   /api/v1/users/{id}:
     $ref: paths/users/by_id.yaml
   /api/v1/users/self:
     $ref: paths/users/self.yaml
-  /api/v1/self/university:
-    $ref: paths/users/self_university.yaml
-  /api/v1/universities/{universityID}/students:
-    $ref: paths/users/universities_by_id_students.yaml
   /api/v1/users/contacts:
     $ref: paths/users/contacts.yaml
   /api/v1/users/users/conversations:
