@@ -116,7 +116,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/linkedin-universities:
+  /api/v1/universities:
     post:
       tags:
         - Universities
@@ -147,10 +147,9 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/universities:
+  /api/v1/universities/all:
     get:
       tags:
-        - Users
         - Universities
       summary: Get all universities
       description: Get all the universities in the system
@@ -171,7 +170,7 @@ paths:
   /api/v1/enroll:
     post:
       tags:
-        - Users
+        - Universities
       summary: Enroll user to university
       description: Enrolls the authenticated user to a university
       operationId: enrollUser
@@ -207,7 +206,6 @@ paths:
   /api/v1/self/university:
     get:
       tags:
-        - Users
         - Universities
       summary: Get self university
       description: Get the university object associated with the authenticated user
@@ -235,7 +233,6 @@ paths:
   /api/v1/universities/{universityID}/students:
     get:
       tags:
-        - Users
         - Universities
       summary: Get students by university ID
       description: Get students associated with a specific university
@@ -265,9 +262,7 @@ paths:
   /api/v1/cohort/{cohortID}/students:
     get:
       tags:
-        - Users
         - Universities
-        - Cohorts
       summary: Get students by cohort ID
       description: Get students associated with a specific cohort
       operationId: getStudentsByCohortID
@@ -296,9 +291,7 @@ paths:
   /api/v1/university/{universityID}/cohorts:
     get:
       tags:
-        - Users
         - Universities
-        - Cohorts
       summary: Get cohorts by university ID
       description: Get cohorts associated with a specific university
       operationId: getCohortbyUniversityID
