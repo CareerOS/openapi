@@ -1,6 +1,5 @@
 get:
   tags:
-    - Users
     - Universities
   summary: Get all universities
   description: Get all the universities in the system

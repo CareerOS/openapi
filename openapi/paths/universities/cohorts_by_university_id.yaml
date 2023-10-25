@@ -1,8 +1,6 @@
 get:
   tags:
-    - Users
     - Universities
-    - Cohorts
   summary: Get cohorts by university ID
   description: Get cohorts associated with a specific university
   operationId: getCohortbyUniversityID

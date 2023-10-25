@@ -33,11 +33,11 @@ paths:
     $ref: paths/applications/archive.yaml
 
   #  Linkedin Universities
-  /api/v1/linkedin-universities:
+  /api/v1/universities:
     $ref: paths/linkedin-universities/index.yaml
 
   #  Universities
-  /api/v1/universities:
+  /api/v1/universities/all:
     $ref: paths/universities/all_universities.yaml
   /api/v1/enroll:
     $ref: paths/universities/enroll.yaml
