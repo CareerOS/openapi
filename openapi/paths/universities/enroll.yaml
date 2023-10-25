@@ -1,6 +1,6 @@
 post:
   tags:
-    - Users
+    - Universities
   summary: Enroll user to university
   description: Enrolls the authenticated user to a university
   operationId: enrollUser
