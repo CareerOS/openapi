@@ -1734,6 +1734,10 @@ components:
           items:
             $ref: '#/components/schemas/JobInfo'
           description: List of jobs associated with the application
+        updated_at:
+          type: string
+          format: date-time
+          description: The date filed reflects when the application's tile was updated.
       required:
         - status
         - company_id
