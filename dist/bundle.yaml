@@ -1737,7 +1737,7 @@ components:
         updated_at:
           type: string
           format: date-time
-          description: The date filed reflects when the application's tile was updated.
+          description: Time of last update (create, status change) of application tile.
       required:
         - status
         - company_id
