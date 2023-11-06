@@ -24,6 +24,16 @@ properties:
   title:
     type: string
     example: Cloud Engineer
+  deadline:
+    type: string
+    format: date-time
+    description: The field reflects the Applicaton deadline provided by the user.
+  rolling_date:
+    type: boolean
+  posted_on:
+    type: string
+    format: date-time
+    description: The field contains the date when a job was posted.
 required:
   - company_name
   - description

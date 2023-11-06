@@ -117,6 +117,8 @@ paths:
   #  Jobs
   /api/v1/jobs:
     $ref: paths/jobs/index.yaml
+  /api/v1/jobs/{id}:
+    $ref: paths/jobs/by_id.yaml
   /api/v1/jobs/issaved:
     $ref: paths/jobs/issaved.yaml
 
@@ -135,7 +137,6 @@ paths:
   #  Users
   /api/v1/login:
     $ref: paths/users/login.yaml
- 
   /api/v1/users/{id}:
     $ref: paths/users/by_id.yaml
   /api/v1/users/self:
