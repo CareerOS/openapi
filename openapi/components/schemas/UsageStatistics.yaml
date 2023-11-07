@@ -18,3 +18,9 @@ properties:
         type: integer
       sent_linkedin_invitations:
         type: integer
+      save_company_challenge_status:
+        type: string
+      save_contact_challenge_status:
+        type: integer
+      send_request_challenge_status:
+        type: integer

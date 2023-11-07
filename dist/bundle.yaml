@@ -1676,6 +1676,59 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - Users
+      summary: Update app usage challenge statuses for the current user
+      description: |
+        This endpoint allows updating the challenge statuses for a user's weekly goals. The client can send one or more statuses to update.
+      operationId: updateUsageStatisticsForUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                save_company_challenge_status:
+                  type: string
+                  enum:
+                    - null
+                    - activated
+                    - halfway
+                    - completed
+                  nullable: true
+                save_contact_challenge_status:
+                  type: string
+                  enum:
+                    - null
+                    - activated
+                    - halfway
+                    - completed
+                  nullable: true
+                send_request_challenge_status:
+                  type: string
+                  enum:
+                    - null
+                    - activated
+                    - halfway
+                    - completed
+                  nullable: true
+      responses:
+        '200':
+          description: The challenge statuses were successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Usage statistics updated successfully
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     BearerAuth:
@@ -2301,6 +2354,12 @@ components:
             saved_contacts:
               type: integer
             sent_linkedin_invitations:
+              type: integer
+            save_company_challenge_status:
+              type: string
+            save_contact_challenge_status:
+              type: integer
+            send_request_challenge_status:
               type: integer
     DateParamValidationFailed:
       type: object
