@@ -12,6 +12,8 @@ servers:
     description: Development server
   - url: https://backend-prod-tsalqjuvda-oc.a.run.app
     description: Production server
+  - url: https://europe-southwest1-tcos-378721.cloudfunctions.net
+    description: Development Error Collector
 security:
   - BearerAuth: []
 tags:
@@ -19,6 +21,10 @@ tags:
     description: Careers endpoint
   - name: Applications
     description: Kanban tiles
+  - name: ErrorCollector
+    description: |
+      Error Collector is a service for handling front-end errors.
+      It runs on Google Cloud Function and is separated from the main API; has only one endpoint, and handles one method - POST.
 paths:
   /api/v1/applications/{studentId}:
     get:
@@ -1676,6 +1682,46 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /error-collector:
+    post:
+      tags:
+        - ErrorCollector
+      summary: Handles errors from the front-end side (student app & extension)
+      description: This endpoint takes front-end errors and provides them to the Error Reporting.
+      operationId: errorCollector
+      parameters:
+        - name: X-User-Authorization
+          in: header
+          schema:
+            type: string
+            format: JWT
+            example: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjViMzcwNjk2MGUzZTYwMDI0YTI2NTVlNzhjZmE2M2Y4N2M5N2QzMDkiLCJ0eXAiOiJKV1QifQ
+          description: |
+            The user token associated with the request during which the error occurred.
+            The token contains information needed to add context to the error.
+      requestBody:
+        description: Error data from the front-end side.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: The client's error message with the stacktrace.
+                source:
+                  type: string
+                  enum:
+                    - student-app
+                    - chrome-extension
+      responses:
+        '200':
+          description: The error has been committed successfully.
+        '400':
+          description: Invalid data format.
+        '401':
+          description: Incorrect authorization token.
 components:
   securitySchemes:
     BearerAuth:

@@ -1,0 +1,39 @@
+post:
+  tags:
+    - ErrorCollector
+  summary: Handles errors from the front-end side (student app & extension)
+  description: This endpoint takes front-end errors and provides them to the Error Reporting.
+  operationId: errorCollector
+  parameters:
+    - name: X-User-Authorization
+      in: header
+      schema: 
+        type: string
+        format: JWT
+        example: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjViMzcwNjk2MGUzZTYwMDI0YTI2NTVlNzhjZmE2M2Y4N2M5N2QzMDkiLCJ0eXAiOiJKV1QifQ
+      description: |
+        The user token associated with the request during which the error occurred.
+        The token contains information needed to add context to the error.
+  requestBody:
+    description: Error data from the front-end side.
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message: 
+              type: string
+              description: The client's error message with the stacktrace.
+            source:
+              type: string
+              enum:
+                - student-app
+                - chrome-extension
+  responses:
+    '200':
+      description: The error has been committed successfully.
+    '400':
+      description: Invalid data format.
+    '401':
+      description: Incorrect authorization token.

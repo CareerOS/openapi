@@ -14,12 +14,18 @@ servers:
     description: Development server
   - url: https://backend-prod-tsalqjuvda-oc.a.run.app
     description: Production server
+  - url: https://europe-southwest1-tcos-378721.cloudfunctions.net
+    description: Development Error Collector
 
 tags:
   - name: Careers
     description: Careers endpoint
   - name: Applications
     description: Kanban tiles
+  - name: ErrorCollector
+    description: | 
+      Error Collector is a service for handling front-end errors.
+      It runs on Google Cloud Function and is separated from the main API; has only one endpoint, and handles one method - POST.
 
 paths:
   #  Careers
@@ -148,6 +154,10 @@ paths:
     $ref: paths/users/self_lid.yaml
   /api/v1/users/self/statistics:
     $ref: paths/users/self_statistics.yaml
+
+  # Error Collector
+  /error-collector:
+    $ref: paths/error-collector/index.yaml
 
 components:
   securitySchemes:
