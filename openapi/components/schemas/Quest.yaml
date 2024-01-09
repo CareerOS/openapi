@@ -1,0 +1,30 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier for the quest
+  user_id:
+    type: string
+    format: uuid
+    description: Identifier of the user associated with the quest
+  type:
+    type: string
+    description: Type of the quest
+  status:
+    type: string
+    description: Status of the quest
+  experience_points:
+    type: integer
+    description: Experience points associated with the quest
+  due_date:
+    type: string
+    format: date-time
+    nullable: true
+    description: Due date of the quest
+  company:
+    $ref: '#/components/schemas/QuestCompany'
+  contact:
+    $ref: '#/components/schemas/QuestContact'
+  job:
+    $ref: '#/components/schemas/QuestJob'

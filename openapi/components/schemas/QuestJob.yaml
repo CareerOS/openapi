@@ -1,0 +1,8 @@
+ type: object
+properties:
+  id:
+    type: string
+    description: Identifier of the job
+  title:
+    type: string
+    description: Title of the job

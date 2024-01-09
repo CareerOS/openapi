@@ -1,0 +1,47 @@
+get:
+  tags:
+    - Quests
+  operationId: getQuests
+  summary: Returns all quests
+  description: Returns quests
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/Quest.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+patch:
+  tags:
+    - Quests
+  summary: Change Quest Status
+  operationId: UpdateQuestStatus
+  requestBody:
+    description: The Status we are changing
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/QuestStatus.yaml
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+    '400':
+      $ref: ../../components/responses/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

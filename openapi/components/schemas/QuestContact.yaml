@@ -1,0 +1,14 @@
+type: object
+properties:
+  id:
+    type: string
+    nullable: true
+    description: Identifier of the contact
+  first_name:
+    type: string
+    nullable: true
+    description: First name of the contact
+  last_name:
+    type: string
+    nullable: true
+    description: Last name of the contact

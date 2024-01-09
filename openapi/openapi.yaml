@@ -36,6 +36,10 @@ paths:
   /api/v1/universities:
     $ref: paths/linkedin-universities/index.yaml
 
+  #  Quests
+  /api/v1/quests:
+    $ref: paths/quests/index.yaml
+
   #  Universities
   /api/v1/universities/all:
     $ref: paths/universities/all_universities.yaml

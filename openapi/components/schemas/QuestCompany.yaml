@@ -1,0 +1,15 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+    nullable: true
+    description: Unique identifier for the company
+  name:
+    type: string
+    nullable: true
+    description: Name of the company
+  logo_url:
+    type: string
+    nullable: true
+    description: URL of the company's logo
