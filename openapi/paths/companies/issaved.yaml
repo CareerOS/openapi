@@ -1,6 +1,6 @@
 get:
   tags:
-    - Validate
+    - Companies
   summary: Validate company
   description: |
     Endpoint checks if the company exists in the CareerOS database and is it saved by the user.
@@ -11,14 +11,26 @@ get:
     The endpoint is used exclusively by the browser extension.
   operationId: validateCompany
   requestBody:
-    description: Data of the company to be validated
+    description: LinkedIn identifiers of the company to be validated against (name and slug)
     content:
       application/json:
         schema:
-          $ref: ../../components/schemas/CompanySearchFields.yaml
+          type: object
+          properties:
+            name:
+              type: string
+              description: The name of the target company
+            linkedin_slug:
+              type: string
+              description: |
+                The LinkedIn slug of the target company (the part of the LinkedIn URL after the last slash, 
+                e.g. 'google' for https://www.linkedin.com/company/google/)
+          required:
+            - name
+            - linkedin_slug
   responses:
     '200':
-      description: Successful operation
+      description: Company can be saved - it exists in the database and is not saved by the user yet
       content:
         application/json:
           schema:
@@ -31,7 +43,7 @@ get:
     '401':
       $ref: ../../components/responses/UnauthorizedError.yaml
     '404':
-      description: User company not found
+      description: Company not found - we don't have this company in our database
       content:
         application/json:
           schema:
@@ -39,7 +51,6 @@ get:
             properties:
               message:
                 type: string
-                description: Company can be saved - user did not save this company previously
                 enum:
                   - Company does not exist in the database
     '409':
@@ -52,6 +63,6 @@ get:
               company_id:
                 type: string
                 format: uuid
-                description: ID of the company that is already saved by the user
+                description: ID of the company
     '500':
       $ref: ../../components/responses/InternalServerError.yaml

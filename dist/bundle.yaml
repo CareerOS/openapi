@@ -317,210 +317,6 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/validate/company:
-    get:
-      tags:
-        - Validate
-      summary: Validate company
-      description: |
-        Endpoint checks if the company exists in the CareerOS database and is it saved by the user.
-
-        Matching rules:
-            - company is checked by name and slug
-
-        The endpoint is used exclusively by the browser extension.
-      operationId: validateCompany
-      requestBody:
-        description: Data of the company to be validated
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompanySearchFields'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    enum:
-                      - Company can be saved
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '404':
-          description: User company not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Company can be saved - user did not save this company previously
-                    enum:
-                      - Company does not exist in the database
-        '409':
-          description: Conflict - user already saved this company
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  company_id:
-                    type: string
-                    format: uuid
-                    description: ID of the company that is already saved by the user
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/validate/contact:
-    post:
-      tags:
-        - Validate
-      summary: Validate contact
-      description: |
-        Endpoint checks if the company in which contact works currently exists in the CareerOS database, and 
-        that given contact is not yet saved by the user for the given company.
-
-        Matching rules:
-         - company is checked by name and slug
-         - contact is checked by linkedin_url
-
-        The endpoint is used exclusively by the browser extension.
-      operationId: validateContact
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              allOf:
-                - type: object
-                  properties:
-                    company:
-                      $ref: '#/components/schemas/CompanySearchFields'
-                - type: object
-                  properties:
-                    contact_linkedin_url:
-                      type: string
-                      description: LinkedIn URL of the contact
-                  required:
-                    - contact_linkedin_url
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    enum:
-                      - Contact can be saved
-        '400':
-          $ref: '#/components/responses/JSONValidationFailedError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '404':
-          description: User contact not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Contact can be saved - user did not save this contact previously
-                    enum:
-                      - Contact does not exist in the database
-        '409':
-          description: Conflict - user already saved this contact
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  company_id:
-                    type: string
-                    format: uuid
-                    description: ID of the already saved contact
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/validate/job:
-    post:
-      tags:
-        - Validate
-      summary: Validate job
-      description: |
-        Endpoint checks if the company in which job is opened exists in the CareerOS database, and 
-        that given job is not yet saved by the user for the given company.
-
-        Matching rules:
-         - company is checked by name and slug
-         - job is checked by linkedin_url
-
-        The endpoint is used exclusively by the browser extension.
-      operationId: validateJob
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              allOf:
-                - type: object
-                  properties:
-                    company:
-                      $ref: '#/components/schemas/CompanySearchFields'
-                - type: object
-                  properties:
-                    job_linkedin_url:
-                      type: string
-                      description: LinkedIn URL of the job
-                  required:
-                    - job_linkedin_url
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    enum:
-                      - Job can be saved
-        '400':
-          $ref: '#/components/responses/JSONValidationFailedError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '404':
-          description: User job not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Job can be saved - user did not save this job previously
-                    enum:
-                      - Job does not exist in the database
-        '409':
-          description: Conflict - user already saved this job
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  job_id:
-                    type: string
-                    format: uuid
-                    description: ID of the already saved job
-        '500':
-          $ref: '#/components/responses/InternalServerError'
   /api/v1/companies:
     get:
       tags:
@@ -597,6 +393,75 @@ paths:
           $ref: '#/components/responses/JSONValidationFailedError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/companies/issaved:
+    get:
+      tags:
+        - Companies
+      summary: Validate company
+      description: |
+        Endpoint checks if the company exists in the CareerOS database and is it saved by the user.
+
+        Matching rules:
+            - company is checked by name and slug
+
+        The endpoint is used exclusively by the browser extension.
+      operationId: validateCompany
+      requestBody:
+        description: LinkedIn identifiers of the company to be validated against (name and slug)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the target company
+                linkedin_slug:
+                  type: string
+                  description: |
+                    The LinkedIn slug of the target company (the part of the LinkedIn URL after the last slash, 
+                    e.g. 'google' for https://www.linkedin.com/company/google/)
+              required:
+                - name
+                - linkedin_slug
+      responses:
+        '200':
+          description: Company can be saved - it exists in the database and is not saved by the user yet
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    enum:
+                      - Company can be saved
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Company not found - we don't have this company in our database
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    enum:
+                      - Company does not exist in the database
+        '409':
+          description: Conflict - user already saved this company
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  company_id:
+                    type: string
+                    format: uuid
+                    description: ID of the company
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/companies/{id}:
@@ -720,6 +585,67 @@ paths:
           $ref: '#/components/responses/JSONValidationFailedError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/contacts/issaved:
+    post:
+      tags:
+        - Contacts
+      summary: Validate contact
+      description: |
+        Endpoint checks if the company in which contact works currently exists in the CareerOS database, and 
+        that given contact is not yet saved by the user for the given company.
+
+        Matching rules:
+         - company is fetched by company_id
+         - contact is checked by linkedin_url
+
+        The endpoint is used exclusively by the browser extension.
+      operationId: validateContact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_id:
+                  type: string
+                  format: uuid
+                  description: ID of the company in which contact works currently
+                contact_linkedin_url:
+                  type: string
+                  description: LinkedIn URL of the contact
+              required:
+                - company_id
+                - contact_linkedin_url
+      responses:
+        '200':
+          description: Contact can be saved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    enum:
+                      - Contact can be saved
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '409':
+          description: Conflict - user already saved this contact for the given company
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contact_id:
+                    type: string
+                    format: uuid
+                    description: ID of the already saved contact
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/contacts/{id}:
@@ -1443,6 +1369,67 @@ paths:
                     type: string
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/jobs/issaved:
+    post:
+      tags:
+        - Jobs
+      summary: Validate job
+      description: |
+        Endpoint checks if the company in which job is opened exists in the CareerOS database, and 
+        that given job is not yet saved by the user for the given company.
+
+        Matching rules:
+         - company is checked by company_id
+         - job is checked by linkedin_url
+
+        The endpoint is used exclusively by the browser extension.
+      operationId: validateJob
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_id:
+                  type: string
+                  format: uuid
+                  description: ID of the company in which job is opened
+                job_linkedin_url:
+                  type: string
+                  description: LinkedIn URL of the job
+              required:
+                - company_id
+                - job_linkedin_url
+      responses:
+        '200':
+          description: Job can be saved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    enum:
+                      - Job can be saved
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '409':
+          description: Conflict - user already saved this job
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                    description: ID of the already saved job
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/v1/outlook/messages:
     get:
       tags:
@@ -1929,20 +1916,6 @@ components:
         - logo_url
         - linkedin_url
         - industry
-    CompanySearchFields:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the target company
-        linkedin_slug:
-          type: string
-          description: |
-            The LinkedIn slug of the target company (the part of the LinkedIn URL after the last slash, 
-            e.g. 'google' for https://www.linkedin.com/company/google/)
-      required:
-        - name
-        - linkedin_slug
     ErrorResponse:
       type: object
       properties:

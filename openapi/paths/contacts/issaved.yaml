@@ -1,13 +1,13 @@
 post:
   tags:
-    - Validate
+    - Contacts
   summary: Validate contact
   description: |
     Endpoint checks if the company in which contact works currently exists in the CareerOS database, and 
     that given contact is not yet saved by the user for the given company.
     
     Matching rules:
-     - company is checked by name and slug
+     - company is fetched by company_id
      - contact is checked by linkedin_url
     
     The endpoint is used exclusively by the browser extension.
@@ -17,21 +17,21 @@ post:
     content:
       application/json:
         schema:
-          allOf:
-            - type: object
-              properties:
-                company:
-                  $ref: ../../components/schemas/CompanySearchFields.yaml
-            - type: object
-              properties:
-                contact_linkedin_url:
-                  type: string
-                  description: LinkedIn URL of the contact
-              required:
-                - contact_linkedin_url
+          type: object
+          properties:
+            company_id:
+              type: string
+              format: uuid
+              description: ID of the company in which contact works currently
+            contact_linkedin_url:
+              type: string
+              description: LinkedIn URL of the contact
+          required:
+            - company_id
+            - contact_linkedin_url
   responses:
     '200':
-      description: Successful operation
+      description: Contact can be saved
       content:
         application/json:
           schema:
@@ -45,26 +45,14 @@ post:
       $ref: ../../components/responses/JSONValidationFailedError.yaml
     '401':
       $ref: ../../components/responses/UnauthorizedError.yaml
-    '404':
-      description: User contact not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                description: Contact can be saved - user did not save this contact previously
-                enum:
-                  - Contact does not exist in the database
     '409':
-      description: Conflict - user already saved this contact
+      description: Conflict - user already saved this contact for the given company
       content:
         application/json:
           schema:
             type: object
             properties:
-              company_id:
+              contact_id:
                 type: string
                 format: uuid
                 description: ID of the already saved contact

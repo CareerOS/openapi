@@ -50,17 +50,11 @@ paths:
   /api/v1/university/{universityID}/cohorts:
     $ref: paths/universities/cohorts_by_university_id.yaml
 
-  #  Validation
-  /api/v1/validate/company:
-    $ref: paths/validate/company.yaml
-  /api/v1/validate/contact:
-    $ref: paths/validate/contact.yaml
-  /api/v1/validate/job:
-    $ref: paths/validate/job.yaml
-
   #  Companies
   /api/v1/companies:
     $ref: paths/companies/index.yaml
+  /api/v1/companies/issaved:
+    $ref: paths/companies/issaved.yaml
   /api/v1/companies/{id}:
     $ref: paths/companies/by_id.yaml
   /api/v1/companies/explore:
@@ -71,6 +65,8 @@ paths:
   #  Contacts
   /api/v1/contacts:
     $ref: paths/contacts/index.yaml
+  /api/v1/contacts/issaved:
+    $ref: paths/contacts/issaved.yaml
   /api/v1/contacts/{id}:
     $ref: paths/contacts/by_id.yaml
   /api/v1/contacts/{id}/email:
@@ -121,6 +117,8 @@ paths:
   #  Jobs
   /api/v1/jobs:
     $ref: paths/jobs/index.yaml
+  /api/v1/jobs/issaved:
+    $ref: paths/jobs/issaved.yaml
 
   #  Outlook Messaging
   /api/v1/outlook/messages:
@@ -137,7 +135,6 @@ paths:
   #  Users
   /api/v1/login:
     $ref: paths/users/login.yaml
-
   /api/v1/users/{id}:
     $ref: paths/users/by_id.yaml
   /api/v1/users/self:
