@@ -53,6 +53,10 @@ post:
           schema:
             type: object
             properties:
+              company_id:
+                type: string
+                format: uuid
+                description: ID of the matched company in which job is opened
               job_id:
                 type: string
                 format: uuid

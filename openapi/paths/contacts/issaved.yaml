@@ -53,6 +53,10 @@ post:
           schema:
             type: object
             properties:
+              company_id:
+                type: string
+                format: uuid
+                description: ID of the matched company in which contact works
               contact_id:
                 type: string
                 format: uuid
