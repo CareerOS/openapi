@@ -7,7 +7,7 @@ post:
     that given job is not yet saved by the user for the given company.
     
     Matching rules:
-     - company is checked by company_id
+     - company is checked by name and slug
      - job is checked by linkedin_url
     
     The endpoint is used exclusively by the browser extension.
@@ -17,18 +17,19 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            company_id:
-              type: string
-              format: uuid
-              description: ID of the company in which job is opened
-            job_linkedin_url:
-              type: string
-              description: LinkedIn URL of the job
-          required:
-            - company_id
-            - job_linkedin_url
+          allOf:
+            - type: object
+              properties:
+                company:
+                  $ref: ../../components/schemas/CompanySearchFields.yaml
+            - type: object
+              properties:
+                job_linkedin_url:
+                  type: string
+                  description: LinkedIn URL of the job
+              required:
+                - company
+                - job_linkedin_url
   responses:
     '200':
       description: Job can be saved

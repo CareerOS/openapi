@@ -413,19 +413,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: The name of the target company
-                linkedin_slug:
-                  type: string
-                  description: |
-                    The LinkedIn slug of the target company (the part of the LinkedIn URL after the last slash, 
-                    e.g. 'google' for https://www.linkedin.com/company/google/)
-              required:
-                - name
-                - linkedin_slug
+              $ref: '#/components/schemas/CompanySearchFields'
       responses:
         '200':
           description: Company can be saved - it exists in the database and is not saved by the user yet
@@ -597,7 +585,7 @@ paths:
         that given contact is not yet saved by the user for the given company.
 
         Matching rules:
-         - company is fetched by company_id
+         - company is checked by name and slug
          - contact is checked by linkedin_url
 
         The endpoint is used exclusively by the browser extension.
@@ -607,18 +595,19 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                company_id:
-                  type: string
-                  format: uuid
-                  description: ID of the company in which contact works currently
-                contact_linkedin_url:
-                  type: string
-                  description: LinkedIn URL of the contact
-              required:
-                - company_id
-                - contact_linkedin_url
+              allOf:
+                - type: object
+                  properties:
+                    company:
+                      $ref: '#/components/schemas/CompanySearchFields'
+                - type: object
+                  properties:
+                    contact_linkedin_url:
+                      type: string
+                      description: LinkedIn URL of the contact
+                  required:
+                    - company
+                    - contact_linkedin_url
       responses:
         '200':
           description: Contact can be saved
@@ -1379,7 +1368,7 @@ paths:
         that given job is not yet saved by the user for the given company.
 
         Matching rules:
-         - company is checked by company_id
+         - company is checked by name and slug
          - job is checked by linkedin_url
 
         The endpoint is used exclusively by the browser extension.
@@ -1389,18 +1378,19 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                company_id:
-                  type: string
-                  format: uuid
-                  description: ID of the company in which job is opened
-                job_linkedin_url:
-                  type: string
-                  description: LinkedIn URL of the job
-              required:
-                - company_id
-                - job_linkedin_url
+              allOf:
+                - type: object
+                  properties:
+                    company:
+                      $ref: '#/components/schemas/CompanySearchFields'
+                - type: object
+                  properties:
+                    job_linkedin_url:
+                      type: string
+                      description: LinkedIn URL of the job
+                  required:
+                    - company
+                    - job_linkedin_url
       responses:
         '200':
           description: Job can be saved
@@ -1924,6 +1914,20 @@ components:
           description: Error message
       required:
         - error
+    CompanySearchFields:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the target company
+        linkedin_slug:
+          type: string
+          description: |
+            The LinkedIn slug of the target company (the part of the LinkedIn URL after the last slash, 
+            e.g. 'google' for https://www.linkedin.com/company/google/)
+      required:
+        - name
+        - linkedin_slug
     Job:
       type: object
       properties:

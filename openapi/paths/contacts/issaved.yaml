@@ -7,7 +7,7 @@ post:
     that given contact is not yet saved by the user for the given company.
     
     Matching rules:
-     - company is fetched by company_id
+     - company is checked by name and slug
      - contact is checked by linkedin_url
     
     The endpoint is used exclusively by the browser extension.
@@ -17,18 +17,19 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            company_id:
-              type: string
-              format: uuid
-              description: ID of the company in which contact works currently
-            contact_linkedin_url:
-              type: string
-              description: LinkedIn URL of the contact
-          required:
-            - company_id
-            - contact_linkedin_url
+          allOf:
+            - type: object
+              properties:
+                company:
+                  $ref: ../../components/schemas/CompanySearchFields.yaml
+            - type: object
+              properties:
+                contact_linkedin_url:
+                  type: string
+                  description: LinkedIn URL of the contact
+              required:
+                - company
+                - contact_linkedin_url
   responses:
     '200':
       description: Contact can be saved
