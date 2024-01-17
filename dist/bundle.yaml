@@ -396,7 +396,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/companies/issaved:
-    get:
+    post:
       tags:
         - Companies
       summary: Validate company
