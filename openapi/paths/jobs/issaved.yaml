@@ -2,40 +2,37 @@ post:
   tags:
     - Jobs
   summary: Validate job
-  description: Validate job details for the authenticated user
+  description: |
+    Endpoint checks if the company in which job is opened exists in the CareerOS database, and 
+    that given job is not yet saved by the user for the given company.
+    
+    Matching rules:
+     - company is checked by name and slug
+     - job is checked by linkedin_url
+    
+    The endpoint is used exclusively by the browser extension.
   operationId: validateJob
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            job_linkedin_url:
-              type: string
-            company_name:
-              type: string
+          allOf:
+            - type: object
+              properties:
+                company:
+                  $ref: ../../components/schemas/CompanySearchFields.yaml
+            - type: object
+              properties:
+                job_linkedin_url:
+                  type: string
+                  description: LinkedIn URL of the job
+              required:
+                - company
+                - job_linkedin_url
   responses:
     '200':
-      description: Successful operation
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - type: object
-                properties:
-                  message:
-                    type: string
-              - type: object
-                properties:
-                  company_id:
-                    type: string
-    '400':
-      $ref: ../../components/responses/JSONValidationFailedError.yaml
-    '401':
-      $ref: ../../components/responses/UnauthorizedError.yaml
-    '404':
-      description: Not found
+      description: Job can be saved
       content:
         application/json:
           schema:
@@ -43,5 +40,26 @@ post:
             properties:
               message:
                 type: string
+                enum:
+                  - Job can be saved
+    '400':
+      $ref: ../../components/responses/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '409':
+      description: Conflict - user already saved this job
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              company_id:
+                type: string
+                format: uuid
+                description: ID of the matched company in which job is opened
+              job_id:
+                type: string
+                format: uuid
+                description: ID of the already saved job
     '500':
       $ref: ../../components/responses/InternalServerError.yaml
