@@ -120,11 +120,9 @@ paths:
   /api/v1/jobs/issaved:
     $ref: paths/jobs/issaved.yaml
 
-  #  Outlook Messaging
-  /api/v1/outlook/messages:
-    $ref: paths/outlook/messages.yaml
-  /api/v1/outlook/message/send:
-    $ref: paths/outlook/message_send.yaml
+  #  Email Messaging
+  /api/v1/email/messages/{provider}:
+    $ref: paths/messages/index.yaml
 
   #  Templates
   /api/v1/templates:

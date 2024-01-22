@@ -1,0 +1,93 @@
+get:
+  tags:
+    - Email Messaging
+  summary: Get email messages
+  description: Get email messages for the authenticated user from a specified provider.
+  operationId: getEmailMessages
+  parameters:
+    - in: path
+      name: provider
+      required: true
+      schema:
+        type: string
+      description: The email provider (e.g., 'gmail', 'outlook')
+    - in: query
+      name: contactID
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: The contact ID associated with the email messages
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/ErrorResponse.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+
+post:
+  tags:
+    - Email Messaging
+  summary: Send an email message
+  description: Send an email message through a specified provider.
+  operationId: sendEmailMessage
+  parameters:
+    - in: path
+      name: provider
+      required: true
+      schema:
+        type: string
+      description: The email provider (e.g., 'gmail', 'outlook')
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            to_email:
+              type: string
+            contact_id:
+              type: string
+              format: uuid
+            subject:
+              type: string
+            message:
+              type: string
+            original_message_id:
+              type: string
+              nullable: true
+          required:
+            - contact_id
+            - subject
+            - message
+  responses:
+    '200':
+      description: Email sent successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    '400':
+      $ref: ../../components/responses/JSONValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
