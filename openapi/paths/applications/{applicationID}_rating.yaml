@@ -1,0 +1,46 @@
+patch:
+  tags:
+    - Applications
+  summary: Change Application Rating
+  description: This endpoint changes the application's rating.
+  operationId: changeApplicationRating
+  parameters:
+    - name: applicationID
+      in: path
+      description: ID of the application of whom update application's rating for
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - name: rating
+      in: query
+      required: true
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 3
+      description: The application's rating
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+    '400':
+      description: | 
+        Invalid input data format: applicationID or rating's value 
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../../components/schemas/errors/ApplicationRatingIsInvalid.yaml
+              - $ref: ../../components/schemas/errors/IDValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+

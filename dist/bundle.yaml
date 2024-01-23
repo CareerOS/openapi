@@ -116,6 +116,52 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/applications/{applicationID}/rating:
+    patch:
+      tags:
+        - Applications
+      summary: Change Application Rating
+      description: This endpoint changes the application's rating.
+      operationId: changeApplicationRating
+      parameters:
+        - name: applicationID
+          in: path
+          description: ID of the application of whom update application's rating for
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: rating
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 3
+          description: The application's rating
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+        '400':
+          description: |
+            Invalid input data format: applicationID or rating's value 
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ApplicationRatingIsInvalid'
+                  - $ref: '#/components/schemas/IDValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/v1/universities:
     post:
       tags:
@@ -1760,6 +1806,20 @@ components:
             - offer
             - archive
           description: Application status
+        rating:
+          type: integer
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+          description: |
+            The application's rating reflects how much the user excited about the company:
+              0 - Unrated;
+              1 - Mildly interested;
+              2 - Interested;
+              3 - Excited;
+            The mapping is rendered on the frontend side.
         company_id:
           type: string
           description: Company ID
@@ -1839,6 +1899,17 @@ components:
           enum:
             - The supplied JSON is not correctly formatted
           description: Failed to bind request body to JSON schema
+      required:
+        - error
+    ApplicationRatingIsInvalid:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - The rating parameter must be 0, 1, 2 or 3.
+          description: |
+            The rating parameter must be 0, 1, 2 or 3. 
       required:
         - error
     Company:

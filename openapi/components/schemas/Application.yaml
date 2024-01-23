@@ -14,6 +14,20 @@ properties:
       - offer
       - archive
     description: Application status
+  rating:
+    type: integer
+    enum:
+      - 0
+      - 1
+      - 2
+      - 3
+    description: |
+      The application's rating reflects how much the user excited about the company:
+        0 - Unrated;
+        1 - Mildly interested;
+        2 - Interested;
+        3 - Excited;
+      The mapping is rendered on the frontend side.
   company_id:
     type: string
     description: Company ID

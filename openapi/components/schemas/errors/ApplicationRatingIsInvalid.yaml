@@ -1,0 +1,10 @@
+type: object
+properties:
+  error:
+    type: string
+    enum:
+      - The rating parameter must be 0, 1, 2 or 3. 
+    description: | 
+      The rating parameter must be 0, 1, 2 or 3. 
+required:
+  - error
