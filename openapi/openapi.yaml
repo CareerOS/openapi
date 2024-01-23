@@ -117,6 +117,8 @@ paths:
   #  Jobs
   /api/v1/jobs:
     $ref: paths/jobs/index.yaml
+  /api/v1/jobs/{id}:
+    $ref: paths/jobs/by_id.yaml
   /api/v1/jobs/issaved:
     $ref: paths/jobs/issaved.yaml
 
