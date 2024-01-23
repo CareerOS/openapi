@@ -53,14 +53,14 @@ paths:
   #  Companies
   /api/v1/companies:
     $ref: paths/companies/index.yaml
+  /api/v1/companies/issaved:
+    $ref: paths/companies/issaved.yaml
   /api/v1/companies/{id}:
     $ref: paths/companies/by_id.yaml
   /api/v1/companies/explore:
     $ref: paths/companies/explore.yaml
   /api/v1/companies/search/{name}:
     $ref: paths/companies/search_by_name.yaml
-  /api/v1/companies/search/company/{name}:
-    $ref: paths/companies/search_company_by_name.yaml
 
   #  Contacts
   /api/v1/contacts:
