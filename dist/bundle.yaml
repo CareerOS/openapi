@@ -120,9 +120,9 @@ paths:
     patch:
       tags:
         - Applications
-      summary: Change Application Rating
-      description: This endpoint changes the application's rating.
-      operationId: changeApplicationRating
+      summary: Update Application Rating
+      description: This endpoint updates the application's rating.
+      operationId: updateApplicationRating
       parameters:
         - name: applicationID
           in: path
