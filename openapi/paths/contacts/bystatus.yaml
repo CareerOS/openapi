@@ -1,0 +1,28 @@
+get:
+  tags:
+    - Contacts
+  summary: Get contacts by Connection Status
+  description: Returns all contacts that have the given connection status with the user
+  operationId: getContactsByStatus
+  parameters:
+    - name: status
+      in: path
+      description: Connection Status
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/Contact.yaml
+    '400':
+      $ref: ../../components/responses/IDValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
