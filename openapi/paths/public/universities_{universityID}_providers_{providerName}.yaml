@@ -1,9 +1,10 @@
 get:
   tags:
-    - Universities
-  summary: Get cohorts by university ID
-  description: Get cohorts associated with a specific university
-  operationId: getCohortbyUniversityID
+    - Public
+    - Providers
+  summary: Get supported domain list for selected university login provider
+  description: Get supported domain list for selected university login provider
+  operationId: getUniversityProviderDomains
   parameters:
     - in: path
       name: universityID
@@ -12,6 +13,12 @@ get:
       schema:
         type: string
         format: uuid
+    - in: path
+      name: providerName
+      description: Name of the supported provider
+      required: true
+      schema:
+        type: string
   responses:
     '200':
       description: Successful operation
@@ -20,9 +27,7 @@ get:
           schema:
             type: array
             items:
-              type: object
-    '400':
-      $ref: ../../components/responses/IDValidationFailedError.yaml
+              type: string
     '401':
       $ref: ../../components/responses/UnauthorizedError.yaml
     '500':
