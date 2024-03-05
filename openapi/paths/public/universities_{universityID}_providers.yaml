@@ -1,9 +1,11 @@
 get:
   tags:
-    - Universities
-  summary: Get cohorts by university ID
-  description: Get cohorts associated with a specific university
-  operationId: getCohortbyUniversityID
+    - Public
+    - Providers
+  summary: Get providers supported by the university
+  description: Get providers supported by the university
+  operationId: getUniversityProviders
+  security: []
   parameters:
     - in: path
       name: universityID
@@ -20,10 +22,6 @@ get:
           schema:
             type: array
             items:
-              type: object
-    '400':
-      $ref: ../../components/responses/IDValidationFailedError.yaml
-    '401':
-      $ref: ../../components/responses/UnauthorizedError.yaml
+              type: string
     '500':
       $ref: ../../components/responses/InternalServerError.yaml

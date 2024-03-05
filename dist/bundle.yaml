@@ -20,6 +20,94 @@ tags:
   - name: Applications
     description: Kanban tiles
 paths:
+  /public/v1/universities:
+    get:
+      tags:
+        - Public
+        - Universities
+      summary: Get universities
+      description: Get all enrolled universities
+      operationId: getUniversities
+      security: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /public/v1/universities/{universityID}/providers:
+    get:
+      tags:
+        - Public
+        - Providers
+      summary: Get providers supported by the university
+      description: Get providers supported by the university
+      operationId: getUniversityProviders
+      security: []
+      parameters:
+        - in: path
+          name: universityID
+          description: ID of the university
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /public/v1/universities/{universityID}/providers/{providerName}:
+    get:
+      tags:
+        - Public
+        - Providers
+      summary: Get supported domain list for selected university login provider
+      description: Get supported domain list for selected university login provider
+      operationId: getUniversityProviderDomains
+      security: []
+      parameters:
+        - in: path
+          name: universityID
+          description: ID of the university
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: path
+          name: providerName
+          description: Name of the supported provider
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/v1/applications/{studentId}:
     get:
       tags:
@@ -147,26 +235,6 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/universities/all:
-    get:
-      tags:
-        - Universities
-      summary: Get all universities
-      description: Get all the universities in the system
-      operationId: getAllUniversities
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
   /api/v1/enroll:
     post:
       tags:
@@ -244,6 +312,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Successful operation
@@ -273,6 +342,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Successful operation
@@ -302,6 +372,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Successful operation
@@ -1783,6 +1854,16 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    InternalServerError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - An internal server error has occurred
+          description: Internal server error message
+      required:
+        - error
     JobInfo:
       type: object
       properties:
@@ -1864,16 +1945,6 @@ components:
           enum:
             - Failed to validate JWT token
           description: JWT token validation failed (expired, invalid, etc.)
-      required:
-        - error
-    InternalServerError:
-      type: object
-      properties:
-        error:
-          type: string
-          enum:
-            - An internal server error has occurred
-          description: Internal server error message
       required:
         - error
     Tile:
@@ -2461,6 +2532,12 @@ components:
       required:
         - error
   responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerError'
     IDValidationFailedError:
       description: Failed to parse ID as UUID
       content:
@@ -2473,12 +2550,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UnauthorizedError'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InternalServerError'
     JSONValidationFailedError:
       description: Failed to parse request body to JSON schema
       content:
