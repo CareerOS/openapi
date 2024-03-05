@@ -5,6 +5,7 @@ get:
   summary: Get providers supported by the university
   description: Get providers supported by the university
   operationId: getUniversityProviders
+  security: []
   parameters:
     - in: path
       name: universityID
@@ -22,7 +23,5 @@ get:
             type: array
             items:
               type: string
-    '401':
-      $ref: ../../components/responses/UnauthorizedError.yaml
     '500':
       $ref: ../../components/responses/InternalServerError.yaml

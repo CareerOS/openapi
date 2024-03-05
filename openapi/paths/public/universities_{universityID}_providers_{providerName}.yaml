@@ -5,6 +5,7 @@ get:
   summary: Get supported domain list for selected university login provider
   description: Get supported domain list for selected university login provider
   operationId: getUniversityProviderDomains
+  security: []
   parameters:
     - in: path
       name: universityID
@@ -28,7 +29,5 @@ get:
             type: array
             items:
               type: string
-    '401':
-      $ref: ../../components/responses/UnauthorizedError.yaml
     '500':
       $ref: ../../components/responses/InternalServerError.yaml

@@ -5,6 +5,7 @@ get:
   summary: Get universities
   description: Get all enrolled universities
   operationId: getUniversities
+  security: []
   responses:
     '200':
       description: Successful operation
@@ -20,7 +21,5 @@ get:
                   format: uuid
                 name:
                   type: string
-    '401':
-      $ref: ../../components/responses/UnauthorizedError.yaml
     '500':
       $ref: ../../components/responses/InternalServerError.yaml

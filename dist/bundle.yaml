@@ -28,6 +28,7 @@ paths:
       summary: Get universities
       description: Get all enrolled universities
       operationId: getUniversities
+      security: []
       responses:
         '200':
           description: Successful operation
@@ -43,8 +44,6 @@ paths:
                       format: uuid
                     name:
                       type: string
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /public/v1/universities/{universityID}/providers:
@@ -55,6 +54,7 @@ paths:
       summary: Get providers supported by the university
       description: Get providers supported by the university
       operationId: getUniversityProviders
+      security: []
       parameters:
         - in: path
           name: universityID
@@ -72,8 +72,6 @@ paths:
                 type: array
                 items:
                   type: string
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /public/v1/universities/{universityID}/providers/{providerName}:
@@ -84,6 +82,7 @@ paths:
       summary: Get supported domain list for selected university login provider
       description: Get supported domain list for selected university login provider
       operationId: getUniversityProviderDomains
+      security: []
       parameters:
         - in: path
           name: universityID
@@ -107,8 +106,6 @@ paths:
                 type: array
                 items:
                   type: string
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/applications/{studentId}:
@@ -1857,16 +1854,6 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    UnauthorizedError:
-      type: object
-      properties:
-        error:
-          type: string
-          enum:
-            - Failed to validate JWT token
-          description: JWT token validation failed (expired, invalid, etc.)
-      required:
-        - error
     InternalServerError:
       type: object
       properties:
@@ -1948,6 +1935,16 @@ components:
           enum:
             - The supplied ID format is invalid
           description: ID validation failed (not UUID)
+      required:
+        - error
+    UnauthorizedError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - Failed to validate JWT token
+          description: JWT token validation failed (expired, invalid, etc.)
       required:
         - error
     Tile:
@@ -2535,12 +2532,6 @@ components:
       required:
         - error
   responses:
-    UnauthorizedError:
-      description: Failed to validate JWT token
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
     InternalServerError:
       description: Internal server error
       content:
@@ -2553,6 +2544,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IDValidationFailedError'
+    UnauthorizedError:
+      description: Failed to validate JWT token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
     JSONValidationFailedError:
       description: Failed to parse request body to JSON schema
       content:
