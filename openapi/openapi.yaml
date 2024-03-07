@@ -22,6 +22,14 @@ tags:
     description: Kanban tiles
 
 paths:
+  # Public API section
+  /public/v1/universities:
+    $ref: paths/public/universities.yaml
+  /public/v1/universities/{universityID}/providers:
+    $ref: paths/public/universities_{universityID}_providers.yaml
+  /public/v1/universities/{universityID}/providers/{providerName}:
+    $ref: paths/public/universities_{universityID}_providers_{providerName}.yaml
+
   #  Careers
   /api/v1/applications/{studentId}:
     $ref: paths/careers/applications_by_studentID.yaml
@@ -39,8 +47,6 @@ paths:
     $ref: paths/linkedin-universities/index.yaml
 
   #  Universities
-  /api/v1/universities/all:
-    $ref: paths/universities/all_universities.yaml
   /api/v1/enroll:
     $ref: paths/universities/enroll.yaml
   /api/v1/self/university:
@@ -119,6 +125,8 @@ paths:
   #  Jobs
   /api/v1/jobs:
     $ref: paths/jobs/index.yaml
+  /api/v1/jobs/{id}:
+    $ref: paths/jobs/by_id.yaml
   /api/v1/jobs/issaved:
     $ref: paths/jobs/issaved.yaml
 

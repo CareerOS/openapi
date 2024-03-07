@@ -1,0 +1,12 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Job ID
+  deadline:
+    type: string
+    format: date-time
+    description: The field reflects the Applicaton deadline provided by the user.
+  rolling_date:
+    type: boolean
