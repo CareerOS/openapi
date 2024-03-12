@@ -1,0 +1,19 @@
+get:
+  tags:
+    - Leaderboard
+  summary: Get Leaderboard
+  description: This endpoint returns the leaderboard of the current user and their cohort. 
+  operationId: getLeaderboard
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/Leaderboard.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
