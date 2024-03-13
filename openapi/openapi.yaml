@@ -157,7 +157,7 @@ paths:
     $ref: paths/users/self_statistics.yaml
 
   # Leaderboard
-  /api/v1/Leaderboard:
+  /api/v1/leaderboard:
     $ref: paths/leaderboard/index.yaml
 
 components:

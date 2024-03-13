@@ -1847,7 +1847,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/Leaderboard:
+  /api/v1/leaderboard:
     get:
       tags:
         - Leaderboard
@@ -1860,9 +1860,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Leaderboard'
+                $ref: '#/components/schemas/Leaderboard'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -2574,7 +2572,9 @@ components:
           type: string
           description: The name of the cohort of the university.
         students:
-          $ref: '#/components/schemas/StudentWithQuests'
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentWithQuests'
   responses:
     InternalServerError:
       description: Internal server error
