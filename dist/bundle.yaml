@@ -1,9 +1,9 @@
-openapi: 3.0.1
+openapi: 3.1.0
 info:
   title: The CareerOS API
   description: The CareerOS server API documentation
   contact: {}
-  version: 1.0.0
+  version: 1.1.0
   license:
     name: CareerOS internal usage license
     url: https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS
@@ -1661,6 +1661,50 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/resumes/base:
+    get:
+      tags:
+        - Resumes
+      summary: Get base resume
+      description: Get base resume
+      operationId: getBaseResume
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resume'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/resumes/tailored:
+    get:
+      tags:
+        - Resumes
+      summary: Get tailored resume
+      description: Get tailored resume
+      operationId: getTailoredResume
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resume'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/v1/login:
     post:
       tags:
@@ -2489,6 +2533,334 @@ components:
         - message
         - message_template
         - ordering
+    Resume_basic_location:
+      type: object
+      properties:
+        address:
+          type: string
+          example: 2712 Broadway St
+        postalCode:
+          type: string
+          example: CA 94115
+        city:
+          type: string
+          example: San Francisco
+        countryCode:
+          type: string
+          example: US
+        region:
+          type: string
+          example: US
+    Resume_basic_profile:
+      type: object
+      properties:
+        network:
+          type: string
+          example: Twitter
+        username:
+          type: string
+          example: john
+        url:
+          type: string
+          example: https://twitter.com/john
+    Resume_basic:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John Doe
+        label:
+          type: string
+          example: Programmer
+        image:
+          type: string
+          example: https://static.vecteezy.com/system/resources/previews/023/654/784/non_2x/golden-logo-template-free-png.png
+        email:
+          type: string
+          example: mail@mail.com
+        phone:
+          type: string
+          example: '+380671234567'
+        url:
+          type: string
+          example: '+380671234567'
+        summary:
+          type: string
+          example: A summary of John Doe…
+        location:
+          type: object
+          $ref: '#/components/schemas/Resume_basic_location'
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_basic_profile'
+    Resume_work:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Company
+        position:
+          type: string
+          example: President
+        url:
+          type: string
+          example: https://company.com
+        startDate:
+          type: Date
+          example: '2013-01-01'
+        endDate:
+          type: Date
+          example: '2014-01-01'
+        summary:
+          type: string
+          example: Description…
+        highlights:
+          type: array
+          items:
+            type: string
+          example:
+            - Started the company
+    Resume_volunteer:
+      type: object
+      properties:
+        organization:
+          type: array
+          items:
+            type: string
+          description: Highlights or achievements during the volunteering period.
+        position:
+          type: string
+          description: The position held by the volunteer.
+        url:
+          type: string
+          format: uri
+          description: The URL of the organization.
+        startDate:
+          type: string
+          format: date
+          description: The start date of the volunteering period.
+        endDate:
+          type: string
+          format: date
+          description: The end date of the volunteering period.
+        summary:
+          type: string
+          description: A brief summary or description of the volunteering experience.
+        highlights:
+          type: array
+          items:
+            type: string
+          description: Highlights or achievements during the volunteering period.
+    Resume_education:
+      type: object
+      properties:
+        institution:
+          type: string
+          description: University
+        url:
+          type: string
+          format: uri
+          example: https://institution.com
+        area:
+          type: string
+          example: Software Development
+        studyType:
+          type: string
+          example: Bachelor
+        startDate:
+          type: string
+          format: date
+          example: '2011-01-01'
+        endDate:
+          type: string
+          format: date
+          example: '2013-01-01'
+        score:
+          type: number
+          format: float
+          example: 4
+        courses:
+          type: array
+          items:
+            type: string
+          description: React Native developer
+    Resume_award:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Award
+        date:
+          type: string
+          format: date
+          example: '2014-11-01'
+        awarder:
+          type: string
+          example: Company
+        summary:
+          type: string
+          example: There is no spoon.
+    Resume_certification:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Certification
+        date:
+          type: string
+          format: date
+          example: '2011-01-01'
+        area:
+          type: string
+          example: Software Development
+        issuer:
+          type: string
+          example: Company
+        url:
+          type: string
+          format: uri
+          example: https://institution.com
+    Resume_publication:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Publication
+        publisher:
+          type: string
+          example: Company
+        releaseDate:
+          type: string
+          format: date
+          example: '2014-10-01'
+        url:
+          type: string
+          format: uri
+          example: https://institution.com
+        summary:
+          type: string
+          example: Description…
+    Resume_skills:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Web Development
+        level:
+          type: string
+          example: Company
+        keywords:
+          type: array
+          items:
+            type: string
+            example: JavaScript
+    Resume_language:
+      type: object
+      properties:
+        language:
+          type: string
+          example: English
+        fluency:
+          type: string
+          example: Native speaker
+    Resume_interest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Wildlife
+        keywords:
+          type: array
+          items:
+            type: string
+            example: Ferrets
+    Resume_reference:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Jane Doe
+        reference:
+          type: string
+          example: Reference…
+    Resume_project:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Project
+        startDate:
+          type: string
+          format: date
+          example: '2011-01-01'
+        endDate:
+          type: string
+          format: date
+          example: '2013-01-01'
+        description:
+          type: string
+          example: Description...
+        highlights:
+          type: array
+          items:
+            type: string
+          example:
+            - Won award at AIHacks 2016
+            - Won award at AIHacks 2017
+        url:
+          type: string
+          format: uri
+          example: https://project.com
+    Resume:
+      type: object
+      properties:
+        basics:
+          $ref: '#/components/schemas/Resume_basic'
+        work:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_work'
+        volunteer:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_volunteer'
+        education:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_education'
+        awards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_award'
+        certifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_certification'
+        publications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_publication'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_skills'
+        languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_language'
+        interests:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_interest'
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_reference'
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resume_project'
     UsageStatistics:
       type: object
       properties:

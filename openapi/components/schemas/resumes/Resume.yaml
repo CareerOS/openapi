@@ -1,0 +1,48 @@
+type: object
+properties:
+  basics:
+    $ref: Resume_basic.yaml
+  work:
+    type: array
+    items:
+      $ref: Resume_work.yaml
+  volunteer:
+    type: array
+    items:
+      $ref: Resume_volunteer.yaml
+  education:
+    type: array
+    items:
+      $ref: Resume_education.yaml
+  awards:
+    type: array
+    items:
+      $ref: Resume_award.yaml
+  certifications:
+    type: array
+    items:
+      $ref: Resume_certification.yaml
+  publications:
+    type: array
+    items:
+      $ref: Resume_publication.yaml
+  skills: 
+    type: array
+    items:
+      $ref: Resume_skills.yaml
+  languages:
+    type: array
+    items:
+      $ref: Resume_language.yaml
+  interests:
+    type: array
+    items:
+      $ref: Resume_interest.yaml
+  references:
+    type: array
+    items:
+      $ref: Resume_reference.yaml
+  projects:
+    type: array
+    items:
+      $ref: Resume_project.yaml

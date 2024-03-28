@@ -1,0 +1,45 @@
+post:
+  tags:
+    - Resumes
+  summary: Create base resume
+  description: Create base resume
+  operationId: createBaseResumes
+  responses:
+    200:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/resumes/Resume.yaml
+    401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/ErrorResponse.yaml
+    500:
+      $ref: ../../components/responses/InternalServerError.yaml
+
+get:
+  tags:
+    - Resumes
+  summary: Get base resumes
+  description: Get base resumes
+  operationId: getBaseResumes
+  responses:
+    200:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/resumes/Resume.yaml
+    401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/ErrorResponse.yaml
+    500:
+      $ref: ../../components/responses/InternalServerError.yaml
