@@ -1662,12 +1662,123 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/resumes/base:
+    post:
+      tags:
+        - Resumes
+      summary: Create base resume
+      description: Create base resume
+      operationId: createBaseResumes
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resume'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
     get:
       tags:
         - Resumes
-      summary: Get base resume
-      description: Get base resume
-      operationId: getBaseResume
+      summary: Get base resumes
+      description: Get base resumes
+      operationId: getBaseResumes
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resume'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/resumes/base/{resumeID}:
+    get:
+      tags:
+        - Resumes
+      summary: Get base resume by id
+      description: Get base resume by id
+      operationId: getBaseResumeById
+      parameters:
+        - name: resumeID
+          in: path
+          description: base resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resume'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - Resumes
+      summary: Update base resume by id
+      description: Update base resume by id
+      operationId: updateBaseResumeById
+      parameters:
+        - name: resumeID
+          in: path
+          description: base resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resume'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Resumes
+      summary: Delete base resume by id
+      description: Delete base resume by id
+      operationId: deleteBaseResumeById
+      parameters:
+        - name: resumeID
+          in: path
+          description: base resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successful operation
@@ -1684,12 +1795,125 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/resumes/tailored:
+    post:
+      tags:
+        - Resumes
+      summary: Create tailored resume
+      description: Create tailored resume
+      operationId: createTailoredResumes
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resume'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
     get:
       tags:
         - Resumes
-      summary: Get tailored resume
-      description: Get tailored resume
-      operationId: getTailoredResume
+      summary: Get tailored resumes
+      description: Get tailored resumes
+      operationId: getTailoredResumes
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resume'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/resumes/tailored/{resumeID}:
+    get:
+      tags:
+        - Resumes
+      summary: Get tailored resume by id
+      description: Get tailored resume by id
+      operationId: getTailoredResumeById
+      parameters:
+        - name: resumeID
+          in: path
+          description: tailored resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resume'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - Resumes
+      summary: Update tailored resume by id
+      description: Update tailored resume by id
+      operationId: updateTailoredResumeById
+      parameters:
+        - name: resumeID
+          in: path
+          description: tailored resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resume'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Resumes
+      summary: Delete tailored resume by id
+      description: Delete tailored resume by id
+      operationId: deleteTailoredResumeById
+      parameters:
+        - name: resumeID
+          in: path
+          description: tailored resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         '200':
           description: Successful operation
@@ -2607,10 +2831,12 @@ components:
           type: string
           example: https://company.com
         startDate:
-          type: Date
+          type: string
+          format: date
           example: '2013-01-01'
         endDate:
-          type: Date
+          type: string
+          format: date
           example: '2014-01-01'
         summary:
           type: string
@@ -2628,36 +2854,36 @@ components:
           type: array
           items:
             type: string
-          description: Highlights or achievements during the volunteering period.
+          example: Organization
         position:
           type: string
-          description: The position held by the volunteer.
+          example: Senior
         url:
           type: string
           format: uri
-          description: The URL of the organization.
+          example: https://organization.com
         startDate:
           type: string
           format: date
-          description: The start date of the volunteering period.
+          example: '2011-01-01'
         endDate:
           type: string
           format: date
-          description: The end date of the volunteering period.
+          example: '2011-01-01'
         summary:
           type: string
-          description: A brief summary or description of the volunteering experience.
+          example: A brief summary or description of the volunteering experience.
         highlights:
           type: array
           items:
             type: string
-          description: Highlights or achievements during the volunteering period.
+          example: Example
     Resume_education:
       type: object
       properties:
         institution:
           type: string
-          description: University
+          example: University
         url:
           type: string
           format: uri
@@ -2684,7 +2910,7 @@ components:
           type: array
           items:
             type: string
-          description: React Native developer
+          example: React Native developer
     Resume_award:
       type: object
       properties:
