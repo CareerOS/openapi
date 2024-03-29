@@ -28,7 +28,7 @@ get:
     500:
       $ref: ../../components/responses/InternalServerError.yaml
 
-patch:
+put:
   tags:
     - Resumes
   summary: Update base resume by id

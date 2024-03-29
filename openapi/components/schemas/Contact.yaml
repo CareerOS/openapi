@@ -31,9 +31,10 @@ properties:
     format: uri
     description: LinkedIn profile URL of the contact
   linkedin_urn:
-    type: string
+    type: 
+      - "string"
+      - "null"
     format: uri
-    nullable: true
     description: LinkedIn profile URN of the contact
   linkedin_connection_status:
     type: string

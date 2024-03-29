@@ -1736,7 +1736,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
-    patch:
+    put:
       tags:
         - Resumes
       summary: Update base resume by id
@@ -1871,7 +1871,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
-    patch:
+    put:
       tags:
         - Resumes
       summary: Update tailored resume by id
@@ -2243,8 +2243,9 @@ components:
           type: string
           description: Company name
         short_description:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Short description of the company
         overview:
           type: string
@@ -2268,29 +2269,34 @@ components:
           format: uri
           description: LinkedIn profile URL of the company
         twitter_url:
-          type: string
+          type:
+            - string
+            - 'null'
           format: uri
-          nullable: true
           description: Twitter profile URL of the company
         industry:
           type: string
           description: Industry of the company as on LinkedIn
         careeros_industry:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Industry of the company as on CareerOs
         application_id:
-          type: string
+          type:
+            - string
+            - 'null'
           format: uuid
-          nullable: true
           description: ID of the associated application (if any)
         application_status:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Status of the associated application (if any)
         source:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Source of the company information
         tags:
           type: array
@@ -2433,9 +2439,10 @@ components:
           type: string
           description: Location of the current position
         company_id:
-          type: string
+          type:
+            - string
+            - 'null'
           format: uuid
-          nullable: true
           description: ID of the company of the current position
     Contact:
       type: object
@@ -2471,9 +2478,10 @@ components:
           format: uri
           description: LinkedIn profile URL of the contact
         linkedin_urn:
-          type: string
+          type:
+            - string
+            - 'null'
           format: uri
-          nullable: true
           description: LinkedIn profile URN of the contact
         linkedin_connection_status:
           type: string
@@ -2734,15 +2742,17 @@ components:
           type: string
           description: Template name
         email_subject:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Email subject of the template
         message:
           type: string
           description: Template message
         email_subject_template:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Email subject template of the template
         message_template:
           type: string
