@@ -1,0 +1,19 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 5f994df8-3c0f-4eda-8bcf-db4aeb35d43f
+  user_id: 
+    type: string
+    example: 7d7f5b28-0c7c-4af9-8a15-e421e71ec39b
+  resume:
+    $ref: Resume.yaml
+  resume_template:
+    type: string
+    example: Esade
+  created_at:
+    type: string
+    format: date
+  updated_at:
+    type: string
+    format: date

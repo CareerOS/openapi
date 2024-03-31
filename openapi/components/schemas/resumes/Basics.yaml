@@ -23,8 +23,8 @@ properties:
     example: A summary of John Doe…
   location:
     type: object
-    $ref: Resume_basic_location.yaml
+    $ref: Basics_location.yaml
   profiles:
     type: array
     items:
-      $ref: Resume_basic_profile.yaml
+      $ref: Basics_Profile.yaml

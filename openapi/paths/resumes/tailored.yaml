@@ -3,7 +3,7 @@ post:
     - Resumes
   summary: Create tailored resume
   description: Create tailored resume
-  operationId: createTailoredResumes
+  operationId: createTailoredResume
   responses:
     200:
       description: Successful operation
@@ -18,7 +18,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../../components/schemas/errors/ErrorResponse.yaml
+            $ref: ../../components/schemas/errors/UnauthorizedError.yaml
     500:
       $ref: ../../components/responses/InternalServerError.yaml
 
@@ -42,6 +42,12 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../../components/schemas/errors/ErrorResponse.yaml
+            $ref: ../../components/schemas/errors/UnauthorizedError.yaml
+    404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/NotFoundError.yaml
     500:
       $ref: ../../components/responses/InternalServerError.yaml

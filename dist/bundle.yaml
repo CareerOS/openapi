@@ -553,7 +553,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/companies/explore:
@@ -1666,28 +1666,30 @@ paths:
       tags:
         - Resumes
       summary: Create base resume
-      description: Create base resume
-      operationId: createBaseResumes
+      description: |
+        This endpoint allows users to create a new base resume.
+        Upon successful creation, the server responds with the newly created resume resource.
+      operationId: createBaseResume
       responses:
-        '200':
-          description: Successful operation
+        '201':
+          description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Resume'
+                $ref: '#/components/schemas/base_resume_response'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
     get:
       tags:
         - Resumes
       summary: Get base resumes
-      description: Get base resumes
+      description: Get base resumes list
       operationId: getBaseResumes
       responses:
         '200':
@@ -1697,13 +1699,19 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Resume'
+                  $ref: '#/components/schemas/base_resume_response'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/resumes/base/{resumeID}:
@@ -1727,20 +1735,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Resume'
+                $ref: '#/components/schemas/base_resume_response'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
     put:
       tags:
         - Resumes
       summary: Update base resume by id
-      description: Update base resume by id
+      description: |
+        This endpoint allows users to update an existing resume by providing the ID of the resume to be updated along with the updated details.
+        Upon successful update, the server responds with the updated resume resource.
       operationId: updateBaseResumeById
       parameters:
         - name: resumeID
@@ -1751,18 +1767,24 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
-          description: Successful operation
+        '201':
+          description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Resume'
+                $ref: '#/components/schemas/base_resume_response'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
     delete:
@@ -1780,18 +1802,20 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Resume'
+        '204':
+          description: No content
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/resumes/tailored:
@@ -1800,7 +1824,7 @@ paths:
         - Resumes
       summary: Create tailored resume
       description: Create tailored resume
-      operationId: createTailoredResumes
+      operationId: createTailoredResume
       responses:
         '200':
           description: Successful operation
@@ -1815,7 +1839,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
     get:
@@ -1838,7 +1862,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/resumes/tailored/{resumeID}:
@@ -1862,13 +1892,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Resume'
+                $ref: '#/components/schemas/tailored_resume_response'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
     put:
@@ -1886,18 +1922,24 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        '201':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Resume'
+                $ref: '#/components/schemas/tailored_resume_response'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
     delete:
@@ -1915,18 +1957,20 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Resume'
+        '204':
+          description: No content
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/login:
@@ -2317,6 +2361,7 @@ components:
         error:
           type: string
           description: Error message
+          example: Error message
       required:
         - error
     CompanySearchFields:
@@ -2423,6 +2468,15 @@ components:
         - logo_url
         - name
         - overview
+    NotFoundError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: 'Entity with id: 1 not found'
+      required:
+        - error
     CurrentPosition:
       type: object
       properties:
@@ -2767,7 +2821,7 @@ components:
         - message
         - message_template
         - ordering
-    Resume_basic_location:
+    Basics_location:
       type: object
       properties:
         address:
@@ -2785,7 +2839,7 @@ components:
         region:
           type: string
           example: US
-    Resume_basic_profile:
+    Basics_Profile:
       type: object
       properties:
         network:
@@ -2797,7 +2851,7 @@ components:
         url:
           type: string
           example: https://twitter.com/john
-    Resume_basic:
+    Basics:
       type: object
       properties:
         name:
@@ -2823,12 +2877,12 @@ components:
           example: A summary of John Doe…
         location:
           type: object
-          $ref: '#/components/schemas/Resume_basic_location'
+          $ref: '#/components/schemas/Basics_location'
         profiles:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_basic_profile'
-    Resume_work:
+            $ref: '#/components/schemas/Basics_Profile'
+    Work:
       type: object
       properties:
         name:
@@ -2857,7 +2911,7 @@ components:
             type: string
           example:
             - Started the company
-    Resume_volunteer:
+    Volunteer:
       type: object
       properties:
         organization:
@@ -2888,7 +2942,7 @@ components:
           items:
             type: string
           example: Example
-    Resume_education:
+    Education:
       type: object
       properties:
         institution:
@@ -2921,7 +2975,7 @@ components:
           items:
             type: string
           example: React Native developer
-    Resume_award:
+    Award:
       type: object
       properties:
         title:
@@ -2937,7 +2991,7 @@ components:
         summary:
           type: string
           example: There is no spoon.
-    Resume_certification:
+    Certification:
       type: object
       properties:
         name:
@@ -2957,7 +3011,7 @@ components:
           type: string
           format: uri
           example: https://institution.com
-    Resume_publication:
+    Publication:
       type: object
       properties:
         name:
@@ -2977,7 +3031,7 @@ components:
         summary:
           type: string
           example: Description…
-    Resume_skills:
+    Skill:
       type: object
       properties:
         name:
@@ -2991,7 +3045,7 @@ components:
           items:
             type: string
             example: JavaScript
-    Resume_language:
+    Language:
       type: object
       properties:
         language:
@@ -3000,7 +3054,7 @@ components:
         fluency:
           type: string
           example: Native speaker
-    Resume_interest:
+    Interest:
       type: object
       properties:
         name:
@@ -3011,7 +3065,7 @@ components:
           items:
             type: string
             example: Ferrets
-    Resume_reference:
+    Reference:
       type: object
       properties:
         name:
@@ -3020,7 +3074,7 @@ components:
         reference:
           type: string
           example: Reference…
-    Resume_project:
+    Project:
       type: object
       properties:
         name:
@@ -3052,51 +3106,94 @@ components:
       type: object
       properties:
         basics:
-          $ref: '#/components/schemas/Resume_basic'
+          $ref: '#/components/schemas/Basics'
         work:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_work'
+            $ref: '#/components/schemas/Work'
         volunteer:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_volunteer'
+            $ref: '#/components/schemas/Volunteer'
         education:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_education'
+            $ref: '#/components/schemas/Education'
         awards:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_award'
+            $ref: '#/components/schemas/Award'
         certifications:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_certification'
+            $ref: '#/components/schemas/Certification'
         publications:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_publication'
+            $ref: '#/components/schemas/Publication'
         skills:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_skills'
+            $ref: '#/components/schemas/Skill'
         languages:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_language'
+            $ref: '#/components/schemas/Language'
         interests:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_interest'
+            $ref: '#/components/schemas/Interest'
         references:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_reference'
+            $ref: '#/components/schemas/Reference'
         projects:
           type: array
           items:
-            $ref: '#/components/schemas/Resume_project'
+            $ref: '#/components/schemas/Project'
+    base_resume_response:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 5f994df8-3c0f-4eda-8bcf-db4aeb35d43f
+        user_id:
+          type: string
+          example: 7d7f5b28-0c7c-4af9-8a15-e421e71ec39b
+        resume:
+          $ref: '#/components/schemas/Resume'
+        resume_template:
+          type: string
+          example: Esade
+        created_at:
+          type: string
+          format: date
+        updated_at:
+          type: string
+          format: date
+    tailored_resume_response:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 5f994df8-3c0f-4eda-8bcf-db4aeb35d43f
+        user_id:
+          type: string
+          example: 7d7f5b28-0c7c-4af9-8a15-e421e71ec39b
+        job_id:
+          type: string
+          example: 39c1f722-0a17-44b7-a121-03165effc81a
+        resume:
+          $ref: '#/components/schemas/Resume'
+        resume_template:
+          type: string
+          example: Esade
+        created_at:
+          type: string
+          format: date
+        updated_at:
+          type: string
+          format: date
     UsageStatistics:
       type: object
       properties:
