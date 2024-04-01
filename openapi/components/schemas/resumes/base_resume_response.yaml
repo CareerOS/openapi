@@ -6,11 +6,13 @@ properties:
   user_id: 
     type: string
     example: 7d7f5b28-0c7c-4af9-8a15-e421e71ec39b
+  title:
+    type: string
+    example: My resume
   resume:
     $ref: Resume.yaml
   resume_template:
-    type: string
-    example: Esade
+    $ref: Resume_template.yaml
   created_at:
     type: string
     format: date

@@ -1678,9 +1678,17 @@ paths:
             schema:
               type: object
               properties:
-                resume:
+                file:
                   type: string
                   format: binary
+                  description: PDF file with resume data
+                title:
+                  type: string
+                  example: My resume
+                resume_template_id:
+                  type: string
+                  format: uuid
+                  example: cdd8b409-ee35-4acd-b022-b5ad46cb076c
       responses:
         '201':
           description: Created
@@ -3198,6 +3206,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Project'
+    Resume_template:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 8de6cfbf-9cef-439a-91d3-1f93b91ce84a
+        name:
+          type: string
+          example: My resume
+        preview_image:
+          type: string
+          format: uri
+          example: https://www.example.com/image.jpg
+        created_at:
+          type: string
+          format: date
+        updated_at:
+          type: string
+          format: date
     base_resume_response:
       type: object
       properties:
@@ -3207,11 +3234,13 @@ components:
         user_id:
           type: string
           example: 7d7f5b28-0c7c-4af9-8a15-e421e71ec39b
+        title:
+          type: string
+          example: My resume
         resume:
           $ref: '#/components/schemas/Resume'
         resume_template:
-          type: string
-          example: Esade
+          $ref: '#/components/schemas/Resume_template'
         created_at:
           type: string
           format: date
@@ -3233,11 +3262,13 @@ components:
         base_resume_id:
           type: string
           example: c6c4bb98-1578-44a2-accb-57112323d510
+        title:
+          type: string
+          example: My resume
         resume:
           $ref: '#/components/schemas/Resume'
         resume_template:
-          type: string
-          example: Esade
+          $ref: '#/components/schemas/Resume_template'
         created_at:
           type: string
           format: date

@@ -14,9 +14,17 @@ post:
         schema:
           type: object
           properties:
-            resume:
+            file:
               type: string
               format: binary
+              description: PDF file with resume data
+            title:
+              type: string
+              example: My resume
+            resume_template_id:
+              type: string
+              format: uuid
+              example: cdd8b409-ee35-4acd-b022-b5ad46cb076c
   responses:
     201:
       description: Created
