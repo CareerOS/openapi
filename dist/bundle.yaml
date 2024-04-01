@@ -1825,6 +1825,13 @@ paths:
       summary: Create tailored resume
       description: Create tailored resume
       operationId: createTailoredResume
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resume'
       responses:
         '200':
           description: Successful operation
@@ -1833,7 +1840,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Resume'
+                  $ref: '#/components/schemas/base_resume_response'
         '401':
           description: Unauthorized
           content:
@@ -1911,7 +1918,9 @@ paths:
       tags:
         - Resumes
       summary: Update tailored resume by id
-      description: Update tailored resume by id
+      description: |
+        This endpoint allows users to update an existing resume by providing the ID of the resume to be updated along with the updated details.
+        Upon successful update, the server responds with the updated resume resource.
       operationId: updateTailoredResumeById
       parameters:
         - name: resumeID
@@ -3183,6 +3192,9 @@ components:
         job_id:
           type: string
           example: 39c1f722-0a17-44b7-a121-03165effc81a
+        base_resume_id:
+          type: string
+          example: c6c4bb98-1578-44a2-accb-57112323d510
         resume:
           $ref: '#/components/schemas/Resume'
         resume_template:

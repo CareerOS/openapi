@@ -9,6 +9,9 @@ properties:
   job_id:
     type: string
     example: 39c1f722-0a17-44b7-a121-03165effc81a
+  base_resume_id:
+    type: string
+    example: c6c4bb98-1578-44a2-accb-57112323d510
   resume:
     $ref: Resume.yaml
   resume_template:

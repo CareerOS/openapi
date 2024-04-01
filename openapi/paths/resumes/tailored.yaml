@@ -2,8 +2,24 @@ post:
   tags:
     - Resumes
   summary: Create tailored resume
-  description: Create tailored resume
+  description: Create tailored resume based on base resume with AI improvements and input data
   operationId: createTailoredResume
+  requestBody:
+    description: Tailored resume object
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            job_iD:
+              type: string
+              format: uuid
+              example: 39c1f722-0a17-44b7-a121-03165effc81a
+            base_resume_id:
+              type: string
+              format: uuid
+              example: c6c4bb98-1578-44a2-accb-57112323d510
   responses:
     200:
       description: Successful operation
@@ -12,7 +28,7 @@ post:
           schema:
             type: array
             items:
-              $ref: ../../components/schemas/resumes/Resume.yaml
+              $ref: ../../components/schemas/resumes/base_resume_response.yaml
     401:
       description: Unauthorized
       content:

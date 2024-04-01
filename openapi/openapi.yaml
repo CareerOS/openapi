@@ -144,12 +144,12 @@ paths:
     # Base
   /api/v1/resumes/base:
     $ref: paths/resumes/base.yaml
-  /api/v1/resumes/base/{resumeID}:
+  /api/v1/resumes/base/{baseResumeID}:
     $ref: paths/resumes/base_{resumeID}.yaml
     # Tailored
   /api/v1/resumes/tailored:
     $ref: paths/resumes/tailored.yaml
-  /api/v1/resumes/tailored/{resumeID}:
+  /api/v1/resumes/tailored/{tailoredResumeID}:
     $ref: paths/resumes/tailored_{resumeID}.yaml
 
   #  Users

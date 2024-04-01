@@ -43,13 +43,31 @@ put:
     Upon successful update, the server responds with the updated resume resource.
   operationId: updateBaseResumeById
   parameters:
-    - name: resumeID
+    - name: baseResumeID
       in: path
       description: base resume id
       required: true
       schema:
         type: string
         format: uuid
+        example: 2437816f-ddec-4bf3-a649-6f13efc0aeb5
+  requestBody:
+    required: true
+    description: Base resume object
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            user_id:
+              type: string
+              format: uuid
+              example: 2437816f-ddec-4bf3-a649-6f13efc0aeb5
+            resume:
+              $ref: ../../components/schemas/resumes/Resume.yaml
+            resume_template:
+              type: string
+              example: "ESADE"
   responses:
     201:
       description: Created

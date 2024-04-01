@@ -38,7 +38,9 @@ put:
   tags:
     - Resumes
   summary: Update tailored resume by id
-  description: Update tailored resume by id
+  description: |
+    This endpoint allows users to update an existing resume by providing the ID of the resume to be updated along with the updated details.
+    Upon successful update, the server responds with the updated resume resource.
   operationId: updateTailoredResumeById
   parameters:
     - name: resumeID

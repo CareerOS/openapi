@@ -1,11 +1,21 @@
 post:
   tags:
     - Resumes
+  operationId: createBaseResume
   summary: Create base resume
   description: |
     This endpoint allows users to create a new base resume.
     Upon successful creation, the server responds with the newly created resume resource.
-  operationId: createBaseResume
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            resume:
+              type: string
+              format: binary
   responses:
     201:
       description: Created
