@@ -1,6 +1,6 @@
 type: object
 properties:
-  name: 
+  name:
     type: string
     example: John Doe
   label:
@@ -27,4 +27,4 @@ properties:
   profiles:
     type: array
     items:
-      $ref: Basics_Profile.yaml
+      $ref: Basics_profile.yaml

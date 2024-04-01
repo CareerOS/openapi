@@ -1668,8 +1668,9 @@ paths:
       operationId: createBaseResume
       summary: Create base resume
       description: |
-        This endpoint allows users to create a new base resume.
-        Upon successful creation, the server responds with the newly created resume resource.
+        This endpoint allows users to create a new base resume from existing one (from file). Endpoint currently supports PDF files only 
+
+        Upon successful resume parsing and saving the result to db the server responds with parsed resume data in Resume Schema format.
       requestBody:
         required: true
         content:
@@ -1699,7 +1700,7 @@ paths:
       tags:
         - Resumes
       summary: Get base resumes
-      description: Get base resumes list
+      description: Get the list of all base resumes that user has
       operationId: getBaseResumes
       responses:
         '200':
@@ -1765,7 +1766,7 @@ paths:
         - Resumes
       summary: Update base resume by id
       description: |
-        This endpoint allows users to update an existing resume by providing the ID of the resume to be updated along with the updated details.
+        This endpoint allows users to update an existing resume by providing the ID of the resume to be updated along with the new resume schema object.
         Upon successful update, the server responds with the updated resume resource.
       operationId: updateBaseResumeById
       parameters:
@@ -1851,7 +1852,7 @@ paths:
       tags:
         - Resumes
       summary: Create tailored resume
-      description: Create tailored resume based on base resume with AI improvements and input data
+      description: Create tailored resume derived from chosen base resume. This endpoint creates a copy of base resume under the hood and automatically applies AI suggestions based on chosen job context
       operationId: createTailoredResume
       requestBody:
         description: Tailored resume object
@@ -1956,7 +1957,7 @@ paths:
         - Resumes
       summary: Update tailored resume by id
       description: |
-        This endpoint allows users to update an existing resume by providing the ID of the resume to be updated along with the updated details.
+        This endpoint allows users to update an existing resume by providing the ID of the target resume and a new resume data in JsonSchema format.
         Upon successful update, the server responds with the updated resume resource.
       operationId: updateTailoredResumeById
       parameters:
@@ -2885,7 +2886,7 @@ components:
         region:
           type: string
           example: US
-    Basics_Profile:
+    Basics_profile:
       type: object
       properties:
         network:
@@ -2927,7 +2928,7 @@ components:
         profiles:
           type: array
           items:
-            $ref: '#/components/schemas/Basics_Profile'
+            $ref: '#/components/schemas/Basics_profile'
     Work:
       type: object
       properties:
