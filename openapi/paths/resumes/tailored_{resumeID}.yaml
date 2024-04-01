@@ -5,7 +5,7 @@ get:
   description: Get tailored resume by id
   operationId: getTailoredResumeById
   parameters:
-    - name: resumeID
+    - name: tailoredResumeID
       in: path
       description: tailored resume id
       required: true
@@ -43,7 +43,7 @@ put:
     Upon successful update, the server responds with the updated resume resource.
   operationId: updateTailoredResumeById
   parameters:
-    - name: resumeID
+    - name: tailoredResumeID
       in: path
       description: tailored resume id
       required: true
@@ -79,7 +79,7 @@ delete:
   description: Delete tailored resume by id
   operationId: deleteTailoredResumeById
   parameters:
-    - name: resumeID
+    - name: tailoredResumeID
       in: path
       description: tailored resume id
       required: true

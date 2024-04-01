@@ -1733,7 +1733,7 @@ paths:
       description: Get base resume by id
       operationId: getBaseResumeById
       parameters:
-        - name: resumeID
+        - name: baseResumeID
           in: path
           description: base resume id
           required: true
@@ -1823,7 +1823,7 @@ paths:
       description: Delete base resume by id
       operationId: deleteBaseResumeById
       parameters:
-        - name: resumeID
+        - name: baseResumeID
           in: path
           description: base resume id
           required: true
@@ -1924,7 +1924,7 @@ paths:
       description: Get tailored resume by id
       operationId: getTailoredResumeById
       parameters:
-        - name: resumeID
+        - name: tailoredResumeID
           in: path
           description: tailored resume id
           required: true
@@ -1961,7 +1961,7 @@ paths:
         Upon successful update, the server responds with the updated resume resource.
       operationId: updateTailoredResumeById
       parameters:
-        - name: resumeID
+        - name: tailoredResumeID
           in: path
           description: tailored resume id
           required: true
@@ -1996,7 +1996,7 @@ paths:
       description: Delete tailored resume by id
       operationId: deleteTailoredResumeById
       parameters:
-        - name: resumeID
+        - name: tailoredResumeID
           in: path
           description: tailored resume id
           required: true

@@ -5,7 +5,7 @@ get:
   description: Get base resume by id
   operationId: getBaseResumeById
   parameters:
-    - name: resumeID
+    - name: baseResumeID
       in: path
       description: base resume id
       required: true
@@ -97,7 +97,7 @@ delete:
   description: Delete base resume by id
   operationId: deleteBaseResumeById
   parameters:
-    - name: resumeID
+    - name: baseResumeID
       in: path
       description: base resume id
       required: true
