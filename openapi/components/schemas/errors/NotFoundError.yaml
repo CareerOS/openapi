@@ -3,6 +3,6 @@ properties:
   error:
     type: string
     description: Error message
-    example: Error message
+    example: "Entity with id: 1 not found"
 required:
   - error

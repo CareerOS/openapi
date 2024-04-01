@@ -1,0 +1,18 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 8de6cfbf-9cef-439a-91d3-1f93b91ce84a
+  name:
+    type: string
+    example: My resume
+  preview_image:
+    type: string
+    format: uri
+    example: https://www.example.com/image.jpg
+  created_at:
+    type: string
+    format: date
+  updated_at:
+    type: string
+    format: date

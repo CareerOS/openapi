@@ -1,0 +1,19 @@
+type: object
+properties:
+  name:
+    type: string
+    example: Publication
+  publisher:
+    type: string
+    example: Company
+  releaseDate:
+    type: string
+    format: date
+    example: '2014-10-01'
+  url:
+    type: string
+    format: uri
+    example: https://institution.com
+  summary:
+    type: string
+    example: Description…

@@ -1,0 +1,30 @@
+type: object
+properties:
+  name:
+    type: string
+    example: John Doe
+  label:
+    type: string
+    example: Programmer
+  image:
+    type: string
+    example: https://static.vecteezy.com/system/resources/previews/023/654/784/non_2x/golden-logo-template-free-png.png
+  email:
+    type: string
+    example: mail@mail.com
+  phone:
+    type: string
+    example: '+380671234567'
+  url:
+    type: string
+    example: '+380671234567'
+  summary:
+    type: string
+    example: A summary of John Doe…
+  location:
+    type: object
+    $ref: Basics_location.yaml
+  profiles:
+    type: array
+    items:
+      $ref: Basics_profile.yaml

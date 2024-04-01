@@ -1,0 +1,10 @@
+type: object
+properties:
+  name:
+    type: string
+    example: Wildlife
+  keywords:
+    type: array
+    items:
+      type: string
+      example: Ferrets

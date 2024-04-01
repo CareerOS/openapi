@@ -1,0 +1,72 @@
+post:
+  tags:
+    - Resumes
+  operationId: createBaseResume
+  summary: Create base resume
+  description: |
+    This endpoint allows users to create a new base resume from existing one (from file). Endpoint currently supports PDF files only 
+    
+    Upon successful resume parsing and saving the result to db the server responds with parsed resume data in Resume Schema format.
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            file:
+              type: string
+              format: binary
+              description: PDF file with resume data
+            title:
+              type: string
+              example: My resume
+            resume_template_id:
+              type: string
+              format: uuid
+              example: cdd8b409-ee35-4acd-b022-b5ad46cb076c
+  responses:
+    201:
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/resumes/base_resume_response.yaml
+    401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/UnauthorizedError.yaml
+    500:
+      $ref: ../../components/responses/InternalServerError.yaml
+
+get:
+  tags:
+    - Resumes
+  summary: Get base resumes
+  description: Get the list of all base resumes that user has
+  operationId: getBaseResumes
+  responses:
+    200:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/resumes/base_resume_response.yaml
+    401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/UnauthorizedError.yaml
+    404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/NotFoundError.yaml
+    500:
+      $ref: ../../components/responses/InternalServerError.yaml

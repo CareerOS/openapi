@@ -1,0 +1,27 @@
+type: object
+properties:
+  name:
+    type: string
+    example: Project
+  startDate:
+    type: string
+    format: date
+    example: '2011-01-01'
+  endDate:
+    type: string
+    format: date
+    example: '2013-01-01'
+  description:
+    type: string
+    example: Description...
+  highlights:
+    type: array
+    items:
+      type: string
+    example: 
+      - Won award at AIHacks 2016
+      - Won award at AIHacks 2017
+  url:
+    type: string
+    format: uri
+    example: https://project.com

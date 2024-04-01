@@ -1,0 +1,105 @@
+get:
+  tags:
+    - Resumes
+  summary: Get tailored resume by id
+  description: Get tailored resume by id
+  operationId: getTailoredResumeById
+  parameters:
+    - name: tailoredResumeID
+      in: path
+      description: tailored resume id
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    200:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/resumes/tailored_resume_response.yaml
+    401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/ErrorResponse.yaml
+    404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/NotFoundError.yaml
+    500:
+      $ref: ../../components/responses/InternalServerError.yaml
+
+put:
+  tags:
+    - Resumes
+  summary: Update tailored resume by id
+  description: |
+    This endpoint allows users to update an existing resume by providing the ID of the target resume and a new resume data in JsonSchema format.
+    Upon successful update, the server responds with the updated resume resource.
+  operationId: updateTailoredResumeById
+  parameters:
+    - name: tailoredResumeID
+      in: path
+      description: tailored resume id
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    201:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/resumes/tailored_resume_response.yaml
+    401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/ErrorResponse.yaml
+    404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/NotFoundError.yaml
+    500:
+      $ref: ../../components/responses/InternalServerError.yaml
+
+delete:
+  tags:
+    - Resumes
+  summary: Delete tailored resume by id
+  description: Delete tailored resume by id
+  operationId: deleteTailoredResumeById
+  parameters:
+    - name: tailoredResumeID
+      in: path
+      description: tailored resume id
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    204:
+      description: No content
+    401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/UnauthorizedError.yaml
+    404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/NotFoundError.yaml
+    500:
+      $ref: ../../components/responses/InternalServerError.yaml

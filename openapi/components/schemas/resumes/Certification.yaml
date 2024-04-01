@@ -1,0 +1,19 @@
+type: object
+properties:
+  name:
+    type: string
+    example: Certification
+  date:
+    type: string
+    format: date
+    example: '2011-01-01'
+  area:
+    type: string
+    example: Software Development
+  issuer:
+    type: string
+    example: Company
+  url:
+    type: string
+    format: uri
+    example: https://institution.com
