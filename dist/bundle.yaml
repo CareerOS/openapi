@@ -1665,11 +1665,21 @@ paths:
     post:
       tags:
         - Resumes
+      operationId: createBaseResume
       summary: Create base resume
       description: |
         This endpoint allows users to create a new base resume.
         Upon successful creation, the server responds with the newly created resume resource.
-      operationId: createBaseResume
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                resume:
+                  type: string
+                  format: binary
       responses:
         '201':
           description: Created
@@ -1714,7 +1724,7 @@ paths:
                 $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/resumes/base/{resumeID}:
+  /api/v1/resumes/base/{baseResumeID}:
     get:
       tags:
         - Resumes
@@ -1759,13 +1769,31 @@ paths:
         Upon successful update, the server responds with the updated resume resource.
       operationId: updateBaseResumeById
       parameters:
-        - name: resumeID
+        - name: baseResumeID
           in: path
           description: base resume id
           required: true
           schema:
             type: string
             format: uuid
+            example: 2437816f-ddec-4bf3-a649-6f13efc0aeb5
+      requestBody:
+        required: true
+        description: Base resume object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                  example: 2437816f-ddec-4bf3-a649-6f13efc0aeb5
+                resume:
+                  $ref: '#/components/schemas/Resume'
+                resume_template:
+                  type: string
+                  example: ESADE
       responses:
         '201':
           description: Created
@@ -1823,15 +1851,24 @@ paths:
       tags:
         - Resumes
       summary: Create tailored resume
-      description: Create tailored resume
+      description: Create tailored resume based on base resume with AI improvements and input data
       operationId: createTailoredResume
       requestBody:
-        description: Optional description in *Markdown*
+        description: Tailored resume object
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Resume'
+              type: object
+              properties:
+                job_iD:
+                  type: string
+                  format: uuid
+                  example: 39c1f722-0a17-44b7-a121-03165effc81a
+                base_resume_id:
+                  type: string
+                  format: uuid
+                  example: c6c4bb98-1578-44a2-accb-57112323d510
       responses:
         '200':
           description: Successful operation
@@ -1878,7 +1915,7 @@ paths:
                 $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/resumes/tailored/{resumeID}:
+  /api/v1/resumes/tailored/{tailoredResumeID}:
     get:
       tags:
         - Resumes
