@@ -4,8 +4,9 @@ post:
   operationId: createBaseResume
   summary: Create base resume
   description: |
-    This endpoint allows users to create a new base resume.
-    Upon successful creation, the server responds with the newly created resume resource.
+    This endpoint allows users to create a new base resume from existing one (from file). Endpoint currently supports PDF files only 
+    
+    Upon successful resume parsing and saving the result to db the server responds with parsed resume data in Resume Schema format.
   requestBody:
     required: true
     content:
@@ -36,7 +37,7 @@ get:
   tags:
     - Resumes
   summary: Get base resumes
-  description: Get base resumes list
+  description: Get the list of all base resumes that user has
   operationId: getBaseResumes
   responses:
     200:

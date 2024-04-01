@@ -2,7 +2,7 @@ post:
   tags:
     - Resumes
   summary: Create tailored resume
-  description: Create tailored resume based on base resume with AI improvements and input data
+  description: Create tailored resume derived from chosen base resume. This endpoint creates a copy of base resume under the hood and automatically applies AI suggestions based on chosen job context 
   operationId: createTailoredResume
   requestBody:
     description: Tailored resume object
