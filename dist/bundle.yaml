@@ -1725,12 +1725,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedError'
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/resumes/base/{baseResumeID}:
@@ -1804,12 +1798,16 @@ paths:
                   type: string
                   example: ESADE
       responses:
-        '201':
-          description: Created
+        '200':
+          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/base_resume_response'
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Tailored resume has been successfully updated
         '401':
           description: Unauthorized
           content:
@@ -1847,12 +1845,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedError'
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/resumes/tailored:
@@ -1879,7 +1871,7 @@ paths:
                   format: uuid
                   example: c6c4bb98-1578-44a2-accb-57112323d510
       responses:
-        '200':
+        '201':
           description: Successful operation
           content:
             application/json:
@@ -1916,12 +1908,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedError'
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/resumes/tailored/{tailoredResumeID}:
@@ -1977,12 +1963,16 @@ paths:
             type: string
             format: uuid
       responses:
-        '201':
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/tailored_resume_response'
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Tailored resume has been successfully updated
         '401':
           description: Unauthorized
           content:
@@ -2020,12 +2010,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedError'
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/login:

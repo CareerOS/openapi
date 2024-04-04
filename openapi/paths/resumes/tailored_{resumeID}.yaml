@@ -51,12 +51,16 @@ put:
         type: string
         format: uuid
   responses:
-    201:
+    200:
       description: Successful operation
       content:
         application/json:
           schema:
-            $ref: ../../components/schemas/resumes/tailored_resume_response.yaml
+            type: object
+            properties:
+              message: 
+                type: string
+                example: "Tailored resume has been successfully updated"
     401:
       description: Unauthorized
       content:
@@ -95,11 +99,5 @@ delete:
         application/json:
           schema:
             $ref: ../../components/schemas/errors/UnauthorizedError.yaml
-    404:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: ../../components/schemas/errors/NotFoundError.yaml
     500:
       $ref: ../../components/responses/InternalServerError.yaml
