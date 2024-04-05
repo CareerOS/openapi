@@ -21,7 +21,7 @@ post:
               format: uuid
               example: c6c4bb98-1578-44a2-accb-57112323d510
   responses:
-    200:
+    201:
       description: Successful operation
       content:
         application/json:
@@ -59,11 +59,5 @@ get:
         application/json:
           schema:
             $ref: ../../components/schemas/errors/UnauthorizedError.yaml
-    404:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: ../../components/schemas/errors/NotFoundError.yaml
     500:
       $ref: ../../components/responses/InternalServerError.yaml
