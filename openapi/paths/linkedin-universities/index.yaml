@@ -22,6 +22,7 @@ post:
               universityID:
                 type: string
                 format: uuid
+                example: a809bdd0-9e8d-45f1-ac00-ebbae110a11c
     '400':
       $ref: ../../components/responses/JSONValidationFailedError.yaml
     '401':

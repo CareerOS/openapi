@@ -21,7 +21,7 @@ post:
               format: uuid
               example: c6c4bb98-1578-44a2-accb-57112323d510
   responses:
-    201:
+    '201':
       description: Successful operation
       content:
         application/json:
@@ -29,13 +29,13 @@ post:
             type: array
             items:
               $ref: ../../components/schemas/resumes/base_resume_response.yaml
-    401:
+    '401':
       description: Unauthorized
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/errors/UnauthorizedError.yaml
-    500:
+    '500':
       $ref: ../../components/responses/InternalServerError.yaml
 
 get:
@@ -45,7 +45,7 @@ get:
   description: Get tailored resumes
   operationId: getTailoredResumes
   responses:
-    200:
+    '200':
       description: Successful operation
       content:
         application/json:
@@ -53,11 +53,11 @@ get:
             type: array
             items:
               $ref: ../../components/schemas/resumes/Resume.yaml
-    401:
+    '401':
       description: Unauthorized
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/errors/UnauthorizedError.yaml
-    500:
+    '500':
       $ref: ../../components/responses/InternalServerError.yaml

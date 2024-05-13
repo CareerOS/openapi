@@ -3,7 +3,7 @@ info:
   title: The CareerOS API
   description: The CareerOS server API documentation
   contact: {}
-  version: 1.1.0
+  version: 1.2.0
   license:
     name: CareerOS internal usage license
     url: https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS
@@ -44,6 +44,8 @@ paths:
                       format: uuid
                     name:
                       type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /public/v1/universities/{universityID}/providers:
@@ -63,6 +65,7 @@ paths:
           schema:
             type: string
             format: uuid
+            example: 482ecaf0-e532-4285-85a1-3f22cb86d25f
       responses:
         '200':
           description: Successful operation
@@ -72,6 +75,8 @@ paths:
                 type: array
                 items:
                   type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /public/v1/universities/{universityID}/providers/{providerName}:
@@ -91,6 +96,7 @@ paths:
           schema:
             type: string
             format: uuid
+            example: 5154fae1-5c0b-470e-90d8-3f7c399ca502
         - in: path
           name: providerName
           description: Name of the supported provider
@@ -106,6 +112,8 @@ paths:
                 type: array
                 items:
                   type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/applications/{studentId}:
@@ -229,6 +237,7 @@ paths:
                   universityID:
                     type: string
                     format: uuid
+                    example: a809bdd0-9e8d-45f1-ac00-ebbae110a11c
         '400':
           $ref: '#/components/responses/JSONValidationFailedError'
         '401':
@@ -321,7 +330,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
+                  $ref: '#/components/schemas/Student'
         '400':
           $ref: '#/components/responses/IDValidationFailedError'
         '401':
@@ -343,6 +352,7 @@ paths:
           schema:
             type: string
             format: uuid
+            example: 4effc324-23ea-4ee7-975a-fdf151c8138b
       responses:
         '200':
           description: Successful operation
@@ -351,7 +361,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
+                  $ref: '#/components/schemas/Student'
         '400':
           $ref: '#/components/responses/IDValidationFailedError'
         '401':
@@ -364,7 +374,7 @@ paths:
         - Universities
       summary: Get cohorts by university ID
       description: Get cohorts associated with a specific university
-      operationId: getCohortbyUniversityID
+      operationId: getCohortByUniversityID
       parameters:
         - in: path
           name: universityID
@@ -1004,18 +1014,14 @@ paths:
           schema:
             type: string
             format: uuid
+            example: b5d39534-76ad-4fd4-98b9-d1fd2f852467
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  messages_sent:
-                    type: integer
-                  messages_received:
-                    type: integer
+                $ref: '#/components/schemas/MessageCount'
         '400':
           $ref: '#/components/responses/IDValidationFailedError'
         '401':
@@ -1039,6 +1045,7 @@ paths:
                 conversation_id:
                   type: string
                   format: uuid
+                  example: ed7536ee-0948-4da3-a214-ab30fba3b040
                 message:
                   type: string
       responses:
@@ -1129,6 +1136,7 @@ paths:
           schema:
             type: string
             format: uuid
+            example: a33651fd-92b1-4457-a971-5324013c4163
       responses:
         '200':
           description: Successful operation
@@ -1164,6 +1172,7 @@ paths:
                 to_contact_id:
                   type: string
                   format: uuid
+                  example: 92296e02-089c-4bb1-b7f8-3038b882b113
                 text:
                   type: string
       responses:
@@ -1661,7 +1670,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/resumes/base:
+  /api/v1/resume/base:
     post:
       tags:
         - Resumes
@@ -1727,7 +1736,7 @@ paths:
                 $ref: '#/components/schemas/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/resumes/base/{baseResumeID}:
+  /api/v1/resume/base/{baseResumeID}:
     get:
       tags:
         - Resumes
@@ -1847,7 +1856,7 @@ paths:
                 $ref: '#/components/schemas/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/resumes/tailored:
+  /api/v1/resume/tailored:
     post:
       tags:
         - Resumes
@@ -1910,7 +1919,7 @@ paths:
                 $ref: '#/components/schemas/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/resumes/tailored/{tailoredResumeID}:
+  /api/v1/resume/tailored/{tailoredResumeID}:
     get:
       tags:
         - Resumes
@@ -2010,6 +2019,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/resume/templates:
+    get:
+      tags:
+        - Resumes
+      summary: Get resume templates
+      description: Get resume templates
+      operationId: getResumeTemplates
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resume_template'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/resume/templates/{templateID}:
+    get:
+      tags:
+        - Resumes
+      summary: Get resume template by id
+      description: Get resume template by id
+      operationId: getResumeTemplateByID
+      parameters:
+        - name: resumeTemplateID
+          in: path
+          description: resumeTemplateID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 2ad3189c-7f7c-4c63-b417-cc9db69f03bc
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resume_template'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/login:
@@ -2205,6 +2275,16 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    UnauthorizedError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - Failed to validate JWT token
+          description: JWT token validation failed (expired, invalid, etc.)
+      required:
+        - error
     InternalServerError:
       type: object
       properties:
@@ -2233,6 +2313,7 @@ components:
         id:
           type: string
           description: Application ID
+          example: ed96665b-211f-4a03-a5ca-cd4ac2d74647
         status:
           type: string
           enum:
@@ -2247,9 +2328,11 @@ components:
         company_id:
           type: string
           description: Company ID
+          example: 04a32379-f2fa-43cb-902f-5f0033677dfa
         company_name:
           type: string
           description: Company name
+          example: Google
         industry:
           type: string
           description: Industry
@@ -2286,16 +2369,6 @@ components:
           enum:
             - The supplied ID format is invalid
           description: ID validation failed (not UUID)
-      required:
-        - error
-    UnauthorizedError:
-      type: object
-      properties:
-        error:
-          type: string
-          enum:
-            - Failed to validate JWT token
-          description: JWT token validation failed (expired, invalid, etc.)
       required:
         - error
     Tile:
@@ -2394,6 +2467,51 @@ components:
         - logo_url
         - linkedin_url
         - industry
+    MessageCount:
+      type: object
+      properties:
+        messages_sent:
+          type: integer
+          description: Number of messages sent
+          example: 12
+        messages_received:
+          type: integer
+          description: Number of messages received
+          example: 16
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Student ID
+          example: 61c99bca-0680-4756-ab9e-7d0f24565eee
+        first_name:
+          type: string
+          description: Student first name
+          example: Alex
+        last_name:
+          type: string
+          description: Student last name
+          example: Naidiuk
+        email:
+          type: string
+          format: email
+          description: Student email
+          example: alek.naidiuk@gmail.com
+        role:
+          type: string
+          description: Student role
+        university_id:
+          type: string
+          format: uuid
+          example: 51a16608-fdb9-4675-a8c3-9bc8c15710bb
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+        messages_count:
+          $ref: '#/components/schemas/MessageCount'
     ErrorResponse:
       type: object
       properties:
@@ -3196,6 +3314,10 @@ components:
         id:
           type: string
           example: 8de6cfbf-9cef-439a-91d3-1f93b91ce84a
+        university_id:
+          type: string
+          format: uuid
+          example: a4bd6f2b-fb4e-48ec-909d-42b71953f3ed
         name:
           type: string
           example: My resume
@@ -3302,6 +3424,12 @@ components:
       required:
         - error
   responses:
+    UnauthorizedError:
+      description: Failed to validate JWT token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
     InternalServerError:
       description: Internal server error
       content:
@@ -3314,12 +3442,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IDValidationFailedError'
-    UnauthorizedError:
-      description: Failed to validate JWT token
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
     JSONValidationFailedError:
       description: Failed to parse request body to JSON schema
       content:
