@@ -13,7 +13,8 @@ properties:
     type: string
     description: Location of the current position
   company_id:
-    type: string
+    type: 
+      - "string"
+      - "null"
     format: uuid
-    nullable: true
     description: ID of the company of the current position

@@ -3,6 +3,7 @@ properties:
   id:
     type: string
     description: Application ID
+    example: ed96665b-211f-4a03-a5ca-cd4ac2d74647
   status:
     type: string
     enum:
@@ -31,9 +32,11 @@ properties:
   company_id:
     type: string
     description: Company ID
+    example: 04a32379-f2fa-43cb-902f-5f0033677dfa
   company_name:
     type: string
     description: Company name
+    example: Google
   industry:
     type: string
     description: Industry

@@ -1,0 +1,27 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 5f994df8-3c0f-4eda-8bcf-db4aeb35d43f
+  user_id: 
+    type: string
+    example: 7d7f5b28-0c7c-4af9-8a15-e421e71ec39b
+  job_id:
+    type: string
+    example: 39c1f722-0a17-44b7-a121-03165effc81a
+  base_resume_id:
+    type: string
+    example: c6c4bb98-1578-44a2-accb-57112323d510
+  title:
+    type: string
+    example: My resume
+  resume:
+    $ref: Resume.yaml
+  resume_template:
+    $ref: Resume_template.yaml
+  created_at:
+    type: string
+    format: date
+  updated_at:
+    type: string
+    format: date

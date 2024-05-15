@@ -1,9 +1,9 @@
-openapi: 3.0.1
+openapi: 3.1.0
 info:
   title: The CareerOS API
   description: The CareerOS server API documentation
   contact: {}
-  version: 1.0.0
+  version: 1.2.0
   license:
     name: CareerOS internal usage license
     url: https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS
@@ -44,6 +44,8 @@ paths:
                       format: uuid
                     name:
                       type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /public/v1/universities/{universityID}/providers:
@@ -63,6 +65,7 @@ paths:
           schema:
             type: string
             format: uuid
+            example: 482ecaf0-e532-4285-85a1-3f22cb86d25f
       responses:
         '200':
           description: Successful operation
@@ -72,6 +75,8 @@ paths:
                 type: array
                 items:
                   type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /public/v1/universities/{universityID}/providers/{providerName}:
@@ -91,6 +96,7 @@ paths:
           schema:
             type: string
             format: uuid
+            example: 5154fae1-5c0b-470e-90d8-3f7c399ca502
         - in: path
           name: providerName
           description: Name of the supported provider
@@ -106,6 +112,8 @@ paths:
                 type: array
                 items:
                   type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/applications/{studentId}:
@@ -275,6 +283,7 @@ paths:
                   universityID:
                     type: string
                     format: uuid
+                    example: a809bdd0-9e8d-45f1-ac00-ebbae110a11c
         '400':
           $ref: '#/components/responses/JSONValidationFailedError'
         '401':
@@ -367,7 +376,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
+                  $ref: '#/components/schemas/Student'
         '400':
           $ref: '#/components/responses/IDValidationFailedError'
         '401':
@@ -389,6 +398,7 @@ paths:
           schema:
             type: string
             format: uuid
+            example: 4effc324-23ea-4ee7-975a-fdf151c8138b
       responses:
         '200':
           description: Successful operation
@@ -397,7 +407,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
+                  $ref: '#/components/schemas/Student'
         '400':
           $ref: '#/components/responses/IDValidationFailedError'
         '401':
@@ -410,7 +420,7 @@ paths:
         - Universities
       summary: Get cohorts by university ID
       description: Get cohorts associated with a specific university
-      operationId: getCohortbyUniversityID
+      operationId: getCohortByUniversityID
       parameters:
         - in: path
           name: universityID
@@ -599,7 +609,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/companies/explore:
@@ -1050,18 +1060,14 @@ paths:
           schema:
             type: string
             format: uuid
+            example: b5d39534-76ad-4fd4-98b9-d1fd2f852467
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  messages_sent:
-                    type: integer
-                  messages_received:
-                    type: integer
+                $ref: '#/components/schemas/MessageCount'
         '400':
           $ref: '#/components/responses/IDValidationFailedError'
         '401':
@@ -1085,6 +1091,7 @@ paths:
                 conversation_id:
                   type: string
                   format: uuid
+                  example: ed7536ee-0948-4da3-a214-ab30fba3b040
                 message:
                   type: string
       responses:
@@ -1175,6 +1182,7 @@ paths:
           schema:
             type: string
             format: uuid
+            example: a33651fd-92b1-4457-a971-5324013c4163
       responses:
         '200':
           description: Successful operation
@@ -1210,6 +1218,7 @@ paths:
                 to_contact_id:
                   type: string
                   format: uuid
+                  example: 92296e02-089c-4bb1-b7f8-3038b882b113
                 text:
                   type: string
       responses:
@@ -1707,6 +1716,418 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/resume/base:
+    post:
+      tags:
+        - Resumes
+      operationId: createBaseResume
+      summary: Create base resume
+      description: |
+        This endpoint allows users to create a new base resume from existing one (from file). Endpoint currently supports PDF files only 
+
+        Upon successful resume parsing and saving the result to db the server responds with parsed resume data in Resume Schema format.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: PDF file with resume data
+                title:
+                  type: string
+                  example: My resume
+                resume_template_id:
+                  type: string
+                  format: uuid
+                  example: cdd8b409-ee35-4acd-b022-b5ad46cb076c
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/base_resume_response'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+        - Resumes
+      summary: Get base resumes
+      description: Get the list of all base resumes that user has
+      operationId: getBaseResumes
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/base_resume_response'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/resume/base/{baseResumeID}:
+    get:
+      tags:
+        - Resumes
+      summary: Get base resume by id
+      description: Get base resume by id
+      operationId: getBaseResumeById
+      parameters:
+        - name: baseResumeID
+          in: path
+          description: base resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/base_resume_response'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Resumes
+      summary: Update base resume by id
+      description: |
+        This endpoint allows users to update an existing resume by providing the ID of the resume to be updated along with the new resume schema object.
+        Upon successful update, the server responds with the updated resume resource.
+      operationId: updateBaseResumeById
+      parameters:
+        - name: baseResumeID
+          in: path
+          description: base resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 2437816f-ddec-4bf3-a649-6f13efc0aeb5
+      requestBody:
+        required: true
+        description: Base resume object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: uuid
+                  example: 2437816f-ddec-4bf3-a649-6f13efc0aeb5
+                resume:
+                  $ref: '#/components/schemas/Resume'
+                resume_template:
+                  type: string
+                  example: ESADE
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Tailored resume has been successfully updated
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Resumes
+      summary: Delete base resume by id
+      description: Delete base resume by id
+      operationId: deleteBaseResumeById
+      parameters:
+        - name: baseResumeID
+          in: path
+          description: base resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/resume/tailored:
+    post:
+      tags:
+        - Resumes
+      summary: Create tailored resume
+      description: Create tailored resume derived from chosen base resume. This endpoint creates a copy of base resume under the hood and automatically applies AI suggestions based on chosen job context
+      operationId: createTailoredResume
+      requestBody:
+        description: Tailored resume object
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job_iD:
+                  type: string
+                  format: uuid
+                  example: 39c1f722-0a17-44b7-a121-03165effc81a
+                base_resume_id:
+                  type: string
+                  format: uuid
+                  example: c6c4bb98-1578-44a2-accb-57112323d510
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/base_resume_response'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+        - Resumes
+      summary: Get tailored resumes
+      description: Get tailored resumes
+      operationId: getTailoredResumes
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resume'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/resume/tailored/{tailoredResumeID}:
+    get:
+      tags:
+        - Resumes
+      summary: Get tailored resume by id
+      description: Get tailored resume by id
+      operationId: getTailoredResumeById
+      parameters:
+        - name: tailoredResumeID
+          in: path
+          description: tailored resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tailored_resume_response'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Resumes
+      summary: Update tailored resume by id
+      description: |
+        This endpoint allows users to update an existing resume by providing the ID of the target resume and a new resume data in JsonSchema format.
+        Upon successful update, the server responds with the updated resume resource.
+      operationId: updateTailoredResumeById
+      parameters:
+        - name: tailoredResumeID
+          in: path
+          description: tailored resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Tailored resume has been successfully updated
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Resumes
+      summary: Delete tailored resume by id
+      description: Delete tailored resume by id
+      operationId: deleteTailoredResumeById
+      parameters:
+        - name: tailoredResumeID
+          in: path
+          description: tailored resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/resume/templates:
+    get:
+      tags:
+        - Resumes
+      summary: Get resume templates
+      description: Get resume templates
+      operationId: getResumeTemplates
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resume_template'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/resume/templates/{templateID}:
+    get:
+      tags:
+        - Resumes
+      summary: Get resume template by id
+      description: Get resume template by id
+      operationId: getResumeTemplateByID
+      parameters:
+        - name: resumeTemplateID
+          in: path
+          description: resumeTemplateID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 2ad3189c-7f7c-4c63-b417-cc9db69f03bc
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resume_template'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/v1/login:
     post:
       tags:
@@ -1900,6 +2321,16 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    UnauthorizedError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - Failed to validate JWT token
+          description: JWT token validation failed (expired, invalid, etc.)
+      required:
+        - error
     InternalServerError:
       type: object
       properties:
@@ -1928,6 +2359,7 @@ components:
         id:
           type: string
           description: Application ID
+          example: ed96665b-211f-4a03-a5ca-cd4ac2d74647
         status:
           type: string
           enum:
@@ -1956,9 +2388,11 @@ components:
         company_id:
           type: string
           description: Company ID
+          example: 04a32379-f2fa-43cb-902f-5f0033677dfa
         company_name:
           type: string
           description: Company name
+          example: Google
         industry:
           type: string
           description: Industry
@@ -1995,16 +2429,6 @@ components:
           enum:
             - The supplied ID format is invalid
           description: ID validation failed (not UUID)
-      required:
-        - error
-    UnauthorizedError:
-      type: object
-      properties:
-        error:
-          type: string
-          enum:
-            - Failed to validate JWT token
-          description: JWT token validation failed (expired, invalid, etc.)
       required:
         - error
     Tile:
@@ -2046,8 +2470,9 @@ components:
           type: string
           description: Company name
         short_description:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Short description of the company
         overview:
           type: string
@@ -2071,29 +2496,34 @@ components:
           format: uri
           description: LinkedIn profile URL of the company
         twitter_url:
-          type: string
+          type:
+            - string
+            - 'null'
           format: uri
-          nullable: true
           description: Twitter profile URL of the company
         industry:
           type: string
           description: Industry of the company as on LinkedIn
         careeros_industry:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Industry of the company as on CareerOs
         application_id:
-          type: string
+          type:
+            - string
+            - 'null'
           format: uuid
-          nullable: true
           description: ID of the associated application (if any)
         application_status:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Status of the associated application (if any)
         source:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Source of the company information
         tags:
           type: array
@@ -2108,12 +2538,58 @@ components:
         - logo_url
         - linkedin_url
         - industry
+    MessageCount:
+      type: object
+      properties:
+        messages_sent:
+          type: integer
+          description: Number of messages sent
+          example: 12
+        messages_received:
+          type: integer
+          description: Number of messages received
+          example: 16
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Student ID
+          example: 61c99bca-0680-4756-ab9e-7d0f24565eee
+        first_name:
+          type: string
+          description: Student first name
+          example: Alex
+        last_name:
+          type: string
+          description: Student last name
+          example: Naidiuk
+        email:
+          type: string
+          format: email
+          description: Student email
+          example: alek.naidiuk@gmail.com
+        role:
+          type: string
+          description: Student role
+        university_id:
+          type: string
+          format: uuid
+          example: 51a16608-fdb9-4675-a8c3-9bc8c15710bb
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+        messages_count:
+          $ref: '#/components/schemas/MessageCount'
     ErrorResponse:
       type: object
       properties:
         error:
           type: string
           description: Error message
+          example: Error message
       required:
         - error
     CompanySearchFields:
@@ -2220,6 +2696,15 @@ components:
         - logo_url
         - name
         - overview
+    NotFoundError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: 'Entity with id: 1 not found'
+      required:
+        - error
     CurrentPosition:
       type: object
       properties:
@@ -2236,9 +2721,10 @@ components:
           type: string
           description: Location of the current position
         company_id:
-          type: string
+          type:
+            - string
+            - 'null'
           format: uuid
-          nullable: true
           description: ID of the company of the current position
     Contact:
       type: object
@@ -2274,9 +2760,10 @@ components:
           format: uri
           description: LinkedIn profile URL of the contact
         linkedin_urn:
-          type: string
+          type:
+            - string
+            - 'null'
           format: uri
-          nullable: true
           description: LinkedIn profile URN of the contact
         linkedin_connection_status:
           type: string
@@ -2537,15 +3024,17 @@ components:
           type: string
           description: Template name
         email_subject:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Email subject of the template
         message:
           type: string
           description: Template message
         email_subject_template:
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           description: Email subject template of the template
         message_template:
           type: string
@@ -2560,6 +3049,409 @@ components:
         - message
         - message_template
         - ordering
+    Basics_location:
+      type: object
+      properties:
+        address:
+          type: string
+          example: 2712 Broadway St
+        postalCode:
+          type: string
+          example: CA 94115
+        city:
+          type: string
+          example: San Francisco
+        countryCode:
+          type: string
+          example: US
+        region:
+          type: string
+          example: US
+    Basics_profile:
+      type: object
+      properties:
+        network:
+          type: string
+          example: Twitter
+        username:
+          type: string
+          example: john
+        url:
+          type: string
+          example: https://twitter.com/john
+    Basics:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John Doe
+        label:
+          type: string
+          example: Programmer
+        image:
+          type: string
+          example: https://static.vecteezy.com/system/resources/previews/023/654/784/non_2x/golden-logo-template-free-png.png
+        email:
+          type: string
+          example: mail@mail.com
+        phone:
+          type: string
+          example: '+380671234567'
+        url:
+          type: string
+          example: '+380671234567'
+        summary:
+          type: string
+          example: A summary of John Doe…
+        location:
+          type: object
+          $ref: '#/components/schemas/Basics_location'
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Basics_profile'
+    Work:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Company
+        position:
+          type: string
+          example: President
+        url:
+          type: string
+          example: https://company.com
+        startDate:
+          type: string
+          format: date
+          example: '2013-01-01'
+        endDate:
+          type: string
+          format: date
+          example: '2014-01-01'
+        summary:
+          type: string
+          example: Description…
+        highlights:
+          type: array
+          items:
+            type: string
+          example:
+            - Started the company
+    Volunteer:
+      type: object
+      properties:
+        organization:
+          type: array
+          items:
+            type: string
+          example: Organization
+        position:
+          type: string
+          example: Senior
+        url:
+          type: string
+          format: uri
+          example: https://organization.com
+        startDate:
+          type: string
+          format: date
+          example: '2011-01-01'
+        endDate:
+          type: string
+          format: date
+          example: '2011-01-01'
+        summary:
+          type: string
+          example: A brief summary or description of the volunteering experience.
+        highlights:
+          type: array
+          items:
+            type: string
+          example: Example
+    Education:
+      type: object
+      properties:
+        institution:
+          type: string
+          example: University
+        url:
+          type: string
+          format: uri
+          example: https://institution.com
+        area:
+          type: string
+          example: Software Development
+        studyType:
+          type: string
+          example: Bachelor
+        startDate:
+          type: string
+          format: date
+          example: '2011-01-01'
+        endDate:
+          type: string
+          format: date
+          example: '2013-01-01'
+        score:
+          type: number
+          format: float
+          example: 4
+        courses:
+          type: array
+          items:
+            type: string
+          example: React Native developer
+    Award:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Award
+        date:
+          type: string
+          format: date
+          example: '2014-11-01'
+        awarder:
+          type: string
+          example: Company
+        summary:
+          type: string
+          example: There is no spoon.
+    Certification:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Certification
+        date:
+          type: string
+          format: date
+          example: '2011-01-01'
+        area:
+          type: string
+          example: Software Development
+        issuer:
+          type: string
+          example: Company
+        url:
+          type: string
+          format: uri
+          example: https://institution.com
+    Publication:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Publication
+        publisher:
+          type: string
+          example: Company
+        releaseDate:
+          type: string
+          format: date
+          example: '2014-10-01'
+        url:
+          type: string
+          format: uri
+          example: https://institution.com
+        summary:
+          type: string
+          example: Description…
+    Skill:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Web Development
+        level:
+          type: string
+          example: Company
+        keywords:
+          type: array
+          items:
+            type: string
+            example: JavaScript
+    Language:
+      type: object
+      properties:
+        language:
+          type: string
+          example: English
+        fluency:
+          type: string
+          example: Native speaker
+    Interest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Wildlife
+        keywords:
+          type: array
+          items:
+            type: string
+            example: Ferrets
+    Reference:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Jane Doe
+        reference:
+          type: string
+          example: Reference…
+    Project:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Project
+        startDate:
+          type: string
+          format: date
+          example: '2011-01-01'
+        endDate:
+          type: string
+          format: date
+          example: '2013-01-01'
+        description:
+          type: string
+          example: Description...
+        highlights:
+          type: array
+          items:
+            type: string
+          example:
+            - Won award at AIHacks 2016
+            - Won award at AIHacks 2017
+        url:
+          type: string
+          format: uri
+          example: https://project.com
+    Resume:
+      type: object
+      properties:
+        basics:
+          $ref: '#/components/schemas/Basics'
+        work:
+          type: array
+          items:
+            $ref: '#/components/schemas/Work'
+        volunteer:
+          type: array
+          items:
+            $ref: '#/components/schemas/Volunteer'
+        education:
+          type: array
+          items:
+            $ref: '#/components/schemas/Education'
+        awards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Award'
+        certifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Certification'
+        publications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Publication'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Language'
+        interests:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interest'
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reference'
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    Resume_template:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 8de6cfbf-9cef-439a-91d3-1f93b91ce84a
+        university_id:
+          type: string
+          format: uuid
+          example: a4bd6f2b-fb4e-48ec-909d-42b71953f3ed
+        name:
+          type: string
+          example: My resume
+        preview_image:
+          type: string
+          format: uri
+          example: https://www.example.com/image.jpg
+        created_at:
+          type: string
+          format: date
+        updated_at:
+          type: string
+          format: date
+    base_resume_response:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 5f994df8-3c0f-4eda-8bcf-db4aeb35d43f
+        user_id:
+          type: string
+          example: 7d7f5b28-0c7c-4af9-8a15-e421e71ec39b
+        title:
+          type: string
+          example: My resume
+        resume:
+          $ref: '#/components/schemas/Resume'
+        resume_template:
+          $ref: '#/components/schemas/Resume_template'
+        created_at:
+          type: string
+          format: date
+        updated_at:
+          type: string
+          format: date
+    tailored_resume_response:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 5f994df8-3c0f-4eda-8bcf-db4aeb35d43f
+        user_id:
+          type: string
+          example: 7d7f5b28-0c7c-4af9-8a15-e421e71ec39b
+        job_id:
+          type: string
+          example: 39c1f722-0a17-44b7-a121-03165effc81a
+        base_resume_id:
+          type: string
+          example: c6c4bb98-1578-44a2-accb-57112323d510
+        title:
+          type: string
+          example: My resume
+        resume:
+          $ref: '#/components/schemas/Resume'
+        resume_template:
+          $ref: '#/components/schemas/Resume_template'
+        created_at:
+          type: string
+          format: date
+        updated_at:
+          type: string
+          format: date
     UsageStatistics:
       type: object
       properties:
@@ -2603,6 +3495,12 @@ components:
       required:
         - error
   responses:
+    UnauthorizedError:
+      description: Failed to validate JWT token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
     InternalServerError:
       description: Internal server error
       content:
@@ -2615,12 +3513,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IDValidationFailedError'
-    UnauthorizedError:
-      description: Failed to validate JWT token
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
     JSONValidationFailedError:
       description: Failed to parse request body to JSON schema
       content:

@@ -14,15 +14,17 @@ properties:
     type: string
     description: Template name
   email_subject:
-    type: string
-    nullable: true
+    type:
+      - "string"
+      - "null"
     description: Email subject of the template
   message:
     type: string
     description: Template message
   email_subject_template:
-    type: string
-    nullable: true
+    type:
+      - "string"
+      - "null"
     description: Email subject template of the template
   message_template:
     type: string

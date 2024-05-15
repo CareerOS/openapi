@@ -1,0 +1,48 @@
+type: object
+properties:
+  basics:
+    $ref: Basics.yaml
+  work:
+    type: array
+    items:
+      $ref: Work.yaml
+  volunteer:
+    type: array
+    items:
+      $ref: Volunteer.yaml
+  education:
+    type: array
+    items:
+      $ref: Education.yaml
+  awards:
+    type: array
+    items:
+      $ref: Award.yaml
+  certifications:
+    type: array
+    items:
+      $ref: Certification.yaml
+  publications:
+    type: array
+    items:
+      $ref: Publication.yaml
+  skills: 
+    type: array
+    items:
+      $ref: Skill.yaml
+  languages:
+    type: array
+    items:
+      $ref: Language.yaml
+  interests:
+    type: array
+    items:
+      $ref: Interest.yaml
+  references:
+    type: array
+    items:
+      $ref: Reference.yaml
+  projects:
+    type: array
+    items:
+      $ref: Project.yaml

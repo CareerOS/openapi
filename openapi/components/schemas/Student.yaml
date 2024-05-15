@@ -1,0 +1,33 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Student ID
+    example: 61c99bca-0680-4756-ab9e-7d0f24565eee
+  first_name:
+    type: string
+    description: Student first name
+    example: Alex
+  last_name:
+    type: string
+    description: Student last name
+    example: Naidiuk
+  email:
+    type: string
+    format: email
+    description: Student email
+    example: alek.naidiuk@gmail.com
+  role:
+    type: string
+    description: Student role
+  university_id:
+    type: string
+    format: uuid
+    example: 51a16608-fdb9-4675-a8c3-9bc8c15710bb
+  applications:
+    type: array
+    items:
+      $ref: ./Application.yaml
+  messages_count:
+    $ref: ./MessageCount.yaml

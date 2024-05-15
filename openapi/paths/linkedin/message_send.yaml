@@ -14,6 +14,7 @@ post:
             conversation_id:
               type: string
               format: uuid
+              example: ed7536ee-0948-4da3-a214-ab30fba3b040
             message:
               type: string
   responses:

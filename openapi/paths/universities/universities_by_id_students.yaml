@@ -20,7 +20,7 @@ get:
           schema:
             type: array
             items:
-              type: object
+              $ref: ../../components/schemas/Student.yaml
     '400':
       $ref: ../../components/responses/IDValidationFailedError.yaml
     '401':

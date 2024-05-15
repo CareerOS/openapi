@@ -1,8 +1,8 @@
 {
   "name": "openapi",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "dependencies": {
-    "@redocly/cli": "1.10.3"
+    "@redocly/cli": "1.10.6"
   },
   "private": true,
   "scripts": {

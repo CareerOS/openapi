@@ -1,0 +1,13 @@
+type: object
+properties:
+  name:
+    type: string
+    example: Web Development
+  level:
+    type: string
+    example: Company
+  keywords:
+    type: array
+    items:
+      type: string
+      example: JavaScript
