@@ -26,19 +26,19 @@ post:
               format: uuid
               example: cdd8b409-ee35-4acd-b022-b5ad46cb076c
   responses:
-    201:
+    '201':
       description: Created
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/resumes/base_resume_response.yaml
-    401:
+    '401':
       description: Unauthorized
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/errors/UnauthorizedError.yaml
-    500:
+    '500':
       $ref: ../../components/responses/InternalServerError.yaml
 
 get:
@@ -48,7 +48,7 @@ get:
   description: Get the list of all base resumes that user has
   operationId: getBaseResumes
   responses:
-    200:
+    '200':
       description: Successful operation
       content:
         application/json:
@@ -56,11 +56,11 @@ get:
             type: array
             items:
               $ref: ../../components/schemas/resumes/base_resume_response.yaml
-    401:
+    '401':
       description: Unauthorized
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/errors/UnauthorizedError.yaml
-    500:
+    '500':
       $ref: ../../components/responses/InternalServerError.yaml

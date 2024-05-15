@@ -1,0 +1,36 @@
+get:
+  tags:
+    - Resumes
+  summary: Get resume template by id
+  description: Get resume template by id
+  operationId: getResumeTemplateByID
+  parameters:
+    - name: resumeTemplateID
+      in: path
+      description: resumeTemplateID
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 2ad3189c-7f7c-4c63-b417-cc9db69f03bc
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/resumes/Resume_template.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/ErrorResponse.yaml
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/NotFoundError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

@@ -3,7 +3,7 @@ get:
     - Universities
   summary: Get cohorts by university ID
   description: Get cohorts associated with a specific university
-  operationId: getCohortbyUniversityID
+  operationId: getCohortByUniversityID
   parameters:
     - in: path
       name: universityID
