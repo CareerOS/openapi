@@ -3,6 +3,10 @@ properties:
   id:
     type: string
     example: 8de6cfbf-9cef-439a-91d3-1f93b91ce84a
+  university_id:
+    type: string
+    format: uuid
+    example: a4bd6f2b-fb4e-48ec-909d-42b71953f3ed
   name:
     type: string
     example: My resume
