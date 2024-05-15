@@ -1,0 +1,8 @@
+type: object
+properties:
+  language:
+    type: string
+    example: English
+  fluency:
+    type: string
+    example: Native speaker 

@@ -1,0 +1,32 @@
+type: object
+properties:
+  institution:
+    type: string
+    example: University
+  url:
+    type: string
+    format: uri
+    example: https://institution.com
+  area:
+    type: string
+    example: Software Development
+  studyType:
+    type: string
+    example: Bachelor
+  startDate:
+    type: string
+    format: date
+    example: '2011-01-01'
+  endDate:
+    type: string
+    format: date
+    example: '2013-01-01'
+  score:
+    type: number
+    format: float
+    example: 4.0
+  courses:
+    type: array
+    items:
+      type: string
+    example: React Native developer

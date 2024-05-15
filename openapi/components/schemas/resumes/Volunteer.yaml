@@ -1,0 +1,30 @@
+type: object
+properties:
+  organization:
+    type: array
+    items:
+      type: string
+    example: Organization
+  position:
+    type: string
+    example: Senior
+  url:
+    type: string
+    format: uri
+    example: https://organization.com
+  startDate:
+    type: string
+    format: date
+    example: '2011-01-01'
+  endDate:
+    type: string
+    format: date
+    example: '2011-01-01'
+  summary:
+    type: string
+    example: A brief summary or description of the volunteering experience.
+  highlights:
+    type: array
+    items:
+      type: string
+    example: Example

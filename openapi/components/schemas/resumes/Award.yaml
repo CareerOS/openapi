@@ -1,0 +1,15 @@
+type: object
+properties:
+  title: 
+    type: string
+    example: Award
+  date:
+    type: string
+    format: date
+    example: '2014-11-01'
+  awarder:
+    type: string
+    example: Company
+  summary:
+    type: string
+    example: There is no spoon.
