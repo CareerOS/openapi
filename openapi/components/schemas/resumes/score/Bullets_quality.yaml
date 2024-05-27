@@ -1,0 +1,11 @@
+type: object
+properties:
+  percentage_of_strong_action_verbs: 
+    type: integer
+    example: 30
+  percentage_of_quantify_outcomes: 
+    type: integer
+    example: 60
+  average_percent_score: 
+    type: integer
+    example: 45
