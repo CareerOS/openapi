@@ -1,0 +1,14 @@
+type: object
+properties:
+  number_of_positions: 
+    type: integer
+    example: 3
+  number_of_total_bullets: 
+    type: integer
+    example: 10
+  number_of_total_words: 
+    type: integer
+    example: 510
+  average_percent_score: 
+    type: integer
+    example: 83
