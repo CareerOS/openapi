@@ -5,9 +5,9 @@ get:
   description: Get resume template by id
   operationId: getResumeTemplateByID
   parameters:
-    - name: resumeTemplateID
+    - name: templateID
       in: path
-      description: resumeTemplateID
+      description: templateID
       required: true
       schema:
         type: string
