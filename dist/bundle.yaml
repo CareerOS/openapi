@@ -2304,6 +2304,24 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/leaderboard:
+    get:
+      tags:
+        - Leaderboard
+      summary: Get Leaderboard
+      description: This endpoint returns the leaderboard of the current user and their cohort.
+      operationId: getLeaderboard
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leaderboard'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     BearerAuth:
@@ -3510,6 +3528,32 @@ components:
             The date parameter must be supplied and cannot be empty.
       required:
         - error
+    StudentWithQuests:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: The first name of the current user. The names of the other students are hidden.
+        last_name:
+          type: string
+          description: The last name of the current user. The names of the other students are hidden.
+        completed_quests:
+          type: integer
+          format: int32
+          description: This field reflects the count of the completed quests for each student in the cohort.
+    Leaderboard:
+      type: object
+      properties:
+        university_name:
+          type: string
+          description: The name of the university where the current user studies.
+        cohort_name:
+          type: string
+          description: The name of the cohort of the university.
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentWithQuests'
   responses:
     UnauthorizedError:
       description: Failed to validate JWT token

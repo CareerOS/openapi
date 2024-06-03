@@ -172,6 +172,10 @@ paths:
   /api/v1/users/self/statistics:
     $ref: paths/users/self_statistics.yaml
 
+  # Leaderboard
+  /api/v1/leaderboard:
+    $ref: paths/leaderboard/index.yaml
+
 components:
   securitySchemes:
     BearerAuth:
