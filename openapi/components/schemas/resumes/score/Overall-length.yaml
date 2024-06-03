@@ -1,14 +1,14 @@
 type: object
 properties:
   number_of_positions: 
-    type: integer
-    example: 3
+    $ref: ./Block.yaml
   number_of_total_bullets: 
-    type: integer
-    example: 10
+    $ref: ./Block.yaml
   number_of_total_words: 
+    $ref: ./Block.yaml
+  percent_score:
     type: integer
-    example: 510
-  average_percent_score: 
+    example: 50
+  weight: 
     type: integer
-    example: 83
+    example: 4

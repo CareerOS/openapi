@@ -1,0 +1,14 @@
+type: object
+properties:
+  average_bullets_per_position: 
+    $ref: ./Block.yaml
+  average_words_per_bullet: 
+    $ref: ./Block.yaml
+  average_percent_score: 
+    $ref: ./Block.yaml
+  percent_score:
+    type: integer
+    example: 50
+  weight: 
+    type: integer
+    example: 4
