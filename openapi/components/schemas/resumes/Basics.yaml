@@ -9,12 +9,26 @@ properties:
   image:
     type: string
     example: https://static.vecteezy.com/system/resources/previews/023/654/784/non_2x/golden-logo-template-free-png.png
-  email:
-    type: string
-    example: mail@mail.com
-  phone:
-    type: string
-    example: '+380671234567'
+  emails:
+    type: 
+      - "null"
+      - array
+    items:
+      type: string
+    example: [
+      "test@thecareeros.com",
+      "test@gmail.com"
+    ]
+  phone_numbers:
+    type:
+      - "null"
+      - array
+    items:
+      type: string
+    example: [
+      "+4 23 223 2313",
+      "+380680223232"
+    ]
   url:
     type: string
     example: '+380671234567'
@@ -24,6 +38,18 @@ properties:
   location:
     type: object
     $ref: Basics_location.yaml
+  work_permit:
+    type: 
+      - "null"
+      - array
+    items: 
+      type: string
+  nationality:
+    type: 
+      - "null"
+      - array
+    items: 
+      type: string
   profiles:
     type: array
     items:
