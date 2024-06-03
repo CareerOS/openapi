@@ -3,7 +3,7 @@ info:
   title: The CareerOS API
   description: The CareerOS server API documentation
   contact: {}
-  version: 1.2.0
+  version: 1.3.0
   license:
     name: CareerOS internal usage license
     url: https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS
@@ -2436,8 +2436,8 @@ components:
           description: Company name
         short_description:
           type:
-            - string
             - 'null'
+            - string
           description: Short description of the company
         overview:
           type: string
@@ -2462,8 +2462,8 @@ components:
           description: LinkedIn profile URL of the company
         twitter_url:
           type:
-            - string
             - 'null'
+            - string
           format: uri
           description: Twitter profile URL of the company
         industry:
@@ -2471,24 +2471,24 @@ components:
           description: Industry of the company as on LinkedIn
         careeros_industry:
           type:
-            - string
             - 'null'
+            - string
           description: Industry of the company as on CareerOs
         application_id:
           type:
-            - string
             - 'null'
+            - string
           format: uuid
           description: ID of the associated application (if any)
         application_status:
           type:
-            - string
             - 'null'
+            - string
           description: Status of the associated application (if any)
         source:
           type:
-            - string
             - 'null'
+            - string
           description: Source of the company information
         tags:
           type: array
@@ -2687,8 +2687,8 @@ components:
           description: Location of the current position
         company_id:
           type:
-            - string
             - 'null'
+            - string
           format: uuid
           description: ID of the company of the current position
     Contact:
@@ -2726,8 +2726,8 @@ components:
           description: LinkedIn profile URL of the contact
         linkedin_urn:
           type:
-            - string
             - 'null'
+            - string
           format: uri
           description: LinkedIn profile URN of the contact
         linkedin_connection_status:
@@ -2990,16 +2990,16 @@ components:
           description: Template name
         email_subject:
           type:
-            - string
             - 'null'
+            - string
           description: Email subject of the template
         message:
           type: string
           description: Template message
         email_subject_template:
           type:
-            - string
             - 'null'
+            - string
           description: Email subject template of the template
         message_template:
           type: string
@@ -3389,57 +3389,112 @@ components:
         updated_at:
           type: string
           format: date
-    Overall_length:
+    Block:
+      type: object
+      properties:
+        value:
+          type:
+            - integer
+            - boolean
+          example: 3
+        percentage_score:
+          type: integer
+          example: 50
+        feedback:
+          type: string
+          example: Please, update fields...
+        link:
+          type:
+            - 'null'
+            - integer
+          example: https://www.thecareeros.com
+    Overall-length:
       type: object
       properties:
         number_of_positions:
-          type: integer
-          example: 3
+          $ref: '#/components/schemas/Block'
         number_of_total_bullets:
-          type: integer
-          example: 10
+          $ref: '#/components/schemas/Block'
         number_of_total_words:
+          $ref: '#/components/schemas/Block'
+        percent_score:
           type: integer
-          example: 510
-        average_percent_score:
+          example: 50
+        weight:
           type: integer
-          example: 83
-    Bullets_balance:
+          example: 4
+    Bullets-balance:
       type: object
       properties:
         average_bullets_per_position:
-          type: integer
-          example: 3
+          $ref: '#/components/schemas/Block'
         average_words_per_bullet:
-          type: integer
-          example: 16
+          $ref: '#/components/schemas/Block'
         average_percent_score:
+          $ref: '#/components/schemas/Block'
+        percent_score:
           type: integer
-          example: 100
-    Bullets_quality:
+          example: 50
+        weight:
+          type: integer
+          example: 4
+    Bullets-quality:
       type: object
       properties:
         percentage_of_strong_action_verbs:
-          type: integer
-          example: 30
+          $ref: '#/components/schemas/Block'
+        percentage_of_bullets_starting_with_strong_action_verbs:
+          $ref: '#/components/schemas/Block'
         percentage_of_quantify_outcomes:
+          $ref: '#/components/schemas/Block'
+        percent_score:
           type: integer
-          example: 60
-        average_percent_score:
+          example: 50
+        weight:
           type: integer
-          example: 45
+          example: 7
+    Skills:
+      type: object
+      properties:
+        number_of_total_skills_listed:
+          $ref: '#/components/schemas/Block'
+        percent_score:
+          type: integer
+          example: 50
+        weight:
+          type: integer
+          example: 2
+    Consistency:
+      type: object
+      properties:
+        all_bullets_end_with_period_or_none:
+          $ref: '#/components/schemas/Block'
+        overusage_of_action_verbs_in_bullets:
+          $ref: '#/components/schemas/Block'
+        avoided_words_used_in_bullets:
+          $ref: '#/components/schemas/Block'
+        percent_score:
+          type: integer
+          example: 50
+        weight:
+          type: integer
+          example: 3
     Score:
       type: object
       properties:
         overall_length:
-          $ref: '#/components/schemas/Overall_length'
+          $ref: '#/components/schemas/Overall-length'
         bullets_balance:
-          $ref: '#/components/schemas/Bullets_balance'
+          $ref: '#/components/schemas/Bullets-balance'
         bullets_quality:
-          $ref: '#/components/schemas/Bullets_quality'
+          $ref: '#/components/schemas/Bullets-quality'
+        skills:
+          $ref: '#/components/schemas/Skills'
+        consistency:
+          $ref: '#/components/schemas/Consistency'
         score:
           type: integer
-          example: 95
+          example: 42
     tailored_resume_response:
       type: object
       properties:

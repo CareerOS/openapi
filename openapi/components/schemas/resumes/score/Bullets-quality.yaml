@@ -1,0 +1,14 @@
+type: object
+properties:
+  percentage_of_strong_action_verbs: 
+    $ref: ./Block.yaml
+  percentage_of_bullets_starting_with_strong_action_verbs: 
+    $ref: ./Block.yaml
+  percentage_of_quantify_outcomes: 
+    $ref: ./Block.yaml
+  percent_score:
+    type: integer
+    example: 50
+  weight: 
+    type: integer
+    example: 7

@@ -15,16 +15,16 @@ properties:
     description: Template name
   email_subject:
     type:
-      - "string"
       - "null"
+      - string
     description: Email subject of the template
   message:
     type: string
     description: Template message
   email_subject_template:
     type:
-      - "string"
       - "null"
+      - string
     description: Email subject template of the template
   message_template:
     type: string
