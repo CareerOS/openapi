@@ -1,0 +1,16 @@
+type: object
+properties:
+  bullets: 
+    type:
+      - "null"
+      - array
+    items:
+      type: string
+    example: [
+      "Some information here"
+    ]
+  gmatscore:
+    type:
+      - "null"
+      - string
+    example: "305"
