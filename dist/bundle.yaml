@@ -1856,6 +1856,42 @@ paths:
                 $ref: '#/components/schemas/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/resume/base/{baseResumeID}/score:
+    get:
+      tags:
+        - Resumes
+      summary: Get base resume score
+      description: Get base resume score
+      operationId: getBaseResumeScore
+      parameters:
+        - name: baseResumeID
+          in: path
+          description: base resume id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Score'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/v1/resume/tailored:
     post:
       tags:
@@ -2053,9 +2089,9 @@ paths:
       description: Get resume template by id
       operationId: getResumeTemplateByID
       parameters:
-        - name: resumeTemplateID
+        - name: templateID
           in: path
-          description: resumeTemplateID
+          description: templateID
           required: true
           schema:
             type: string
@@ -3371,6 +3407,57 @@ components:
         updated_at:
           type: string
           format: date
+    Overall_length:
+      type: object
+      properties:
+        number_of_positions:
+          type: integer
+          example: 3
+        number_of_total_bullets:
+          type: integer
+          example: 10
+        number_of_total_words:
+          type: integer
+          example: 510
+        average_percent_score:
+          type: integer
+          example: 83
+    Bullets_balance:
+      type: object
+      properties:
+        average_bullets_per_position:
+          type: integer
+          example: 3
+        average_words_per_bullet:
+          type: integer
+          example: 16
+        average_percent_score:
+          type: integer
+          example: 100
+    Bullets_quality:
+      type: object
+      properties:
+        percentage_of_strong_action_verbs:
+          type: integer
+          example: 30
+        percentage_of_quantify_outcomes:
+          type: integer
+          example: 60
+        average_percent_score:
+          type: integer
+          example: 45
+    Score:
+      type: object
+      properties:
+        overall_length:
+          $ref: '#/components/schemas/Overall_length'
+        bullets_balance:
+          $ref: '#/components/schemas/Bullets_balance'
+        bullets_quality:
+          $ref: '#/components/schemas/Bullets_quality'
+        score:
+          type: integer
+          example: 95
     tailored_resume_response:
       type: object
       properties:

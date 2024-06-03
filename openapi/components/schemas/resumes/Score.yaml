@@ -1,0 +1,11 @@
+type: object
+properties:
+  overall_length:
+    $ref: ./score/Overall_length.yaml
+  bullets_balance:
+    $ref: ./score/Bullets_balance.yaml
+  bullets_quality:
+    $ref: ./score/Bullets_quality.yaml
+  score:
+    type: integer
+    example: 95
