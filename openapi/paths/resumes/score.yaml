@@ -1,17 +1,16 @@
-get:
+post:
   tags:
     - Resumes
-  summary: Get base resume score
-  description: Get base resume score
-  operationId: getBaseResumeScore
-  parameters:
-    - name: baseResumeID
-      in: path
-      description: base resume id
-      required: true
-      schema:
-        type: string
-        format: uuid
+  summary: Get resume score
+  description: Get resume score
+  operationId: getResumeScore
+  requestBody:
+    required: true
+    description: This is my test description.
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/resumes/Resume.yaml
   responses:
     '200':
       description: Successful operation

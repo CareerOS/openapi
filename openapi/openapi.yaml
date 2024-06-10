@@ -145,8 +145,6 @@ paths:
     $ref: paths/resumes/base.yaml
   /api/v1/resume/base/{baseResumeID}:
     $ref: paths/resumes/base_{resumeID}.yaml
-  /api/v1/resume/base/{baseResumeID}/score:
-    $ref: paths/resumes/base_{resumeID}_score.yaml
   /api/v1/resume/tailored:
     $ref: paths/resumes/tailored.yaml
   /api/v1/resume/tailored/{tailoredResumeID}:
@@ -155,6 +153,8 @@ paths:
     $ref: paths/resumes/templates.yaml
   /api/v1/resume/templates/{templateID}:
     $ref: paths/resumes/templates_{templateID}.yaml
+  /api/v1/resume/score:
+    $ref: paths/resumes/score.yaml
 
   #  Users
   /api/v1/login:
