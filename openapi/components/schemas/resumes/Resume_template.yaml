@@ -8,8 +8,10 @@ properties:
     format: uuid
     example: a4bd6f2b-fb4e-48ec-909d-42b71953f3ed
   name:
-    type: string
-    example: My resume
+    type: 
+      - "null"
+      - string
+    example: ESMT
   preview_image:
     type: string
     format: uri
