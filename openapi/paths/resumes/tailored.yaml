@@ -52,7 +52,7 @@ get:
           schema:
             type: array
             items:
-              $ref: ../../components/schemas/resumes/Resume.yaml
+              $ref: ../../components/schemas/resumes/tailored_resume_response.yaml
     '401':
       description: Unauthorized
       content:

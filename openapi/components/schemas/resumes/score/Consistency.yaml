@@ -1,5 +1,7 @@
 type: object
 properties:
+  all_bullets_start_with_capital_letter:
+    $ref: ./Block.yaml
   all_bullets_end_with_period_or_none: 
     $ref: ./Block.yaml
   overusage_of_action_verbs_in_bullets: 
@@ -11,4 +13,4 @@ properties:
     example: 50
   weight: 
     type: integer
-    example: 3
+    example: 4
