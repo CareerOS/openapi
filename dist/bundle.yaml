@@ -763,8 +763,8 @@ paths:
           schema:
             type: string
       responses:
-        '201':
-          description: Created
+        '200':
+          description: The contact has been successfully removed from the database.
           content:
             application/json:
               schema:
