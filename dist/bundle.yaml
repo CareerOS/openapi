@@ -764,7 +764,7 @@ paths:
             type: string
       responses:
         '200':
-          description: The contact has been successfully removed from the database or does not exist.
+          description: The contact has been successfully removed from the database.
           content:
             application/json:
               schema:
