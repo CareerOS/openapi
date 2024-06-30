@@ -1212,7 +1212,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/companies/favorite/{id}:
-    get:
+    post:
       tags:
         - Favorite Companies
       summary: Toggle favorite company

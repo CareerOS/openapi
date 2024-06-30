@@ -1,4 +1,4 @@
-get:
+post:
   tags:
     - Favorite Companies
   summary: Toggle favorite company
