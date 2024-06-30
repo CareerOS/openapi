@@ -11,6 +11,7 @@ post:
       required: true
       schema:
         type: string
+        format: jwt
   responses:
     '200':
       description: Successful operation
