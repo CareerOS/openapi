@@ -165,7 +165,7 @@ paths:
     $ref: paths/users/self.yaml
   /api/v1/users/contacts:
     $ref: paths/users/contacts.yaml
-  /api/v1/users/users/conversations:
+  /api/v1/users/conversations:
     $ref: paths/users/conversations.yaml
   /api/v1/users/self/lid:
     $ref: paths/users/self_lid.yaml
