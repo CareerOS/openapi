@@ -15,6 +15,9 @@ properties:
       - offer
       - archive
     description: Application status
+  ordering:
+    type: integer
+    description: Tile position on Kanban board.
   company_id:
     type: string
     description: Company ID
