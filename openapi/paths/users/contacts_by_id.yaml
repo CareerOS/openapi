@@ -1,0 +1,37 @@
+patch:
+  tags:
+    - Users
+  summary: Update contact Kanban position
+  description: The endpoint updates saved contact position on Kanban board.
+  operationId: updateContactKanbanPosition
+  requestBody:
+    description: Kanban position's data
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/KanbanPosition.yaml
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    '400':
+      description: | 
+        One of provided parameters is incorrect: contactID or body (Status)
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../../components/schemas/errors/IDValidationFailedError.yaml
+              - $ref: ../../components/schemas/errors/JSONValidationFailedError.yaml
+              - $ref: ../../components/schemas/errors/InvalidKanbanStatusError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
