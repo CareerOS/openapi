@@ -23,7 +23,7 @@ patch:
                 type: string
     '400':
       description: | 
-        One of provided parameters is incorrect: contactID or body (Status)
+        One of provided parameters is incorrect: contactID or body.
       content:
         application/json:
           schema:
