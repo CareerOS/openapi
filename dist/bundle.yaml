@@ -2239,7 +2239,7 @@ paths:
                     type: string
         '400':
           description: |
-            One of provided parameters is incorrect: contactID or body (Status)
+            One of provided parameters is incorrect: contactID or body.
           content:
             application/json:
               schema:
@@ -3634,9 +3634,9 @@ components:
     KanbanPosition:
       type: object
       properties:
-        status:
-          type: string
-        order:
+        column:
+          type: integer
+        row:
           type: integer
     InvalidKanbanStatusError:
       type: object
