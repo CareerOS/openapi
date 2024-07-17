@@ -4,3 +4,5 @@ properties:
     type: string
   status:
     type: string
+  ordering:
+    type: integer
