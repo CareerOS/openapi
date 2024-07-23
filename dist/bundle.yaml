@@ -2213,6 +2213,44 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/users/contacts/{id}:
+    patch:
+      tags:
+        - Users
+      summary: Update contact Kanban position
+      description: The endpoint updates saved contact position on Kanban board.
+      operationId: updateContactKanbanPosition
+      requestBody:
+        description: Kanban position's data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KanbanPosition'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: |
+            One of provided parameters is incorrect: contactID or body.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/IDValidationFailedError'
+                  - $ref: '#/components/schemas/JSONValidationFailedError'
+                  - $ref: '#/components/schemas/InvalidKanbanStatusError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/v1/users/conversations:
     get:
       tags:
@@ -3598,6 +3636,24 @@ components:
         score:
           type: integer
           example: 42
+    KanbanPosition:
+      type: object
+      properties:
+        column:
+          type: integer
+        row:
+          type: integer
+    InvalidKanbanStatusError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - The provided status is not supported
+          description: |
+            The Kanban status is an ENUM and supports specific value.
+      required:
+        - error
     UsageStatistics:
       type: object
       properties:
