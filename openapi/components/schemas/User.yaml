@@ -2,16 +2,28 @@ type: object
 properties:
   id:
     type: string
-    description: User ID
+    description: The unique identifier for the user.
   first_name:
     type: string
-    description: First name of the user
+    description: The user's first name.
   last_name:
     type: string
-    description: Last name of the user
+    description: The user's last name.
   email:
     type: string
-    description: Email address of the user
+    description: The user's email address.
+  linkedin_slug:
+    type: string
+    description: The slug part of the user's LinkedIn profile.
+  linkedin_urn:
+    type: string
+    description: The URN part of the user's LinkedIn profile, uniquely identifying the user on LinkedIn.
+  linkedin_identifiers_updated_at:
+    type: string
+    format: date-time
+    description: The timestamp when the LinkedIn identifiers were last updated.
 required:
+  - id
   - first_name
   - last_name
+  - email
