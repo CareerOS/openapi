@@ -1,9 +1,9 @@
 post:
   tags:
     - Users
-  summary: Set self user URN
-  description: Set self user URN and LinkedIn ID for the authenticated user
-  operationId: setSelfUserURN
+  summary: Set user LinkedIn identifiers
+  description: Set linkedIn urn and slug for the authenticated user
+  operationId: setUserLinkedInIdentifiers
   requestBody:
     required: true
     content:
@@ -13,7 +13,7 @@ post:
           properties:
             urn:
               type: string
-            linkedin_id:
+            slug:
               type: string
   responses:
     '200':

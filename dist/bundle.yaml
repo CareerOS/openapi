@@ -2194,7 +2194,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Contact'
+                $ref: '#/components/schemas/User'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -2281,9 +2281,9 @@ paths:
     post:
       tags:
         - Users
-      summary: Set self user URN
-      description: Set self user URN and LinkedIn ID for the authenticated user
-      operationId: setSelfUserURN
+      summary: Set user LinkedIn identifiers
+      description: Set linkedIn urn and slug for the authenticated user
+      operationId: setUserLinkedInIdentifiers
       requestBody:
         required: true
         content:
@@ -2293,7 +2293,7 @@ paths:
               properties:
                 urn:
                   type: string
-                linkedin_id:
+                slug:
                   type: string
       responses:
         '200':
@@ -3642,6 +3642,36 @@ components:
         score:
           type: integer
           example: 42
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The user's email address.
+        linkedin_slug:
+          type: string
+          description: The slug part of the user's LinkedIn profile.
+        linkedin_urn:
+          type: string
+          description: The URN part of the user's LinkedIn profile, uniquely identifying the user on LinkedIn.
+        linkedin_identifiers_updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the LinkedIn identifiers were last updated.
+      required:
+        - id
+        - first_name
+        - last_name
+        - email
     KanbanPosition:
       type: object
       properties:
