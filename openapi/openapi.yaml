@@ -1,13 +1,13 @@
-openapi: 3.0.1
+openapi: 3.1.0
 
 info:
   title: The CareerOS API
   description: The CareerOS server API documentation
   contact: {}
-  version: 1.0.0
+  version: 1.3.2
   license:
-    name: 'CareerOS internal usage license'
-    url: 'https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS'
+    name: CareerOS internal usage license
+    url: https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS
 
 servers:
   - url: https://backend-00001-tuf-diofvmfqga-oc.a.run.app
@@ -22,6 +22,14 @@ tags:
     description: Kanban tiles
 
 paths:
+  # Public API section
+  /public/v1/universities:
+    $ref: paths/public/universities.yaml
+  /public/v1/universities/{universityID}/providers:
+    $ref: paths/public/universities_{universityID}_providers.yaml
+  /public/v1/universities/{universityID}/providers/{providerName}:
+    $ref: paths/public/universities_{universityID}_providers_{providerName}.yaml
+
   #  Careers
   /api/v1/applications/{studentId}:
     $ref: paths/careers/applications_by_studentID.yaml
@@ -32,21 +40,33 @@ paths:
   /api/v1/applications/archive:
     $ref: paths/applications/archive.yaml
 
-  #  Universities
+  #  Linkedin Universities
   /api/v1/universities:
-    $ref: paths/universities/index.yaml
+    $ref: paths/linkedin-universities/index.yaml
+
+  #  Universities
+  /api/v1/enroll:
+    $ref: paths/universities/enroll.yaml
+  /api/v1/self/university:
+    $ref: paths/universities/self_university.yaml
+  /api/v1/universities/{universityID}/students:
+    $ref: paths/universities/university_{universityID}_students.yaml
+  /api/v1/cohort/{cohortID}/students:
+    $ref: paths/universities/cohorts_by_id_students.yaml
+  /api/v1/university/{universityID}/cohorts:
+    $ref: paths/universities/cohorts_by_university_id.yaml
 
   #  Companies
   /api/v1/companies:
     $ref: paths/companies/index.yaml
+  /api/v1/companies/issaved:
+    $ref: paths/companies/issaved.yaml
   /api/v1/companies/{id}:
     $ref: paths/companies/by_id.yaml
   /api/v1/companies/explore:
     $ref: paths/companies/explore.yaml
   /api/v1/companies/search/{name}:
     $ref: paths/companies/search_by_name.yaml
-  /api/v1/companies/search/company/{name}:
-    $ref: paths/companies/search_company_by_name.yaml
 
   #  Contacts
   /api/v1/contacts:
@@ -77,13 +97,11 @@ paths:
     $ref: paths/linkedin/conversations.yaml
   /api/v1/linkedin/conversations/updateall:
     $ref: paths/linkedin/conversations_updateall.yaml
-  /api/v1/linkedin/connection/check/{contactID}:
-    $ref: paths/linkedin/connection_check_{contactID}.yaml
   /api/v1/linkedin/connection/update/{contactID}:
     $ref: paths/linkedin/connection_update_{contactID}.yaml
   /api/v1/linkedin/connection/send:
     $ref: paths/linkedin/connection_send.yaml
- 
+
   #  Favorite Companies
   /api/v1/companies/favorite:
     $ref: paths/favorite/index.yaml
@@ -105,6 +123,8 @@ paths:
   #  Jobs
   /api/v1/jobs:
     $ref: paths/jobs/index.yaml
+  /api/v1/jobs/{id}:
+    $ref: paths/jobs/by_id.yaml
   /api/v1/jobs/issaved:
     $ref: paths/jobs/issaved.yaml
 
@@ -120,25 +140,43 @@ paths:
   /api/v1/templates/prefill/{id}:
     $ref: paths/templates/prefill_by_id.yaml
 
+  # Resumes
+  /api/v1/resume/base:
+    $ref: paths/resumes/base.yaml
+  /api/v1/resume/base/{baseResumeID}:
+    $ref: paths/resumes/base_{resumeID}.yaml
+  /api/v1/resume/tailored:
+    $ref: paths/resumes/tailored.yaml
+  /api/v1/resume/tailored/{tailoredResumeID}:
+    $ref: paths/resumes/tailored_{resumeID}.yaml
+  /api/v1/resume/templates:
+    $ref: paths/resumes/templates.yaml
+  /api/v1/resume/templates/{templateID}:
+    $ref: paths/resumes/templates_{templateID}.yaml
+  /api/v1/resume/score:
+    $ref: paths/resumes/score.yaml
+
   #  Users
   /api/v1/login:
     $ref: paths/users/login.yaml
-  /api/v1/enroll:
-    $ref: paths/users/enroll.yaml
   /api/v1/users/{id}:
     $ref: paths/users/by_id.yaml
   /api/v1/users/self:
     $ref: paths/users/self.yaml
-  /api/v1/self/university:
-    $ref: paths/users/self_university.yaml
-  /api/v1/universities/{universityID}/students:
-    $ref: paths/users/universities_by_id_students.yaml
   /api/v1/users/contacts:
     $ref: paths/users/contacts.yaml
-  /api/v1/users/users/conversations:
+  /api/v1/users/contacts/{id}:
+    $ref: paths/users/contacts_by_id.yaml
+  /api/v1/users/conversations:
     $ref: paths/users/conversations.yaml
   /api/v1/users/self/lid:
     $ref: paths/users/self_lid.yaml
+  /api/v1/users/self/statistics:
+    $ref: paths/users/self_statistics.yaml
+
+  # Leaderboard
+  /api/v1/leaderboard:
+    $ref: paths/leaderboard/index.yaml
 
 components:
   securitySchemes:

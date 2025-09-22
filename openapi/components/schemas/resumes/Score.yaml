@@ -1,0 +1,15 @@
+type: object
+properties:
+  overall_length:
+    $ref: ./score/Overall-length.yaml
+  bullets_balance:
+    $ref: ./score/Bullets-balance.yaml
+  bullets_quality:
+    $ref: ./score/Bullets-quality.yaml
+  skills:
+    $ref: ./score/Skills.yaml
+  consistency:
+    $ref: ./score/Consistency.yaml
+  score:
+    type: integer
+    example: 42

@@ -1,0 +1,11 @@
+type: object
+properties:
+  network:
+    type: string
+    example: Twitter
+  username:
+    type: string
+    example: john
+  url:
+    type: string
+    example: https://twitter.com/john

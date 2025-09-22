@@ -1,0 +1,121 @@
+get:
+  tags:
+    - Resumes
+  summary: Get base resume by id
+  description: Get base resume by id
+  operationId: getBaseResumeById
+  parameters:
+    - name: baseResumeID
+      in: path
+      description: base resume id
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/resumes/base_resume_response.yaml
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/UnauthorizedError.yaml
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/NotFoundError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+
+put:
+  tags:
+    - Resumes
+  summary: Update base resume by id
+  description: |
+    This endpoint allows users to update an existing resume by providing the ID of the resume to be updated along with the new resume schema object.
+    Upon successful update, the server responds with the updated resume resource.
+  operationId: updateBaseResumeById
+  parameters:
+    - name: baseResumeID
+      in: path
+      description: base resume id
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 2437816f-ddec-4bf3-a649-6f13efc0aeb5
+  requestBody:
+    required: true
+    description: Base resume object
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            user_id:
+              type: string
+              format: uuid
+              example: 2437816f-ddec-4bf3-a649-6f13efc0aeb5
+            resume:
+              $ref: ../../components/schemas/resumes/Resume.yaml
+            resume_template:
+              type: string
+              example: "ESADE"
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: 
+                type: string
+                example: "Tailored resume has been successfully updated"
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/UnauthorizedError.yaml
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/NotFoundError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+
+delete:
+  tags:
+    - Resumes
+  summary: Delete base resume by id
+  description: Delete base resume by id
+  operationId: deleteBaseResumeById
+  parameters:
+    - name: baseResumeID
+      in: path
+      description: base resume id
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '204':
+      description: No content
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/errors/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

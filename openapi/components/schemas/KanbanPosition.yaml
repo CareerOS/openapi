@@ -1,0 +1,6 @@
+type: object
+properties:
+  column:
+    type: integer
+  row:
+    type: integer

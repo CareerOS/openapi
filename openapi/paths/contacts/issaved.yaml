@@ -2,55 +2,70 @@ post:
   tags:
     - Contacts
   summary: Validate contact
-  description: Validate a contact
+  description: |
+    Endpoint checks if the company in which contact works currently exists in the CareerOS database, and 
+    that given contact is not yet saved by the user for the given company.
+    
+    Matching rules:
+     - company is checked by name and slug
+     - contact is checked by linkedin_url
+    
+    The endpoint is used exclusively by the browser extension.
   operationId: validateContact
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            contact_linkedin_url:
-              type: string
-              description: LinkedIn URL of the contact
-            company_name:
-              type: string
-              description: Company name
+          allOf:
+            - type: object
+              properties:
+                company:
+                  $ref: ../../components/schemas/CompanySearchFields.yaml
+            - type: object
+              properties:
+                contact_linkedin_url:
+                  type: string
+                  description: LinkedIn URL of the contact
+              required:
+                - company
+                - contact_linkedin_url
   responses:
     '200':
-      description: Contact validation successful
+      description: Contact can be saved
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              message:
-                type: string
-                description: Success message
+            oneOf:
+              - type: object
+                properties:
+                  message:
+                    type: string
+                    enum:
+                      - Contact can be saved
+                  should_update:
+                    type: boolean
+                    description: Whether the contact data should be updated
+              - type: object
+                properties:
+                  message:
+                    type: string
+                    enum:
+                      - Already exists and saved by the user
+                  company_id:
+                    type: string
+                    format: uuid
+                    description: ID of the matched company in which contact works
+                  contact_id:
+                    type: string
+                    format: uuid
+                    description: ID of the already saved contact
+                  should_update:
+                    type: boolean
+                    description: Whether the contact data should be updated
     '400':
       $ref: ../../components/responses/JSONValidationFailedError.yaml
     '401':
       $ref: ../../components/responses/UnauthorizedError.yaml
-    '404':
-      description: Company not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                description: Error message indicating company not found
-    '409':
-      description: Contact conflict
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              company_id:
-                type: string
-                description: ID of the conflicting company
     '500':
       $ref: ../../components/responses/InternalServerError.yaml

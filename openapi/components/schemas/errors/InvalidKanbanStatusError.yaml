@@ -1,0 +1,11 @@
+
+type: object
+properties:
+  error:
+    type: string
+    enum:
+      - The provided status is not supported
+    description: |
+      The Kanban status is an ENUM and supports specific value.
+required:
+  - error

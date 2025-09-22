@@ -3,5 +3,6 @@ properties:
   error:
     type: string
     description: Error message
+    example: Error message
 required:
   - error

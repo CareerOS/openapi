@@ -1,29 +1,28 @@
 post:
   tags:
-    - Users
-  summary: Enroll user to university
-  description: Enrolls the authenticated user to a university
-  operationId: enrollUser
+    - Universities
+  summary: Save university
+  description: Saving university to db and current user's favorite universities
+  operationId: saveUniversity
   requestBody:
+    description: University data required to save to DB
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            university:
-              type: string
-          required:
-            - university
+          $ref: ../../components/schemas/Company.yaml
+    required: true
   responses:
-    '200':
-      description: Successful operation
+    '201':
+      description: Successfully created
       content:
         application/json:
           schema:
             type: object
             properties:
-              message:
+              universityID:
                 type: string
+                format: uuid
+                example: a809bdd0-9e8d-45f1-ac00-ebbae110a11c
     '400':
       $ref: ../../components/responses/JSONValidationFailedError.yaml
     '401':

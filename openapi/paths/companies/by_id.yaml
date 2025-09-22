@@ -27,6 +27,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../../components/schemas/errors/ErrorResponse.yaml
+            $ref: ../../components/schemas/errors/NotFoundError.yaml
     '500':
       $ref: ../../components/responses/InternalServerError.yaml

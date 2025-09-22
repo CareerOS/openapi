@@ -1,0 +1,17 @@
+type: object
+properties:
+  address: 
+    type: string
+    example: 2712 Broadway St
+  postalCode: 
+    type: string
+    example: CA 94115
+  city: 
+    type: string
+    example: San Francisco
+  countryCode: 
+    type: string
+    example: US
+  region: 
+    type: string
+    example: US

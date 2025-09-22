@@ -1,0 +1,10 @@
+type: object
+properties:
+  number_of_total_skills_listed: 
+    $ref: ./Block.yaml
+  percent_score:
+    type: integer
+    example: 50
+  weight: 
+    type: integer
+    example: 2

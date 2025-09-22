@@ -1,16 +1,18 @@
 get:
   tags:
-    - Users
-  summary: Get students by university ID
-  description: Get students associated with a specific university
-  operationId: getStudentsByUniversityID
+    - Universities
+  summary: Get students by cohort ID
+  description: Get students associated with a specific cohort
+  operationId: getStudentsByCohortID
   parameters:
     - in: path
-      name: universityID
-      description: ID of the university
+      name: cohortID
+      description: ID of the cohort
       required: true
       schema:
         type: string
+        format: uuid
+        example: 4effc324-23ea-4ee7-975a-fdf151c8138b
   responses:
     '200':
       description: Successful operation
@@ -19,7 +21,7 @@ get:
           schema:
             type: array
             items:
-              type: object
+              $ref: ../../components/schemas/Student.yaml
     '400':
       $ref: ../../components/responses/IDValidationFailedError.yaml
     '401':

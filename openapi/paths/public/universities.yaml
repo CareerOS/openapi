@@ -1,0 +1,27 @@
+get:
+  tags:
+    - Public
+    - Universities
+  summary: Get universities
+  description: Get all enrolled universities
+  operationId: getUniversities
+  security: []
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

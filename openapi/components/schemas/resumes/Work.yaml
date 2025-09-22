@@ -1,0 +1,28 @@
+type: object
+properties:
+  name: 
+    type: string
+    example: Company
+  position: 
+    type: string
+    example: President
+  url: 
+    type: string
+    example: https://company.com
+  startDate: 
+    type: string
+    format: date
+    example: '2013-01-01'
+  endDate:
+    type: string
+    format: date
+    example: '2014-01-01'
+  summary:
+    type: string
+    example: Description…
+  highlights:
+    type: array
+    items:
+      type: string
+    example: 
+      - Started the company

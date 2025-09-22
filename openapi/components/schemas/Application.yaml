@@ -3,6 +3,7 @@ properties:
   id:
     type: string
     description: Application ID
+    example: ed96665b-211f-4a03-a5ca-cd4ac2d74647
   status:
     type: string
     enum:
@@ -14,12 +15,17 @@ properties:
       - offer
       - archive
     description: Application status
+  ordering:
+    type: integer
+    description: Tile position on Kanban board.
   company_id:
     type: string
     description: Company ID
+    example: 04a32379-f2fa-43cb-902f-5f0033677dfa
   company_name:
     type: string
     description: Company name
+    example: Google
   industry:
     type: string
     description: Industry
@@ -36,6 +42,10 @@ properties:
     items:
       $ref: ./JobInfo.yaml
     description: List of jobs associated with the application
+  updated_at:
+    type: string
+    format: date-time
+    description: Time of last update (create, status change) of application tile.
 required:
   - status
   - company_id

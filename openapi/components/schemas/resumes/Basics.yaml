@@ -1,0 +1,56 @@
+type: object
+properties:
+  name:
+    type: string
+    example: John Doe
+  label:
+    type: string
+    example: Programmer
+  image:
+    type: string
+    example: https://static.vecteezy.com/system/resources/previews/023/654/784/non_2x/golden-logo-template-free-png.png
+  emails:
+    type: 
+      - "null"
+      - array
+    items:
+      type: string
+    example: [
+      "test@thecareeros.com",
+      "test@gmail.com"
+    ]
+  phone_numbers:
+    type:
+      - "null"
+      - array
+    items:
+      type: string
+    example: [
+      "+4 23 223 2313",
+      "+380680223232"
+    ]
+  url:
+    type: string
+    example: '+380671234567'
+  summary:
+    type: string
+    example: A summary of John Doe…
+  location:
+    type: object
+    $ref: Basics_location.yaml
+  work_permit:
+    type: 
+      - "null"
+      - array
+    items: 
+      type: string
+  nationality:
+    type: 
+      - "null"
+      - array
+    items: 
+      type: string
+  profiles:
+    type: array
+    items:
+      $ref: Basics_profile.yaml

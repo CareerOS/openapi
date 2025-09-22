@@ -1,0 +1,36 @@
+get:
+  tags:
+    - Users
+  summary: Get app usage statistics for current user
+  description: | 
+    The endpoint aggregates and returns usage statistics for the dashboard pages. It returns weekly goals and challenges info. 
+  operationId: getUsageStatisticsForUser
+  parameters:
+    - name: date 
+      in: query
+      description: | 
+        The date and time from which aggregation should begin. The frontend client is expected to send time.Now(), the parameter is only used because of the time difference between the user and the server 
+      required: true
+      schema:
+        type: string
+        format: date
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/UsageStatistics.yaml
+    '400':
+      description: | 
+        The date parameter is invalid or empty. It is required and should have the correct format: YYYY-MM-DD.
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../../components/schemas/errors/DateParamValidationFailed.yaml
+              - $ref: ../../components/schemas/errors/DataParamIsEmptyError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

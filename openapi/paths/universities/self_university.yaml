@@ -1,6 +1,6 @@
 get:
   tags:
-    - Users
+    - Universities
   summary: Get self university
   description: Get the university object associated with the authenticated user
   operationId: getSelfUniversity

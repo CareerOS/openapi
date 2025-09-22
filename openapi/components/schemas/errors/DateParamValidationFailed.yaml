@@ -1,0 +1,9 @@
+type: object
+properties:
+  error:
+    type: string
+    enum:
+      - The date parameter is invalid
+    description: The date parameter has an invalid format. It should be YYYY-MM-DD.
+required:
+  - error

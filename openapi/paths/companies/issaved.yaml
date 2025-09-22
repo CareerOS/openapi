@@ -1,0 +1,56 @@
+post:
+  tags:
+    - Companies
+  summary: Validate company
+  description: |
+    Endpoint checks if the company exists in the CareerOS database and is it saved by the user.
+    
+    Matching rules:
+        - company is checked by name and slug
+    
+    The endpoint is used exclusively by the browser extension.
+  operationId: validateCompany
+  requestBody:
+    description: LinkedIn identifiers of the company to be validated against (name and slug)
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/CompanySearchFields.yaml
+  responses:
+    '200':
+      description: Company can be saved - it exists in the database and is not saved by the user yet
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - Company can be saved
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      description: Company not found - we don't have this company in our database
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                enum:
+                  - Company does not exist in the database
+    '409':
+      description: Conflict - user already saved this company
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              company_id:
+                type: string
+                format: uuid
+                description: ID of the company
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

@@ -38,6 +38,7 @@ get:
       $ref: ../../components/responses/UnauthorizedError.yaml
     '500':
       $ref: ../../components/responses/InternalServerError.yaml
+
 post:
   tags:
     - Jobs

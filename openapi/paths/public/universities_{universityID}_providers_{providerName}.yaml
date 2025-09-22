@@ -1,0 +1,36 @@
+get:
+  tags:
+    - Public
+    - Providers
+  summary: Get supported domain list for selected university login provider
+  description: Get supported domain list for selected university login provider
+  operationId: getUniversityProviderDomains
+  security: []
+  parameters:
+    - in: path
+      name: universityID
+      description: ID of the university
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 5154fae1-5c0b-470e-90d8-3f7c399ca502
+    - in: path
+      name: providerName
+      description: Name of the supported provider
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

@@ -1,0 +1,12 @@
+type: object
+properties:
+  first_name:
+    type: string
+    description: The first name of the current user. The names of the other students are hidden.
+  last_name:
+    type: string
+    description: The last name of the current user. The names of the other students are hidden.
+  completed_quests:
+    type: integer
+    format: int32
+    description: This field reflects the count of the completed quests for each student in the cohort.

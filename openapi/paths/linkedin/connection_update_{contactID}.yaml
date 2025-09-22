@@ -12,6 +12,7 @@ get:
       schema:
         type: string
         format: uuid
+        example: a33651fd-92b1-4457-a971-5324013c4163
   responses:
     '200':
       description: Successful operation

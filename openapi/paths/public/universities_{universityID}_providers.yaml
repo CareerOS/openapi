@@ -1,0 +1,30 @@
+get:
+  tags:
+    - Public
+    - Providers
+  summary: Get providers supported by the university
+  description: Get providers supported by the university
+  operationId: getUniversityProviders
+  security: []
+  parameters:
+    - in: path
+      name: universityID
+      description: ID of the university
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 482ecaf0-e532-4285-85a1-3f22cb86d25f
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

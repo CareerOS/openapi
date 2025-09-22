@@ -1,0 +1,24 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 5f994df8-3c0f-4eda-8bcf-db4aeb35d43f
+  user_id: 
+    type: string
+    example: 7d7f5b28-0c7c-4af9-8a15-e421e71ec39b
+  preview_url:
+    type: string
+    example: https://placehold.co/100x500
+  title:
+    type: string
+    example: My resume
+  resume:
+    $ref: Resume.yaml
+  resume_template:
+    $ref: Resume_template.yaml
+  created_at:
+    type: string
+    format: date
+  updated_at:
+    type: string
+    format: date

@@ -14,6 +14,7 @@ post:
             to_contact_id:
               type: string
               format: uuid
+              example: 92296e02-089c-4bb1-b7f8-3038b882b113
             text:
               type: string
   responses:

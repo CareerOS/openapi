@@ -8,8 +8,9 @@ properties:
     type: string
     description: Company name
   short_description:
-    type: string
-    nullable: true
+    type: 
+     - "null"
+     - string
     description: Short description of the company
   overview:
     type: string
@@ -33,29 +34,34 @@ properties:
     format: uri
     description: LinkedIn profile URL of the company
   twitter_url:
-    type: string
+    type: 
+      - "null"
+      - string
     format: uri
-    nullable: true
     description: Twitter profile URL of the company
   industry:
     type: string
     description: Industry of the company as on LinkedIn
   careeros_industry:
-    type: string
-    nullable: true
+    type: 
+      - "null"
+      - string
     description: Industry of the company as on CareerOs
   application_id:
-    type: string
+    type: 
+      - "null"
+      - string
     format: uuid
-    nullable: true
     description: ID of the associated application (if any)
   application_status:
-    type: string
-    nullable: true
+    type: 
+      - "null"
+      - string
     description: Status of the associated application (if any)
   source:
-    type: string
-    nullable: true
+    type: 
+      - "null"
+      - string
     description: Source of the company information
   tags:
     type: array

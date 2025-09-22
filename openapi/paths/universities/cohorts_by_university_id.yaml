@@ -1,0 +1,29 @@
+get:
+  tags:
+    - Universities
+  summary: Get cohorts by university ID
+  description: Get cohorts associated with a specific university
+  operationId: getCohortByUniversityID
+  parameters:
+    - in: path
+      name: universityID
+      description: ID of the university
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+    '400':
+      $ref: ../../components/responses/IDValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

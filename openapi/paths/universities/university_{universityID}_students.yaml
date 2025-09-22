@@ -1,0 +1,30 @@
+get:
+  tags:
+    - Universities
+    - Career Advisor App
+  summary: Get students by university id
+  description: Get students assigned to the specific university
+  operationId: getStudentsByUniversityID
+  parameters:
+    - in: path
+      name: universityID
+      description: ID of the university
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/Student.yaml
+    '400':
+      $ref: ../../components/responses/IDValidationFailedError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
