@@ -6,8 +6,8 @@
   },
   "private": true,
   "scripts": {
-    "start": "redocly preview-docs -p 3636",
-    "build": "redocly bundle -o dist/bundle.yaml",
+    "start": "redocly preview -p 3636",
+    "build": "redocly bundle careeros -o dist/bundle.yaml",
     "lint": "redocly lint"
   }
 }
