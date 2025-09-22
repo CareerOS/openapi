@@ -10,8 +10,6 @@ info:
     url: https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS
 
 servers:
-  - url: https://backend-00001-tuf-diofvmfqga-oc.a.run.app
-    description: Development server
   - url: https://backend-prod-tsalqjuvda-oc.a.run.app
     description: Production server
 
@@ -30,19 +28,9 @@ paths:
   /public/v1/universities/{universityID}/providers/{providerName}:
     $ref: paths/public/universities_{universityID}_providers_{providerName}.yaml
 
-  #  Careers
-  /api/v1/applications/{studentId}:
-    $ref: paths/careers/applications_by_studentID.yaml
-
   #  Applications
   /api/v1/applications:
     $ref: paths/applications/index.yaml
-  /api/v1/applications/archive:
-    $ref: paths/applications/archive.yaml
-
-  #  Linkedin Universities
-  /api/v1/universities:
-    $ref: paths/linkedin-universities/index.yaml
 
   #  Universities
   /api/v1/enroll:
@@ -63,8 +51,6 @@ paths:
     $ref: paths/companies/issaved.yaml
   /api/v1/companies/{id}:
     $ref: paths/companies/by_id.yaml
-  /api/v1/companies/explore:
-    $ref: paths/companies/explore.yaml
   /api/v1/companies/search/{name}:
     $ref: paths/companies/search_by_name.yaml
 
@@ -77,48 +63,16 @@ paths:
     $ref: paths/contacts/by_id.yaml
   /api/v1/contacts/{id}/email:
     $ref: paths/contacts/by_id_email.yaml
-  /api/v1/contacts/{id}/chat:
-    $ref: paths/contacts/by_id_chat.yaml
   /api/v1/contacts/bycompany/{id}:
     $ref: paths/contacts/bycompany_id.yaml
   /api/v1/contacts/bycompany/{id}/byuser/{userID}:
     $ref: paths/contacts/bycompany_id_byuser_id.yaml
-  /api/v1/contacts/{contactID}/linkedin:
-    $ref: paths/contacts/{contactID}_linkedin.yaml
-
-  #  LinkedIn Messaging
-  /api/v1/linkedin/messages:
-    $ref: paths/linkedin/messages.yaml
-  /api/v1/linkedin/messages/{studentID}:
-    $ref: paths/linkedin/messages_{studentID}.yaml
-  /api/v1/linkedin/message/send:
-    $ref: paths/linkedin/message_send.yaml
-  /api/v1/linkedin/conversations:
-    $ref: paths/linkedin/conversations.yaml
-  /api/v1/linkedin/conversations/updateall:
-    $ref: paths/linkedin/conversations_updateall.yaml
-  /api/v1/linkedin/connection/update/{contactID}:
-    $ref: paths/linkedin/connection_update_{contactID}.yaml
-  /api/v1/linkedin/connection/send:
-    $ref: paths/linkedin/connection_send.yaml
 
   #  Favorite Companies
   /api/v1/companies/favorite:
     $ref: paths/favorite/index.yaml
   /api/v1/companies/favorite/{id}:
     $ref: paths/favorite/by_id.yaml
-
-  #  FCM Token
-  /api/v1/linkedin/fcm/token:
-    $ref: paths/fcm/token.yaml
-
-  #  Firestore Token
-  /api/v1/firebase/token:
-    $ref: paths/firestore/token.yaml
-
-  #  Industries
-  /api/v1/industries:
-    $ref: paths/industries/index.yaml
 
   #  Jobs
   /api/v1/jobs:
@@ -127,18 +81,6 @@ paths:
     $ref: paths/jobs/by_id.yaml
   /api/v1/jobs/issaved:
     $ref: paths/jobs/issaved.yaml
-
-  #  Outlook Messaging
-  /api/v1/outlook/messages:
-    $ref: paths/outlook/messages.yaml
-  /api/v1/outlook/message/send:
-    $ref: paths/outlook/message_send.yaml
-
-  #  Templates
-  /api/v1/templates:
-    $ref: paths/templates/index.yaml
-  /api/v1/templates/prefill/{id}:
-    $ref: paths/templates/prefill_by_id.yaml
 
   # Resumes
   /api/v1/resume/base:
@@ -167,16 +109,6 @@ paths:
     $ref: paths/users/contacts.yaml
   /api/v1/users/contacts/{id}:
     $ref: paths/users/contacts_by_id.yaml
-  /api/v1/users/conversations:
-    $ref: paths/users/conversations.yaml
-  /api/v1/users/self/lid:
-    $ref: paths/users/self_lid.yaml
-  /api/v1/users/self/statistics:
-    $ref: paths/users/self_statistics.yaml
-
-  # Leaderboard
-  /api/v1/leaderboard:
-    $ref: paths/leaderboard/index.yaml
 
 components:
   securitySchemes:
