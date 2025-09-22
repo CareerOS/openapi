@@ -1,8 +1,8 @@
 openapi: 3.1.0
 
 info:
-  title: The CareerOS API
-  description: The CareerOS server API documentation
+  title: CareerOS OpenAPI
+  description: CareerOS API documentation. [Learn more](https://thecareeros.com).
   contact: {}
   version: 1.3.2
   license:
@@ -10,14 +10,8 @@ info:
     url: https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS
 
 servers:
-  - url: https://backend-prod-tsalqjuvda-oc.a.run.app
+  - url: https://api.thecareeros.com
     description: Production server
-
-tags:
-  - name: Careers
-    description: Careers endpoint
-  - name: Applications
-    description: Kanban tiles
 
 paths:
   # Public API section
