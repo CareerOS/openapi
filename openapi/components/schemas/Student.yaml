@@ -29,5 +29,3 @@ properties:
     type: array
     items:
       $ref: ./Application.yaml
-  messages_count:
-    $ref: ./MessageCount.yaml

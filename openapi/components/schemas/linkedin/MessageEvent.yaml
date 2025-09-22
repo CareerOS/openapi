@@ -1,8 +1,0 @@
-type: object
-properties:
-  messageBodyRenderFormat:
-    type: string
-  body:
-    type: string
-  attributedBody:
-    $ref: ./AttributedBody.yaml

@@ -1,6 +1,0 @@
-type: object
-properties:
-  artifacts:
-    type: array
-    items:
-      $ref: ./Artifact.yaml
