@@ -50,7 +50,7 @@ paths:
   /api/v1/self/university:
     $ref: paths/universities/self_university.yaml
   /api/v1/universities/{universityID}/students:
-    $ref: paths/universities/universities_by_id_students.yaml
+    $ref: paths/universities/university_{universityID}_students.yaml
   /api/v1/cohort/{cohortID}/students:
     $ref: paths/universities/cohorts_by_id_students.yaml
   /api/v1/university/{universityID}/cohorts:
