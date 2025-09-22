@@ -1,9 +1,9 @@
-openapi: 3.1.0
+openapi: 3.0.1
 info:
   title: The CareerOS API
   description: The CareerOS server API documentation
   contact: {}
-  version: 1.3.2
+  version: 1.0.0
   license:
     name: CareerOS internal usage license
     url: https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS
@@ -20,102 +20,6 @@ tags:
   - name: Applications
     description: Kanban tiles
 paths:
-  /public/v1/universities:
-    get:
-      tags:
-        - Public
-        - Universities
-      summary: Get universities
-      description: Get all enrolled universities
-      operationId: getUniversities
-      security: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                    name:
-                      type: string
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /public/v1/universities/{universityID}/providers:
-    get:
-      tags:
-        - Public
-        - Providers
-      summary: Get providers supported by the university
-      description: Get providers supported by the university
-      operationId: getUniversityProviders
-      security: []
-      parameters:
-        - in: path
-          name: universityID
-          description: ID of the university
-          required: true
-          schema:
-            type: string
-            format: uuid
-            example: 482ecaf0-e532-4285-85a1-3f22cb86d25f
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /public/v1/universities/{universityID}/providers/{providerName}:
-    get:
-      tags:
-        - Public
-        - Providers
-      summary: Get supported domain list for selected university login provider
-      description: Get supported domain list for selected university login provider
-      operationId: getUniversityProviderDomains
-      security: []
-      parameters:
-        - in: path
-          name: universityID
-          description: ID of the university
-          required: true
-          schema:
-            type: string
-            format: uuid
-            example: 5154fae1-5c0b-470e-90d8-3f7c399ca502
-        - in: path
-          name: providerName
-          description: Name of the supported provider
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
   /api/v1/applications/{studentId}:
     get:
       tags:
@@ -237,163 +141,8 @@ paths:
                   universityID:
                     type: string
                     format: uuid
-                    example: a809bdd0-9e8d-45f1-ac00-ebbae110a11c
         '400':
           $ref: '#/components/responses/JSONValidationFailedError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/enroll:
-    post:
-      tags:
-        - Universities
-      summary: Enroll user to university
-      description: Enrolls the authenticated user to a university
-      operationId: enrollUser
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                university:
-                  type: string
-                cohort:
-                  type: string
-              required:
-                - university
-                - cohort
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '400':
-          $ref: '#/components/responses/JSONValidationFailedError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/self/university:
-    get:
-      tags:
-        - Universities
-      summary: Get self university
-      description: Get the university object associated with the authenticated user
-      operationId: getSelfUniversity
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  domain:
-                    type: string
-                  created_at:
-                    type: string
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/universities/{universityID}/students:
-    get:
-      tags:
-        - Universities
-      summary: Get students by university ID
-      description: Get students associated with a specific university
-      operationId: getStudentsByUniversityID
-      parameters:
-        - in: path
-          name: universityID
-          description: ID of the university
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Student'
-        '400':
-          $ref: '#/components/responses/IDValidationFailedError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/cohort/{cohortID}/students:
-    get:
-      tags:
-        - Universities
-      summary: Get students by cohort ID
-      description: Get students associated with a specific cohort
-      operationId: getStudentsByCohortID
-      parameters:
-        - in: path
-          name: cohortID
-          description: ID of the cohort
-          required: true
-          schema:
-            type: string
-            format: uuid
-            example: 4effc324-23ea-4ee7-975a-fdf151c8138b
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Student'
-        '400':
-          $ref: '#/components/responses/IDValidationFailedError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/university/{universityID}/cohorts:
-    get:
-      tags:
-        - Universities
-      summary: Get cohorts by university ID
-      description: Get cohorts associated with a specific university
-      operationId: getCohortByUniversityID
-      parameters:
-        - in: path
-          name: universityID
-          description: ID of the university
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-        '400':
-          $ref: '#/components/responses/IDValidationFailedError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -476,63 +225,6 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/companies/issaved:
-    post:
-      tags:
-        - Companies
-      summary: Validate company
-      description: |
-        Endpoint checks if the company exists in the CareerOS database and is it saved by the user.
-
-        Matching rules:
-            - company is checked by name and slug
-
-        The endpoint is used exclusively by the browser extension.
-      operationId: validateCompany
-      requestBody:
-        description: LinkedIn identifiers of the company to be validated against (name and slug)
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompanySearchFields'
-      responses:
-        '200':
-          description: Company can be saved - it exists in the database and is not saved by the user yet
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    enum:
-                      - Company can be saved
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '404':
-          description: Company not found - we don't have this company in our database
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    enum:
-                      - Company does not exist in the database
-        '409':
-          description: Conflict - user already saved this company
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  company_id:
-                    type: string
-                    format: uuid
-                    description: ID of the company
-        '500':
-          $ref: '#/components/responses/InternalServerError'
   /api/v1/companies/{id}:
     get:
       tags:
@@ -563,7 +255,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotFoundError'
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/companies/explore:
@@ -623,6 +315,42 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/companies/search/company/{name}:
+    get:
+      tags:
+        - Companies
+      summary: Check company in DB
+      description: Check exists company in DB or not
+      operationId: checkCompanyInDB
+      parameters:
+        - name: name
+          in: path
+          description: Company name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  linkedin_identifier:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/v1/contacts:
     post:
       tags:
@@ -661,71 +389,56 @@ paths:
       tags:
         - Contacts
       summary: Validate contact
-      description: |
-        Endpoint checks if the company in which contact works currently exists in the CareerOS database, and 
-        that given contact is not yet saved by the user for the given company.
-
-        Matching rules:
-         - company is checked by name and slug
-         - contact is checked by linkedin_url
-
-        The endpoint is used exclusively by the browser extension.
+      description: Validate a contact
       operationId: validateContact
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              allOf:
-                - type: object
-                  properties:
-                    company:
-                      $ref: '#/components/schemas/CompanySearchFields'
-                - type: object
-                  properties:
-                    contact_linkedin_url:
-                      type: string
-                      description: LinkedIn URL of the contact
-                  required:
-                    - company
-                    - contact_linkedin_url
+              type: object
+              properties:
+                contact_linkedin_url:
+                  type: string
+                  description: LinkedIn URL of the contact
+                company_name:
+                  type: string
+                  description: Company name
       responses:
         '200':
-          description: Contact can be saved
+          description: Contact validation successful
           content:
             application/json:
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      message:
-                        type: string
-                        enum:
-                          - Contact can be saved
-                      should_update:
-                        type: boolean
-                        description: Whether the contact data should be updated
-                  - type: object
-                    properties:
-                      message:
-                        type: string
-                        enum:
-                          - Already exists and saved by the user
-                      company_id:
-                        type: string
-                        format: uuid
-                        description: ID of the matched company in which contact works
-                      contact_id:
-                        type: string
-                        format: uuid
-                        description: ID of the already saved contact
-                      should_update:
-                        type: boolean
-                        description: Whether the contact data should be updated
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
         '400':
           $ref: '#/components/responses/JSONValidationFailedError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Company not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message indicating company not found
+        '409':
+          description: Contact conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  company_id:
+                    type: string
+                    description: ID of the conflicting company
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/contacts/{id}:
@@ -769,8 +482,8 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: The contact has been successfully removed from the database.
+        '201':
+          description: Created
           content:
             application/json:
               schema:
@@ -1020,14 +733,18 @@ paths:
           schema:
             type: string
             format: uuid
-            example: b5d39534-76ad-4fd4-98b9-d1fd2f852467
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MessageCount'
+                type: object
+                properties:
+                  messages_sent:
+                    type: integer
+                  messages_received:
+                    type: integer
         '400':
           $ref: '#/components/responses/IDValidationFailedError'
         '401':
@@ -1051,7 +768,6 @@ paths:
                 conversation_id:
                   type: string
                   format: uuid
-                  example: ed7536ee-0948-4da3-a214-ab30fba3b040
                 message:
                   type: string
       responses:
@@ -1127,6 +843,41 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/v1/linkedin/connection/check/{contactID}:
+    get:
+      tags:
+        - LinkedIn Messaging
+      summary: Check connection status
+      description: This endpoint checks connection status between user and contact on LinkedIn
+      operationId: checkConnection
+      parameters:
+        - name: contactID
+          in: path
+          description: ID of contact to check connection status with
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  connection_status:
+                    type: string
+                    enum:
+                      - connected
+                      - not_connected
+                      - connection_requested
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/v1/linkedin/connection/update/{contactID}:
     get:
       tags:
@@ -1142,7 +893,6 @@ paths:
           schema:
             type: string
             format: uuid
-            example: a33651fd-92b1-4457-a971-5324013c4163
       responses:
         '200':
           description: Successful operation
@@ -1178,7 +928,6 @@ paths:
                 to_contact_id:
                   type: string
                   format: uuid
-                  example: 92296e02-089c-4bb1-b7f8-3038b882b113
                 text:
                   type: string
       responses:
@@ -1218,7 +967,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/companies/favorite/{id}:
-    post:
+    get:
       tags:
         - Favorite Companies
       summary: Toggle favorite company
@@ -1448,30 +1197,23 @@ paths:
                     type: string
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/jobs/{id}:
-    patch:
+    delete:
       tags:
         - Jobs
-      summary: Update job
-      description: The endpoint updates a piece of information about the job.
-      operationId: updateJob
+      summary: Delete a job
+      description: Soft delete a job for the current user.
+      operationId: deleteJob
       parameters:
         - name: id
           in: path
-          description: Job ID
+          description: ID of the job to be deleted.
           required: true
           schema:
             type: string
-      requestBody:
-        description: Job fields for updating.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/JobPatch'
-        required: true
+            format: uuid
       responses:
-        '201':
-          description: Successful operation
+        '200':
+          description: Successfully deleted
           content:
             application/json:
               schema:
@@ -1479,14 +1221,52 @@ paths:
                 properties:
                   message:
                     type: string
+                    example: Success
         '400':
-          description: The request body or the job ID in the path has an incorrect format or is empty.
+          description: Bad request or Invalid ID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/jobs/issaved:
+    post:
+      tags:
+        - Jobs
+      summary: Validate job
+      description: Validate job details for the authenticated user
+      operationId: validateJob
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job_linkedin_url:
+                  type: string
+                company_name:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/IDValidationFailedError'
-                  - $ref: '#/components/schemas/JSONValidationFailedError'
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                  - type: object
+                    properties:
+                      company_id:
+                        type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '404':
@@ -1498,72 +1278,6 @@ paths:
                 properties:
                   message:
                     type: string
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/jobs/issaved:
-    post:
-      tags:
-        - Jobs
-      summary: Validate job
-      description: |
-        Endpoint checks if the company in which job is opened exists in the CareerOS database, and 
-        that given job is not yet saved by the user for the given company.
-
-        Matching rules:
-         - company is checked by name and slug
-         - job is checked by linkedin_url
-
-        The endpoint is used exclusively by the browser extension.
-      operationId: validateJob
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              allOf:
-                - type: object
-                  properties:
-                    company:
-                      $ref: '#/components/schemas/CompanySearchFields'
-                - type: object
-                  properties:
-                    job_linkedin_url:
-                      type: string
-                      description: LinkedIn URL of the job
-                  required:
-                    - company
-                    - job_linkedin_url
-      responses:
-        '200':
-          description: Job can be saved
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    enum:
-                      - Job can be saved
-        '400':
-          $ref: '#/components/responses/JSONValidationFailedError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '409':
-          description: Conflict - user already saved this job
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  company_id:
-                    type: string
-                    format: uuid
-                    description: ID of the matched company in which job is opened
-                  job_id:
-                    type: string
-                    format: uuid
-                    description: ID of the already saved job
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/v1/outlook/messages:
@@ -1676,453 +1390,6 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/resume/base:
-    post:
-      tags:
-        - Resumes
-      operationId: createBaseResume
-      summary: Create base resume
-      description: |
-        This endpoint allows users to create a new base resume from existing one (from file). Endpoint currently supports PDF files only 
-
-        Upon successful resume parsing and saving the result to db the server responds with parsed resume data in Resume Schema format.
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: PDF file with resume data
-                title:
-                  type: string
-                  example: My resume
-                resume_template_id:
-                  type: string
-                  format: uuid
-                  example: cdd8b409-ee35-4acd-b022-b5ad46cb076c
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/base_resume_response'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-    get:
-      tags:
-        - Resumes
-      summary: Get base resumes
-      description: Get the list of all base resumes that user has
-      operationId: getBaseResumes
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/base_resume_response'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/resume/base/{baseResumeID}:
-    get:
-      tags:
-        - Resumes
-      summary: Get base resume by id
-      description: Get base resume by id
-      operationId: getBaseResumeById
-      parameters:
-        - name: baseResumeID
-          in: path
-          description: base resume id
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/base_resume_response'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-    put:
-      tags:
-        - Resumes
-      summary: Update base resume by id
-      description: |
-        This endpoint allows users to update an existing resume by providing the ID of the resume to be updated along with the new resume schema object.
-        Upon successful update, the server responds with the updated resume resource.
-      operationId: updateBaseResumeById
-      parameters:
-        - name: baseResumeID
-          in: path
-          description: base resume id
-          required: true
-          schema:
-            type: string
-            format: uuid
-            example: 2437816f-ddec-4bf3-a649-6f13efc0aeb5
-      requestBody:
-        required: true
-        description: Base resume object
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user_id:
-                  type: string
-                  format: uuid
-                  example: 2437816f-ddec-4bf3-a649-6f13efc0aeb5
-                resume:
-                  $ref: '#/components/schemas/Resume'
-                resume_template:
-                  type: string
-                  example: ESADE
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Tailored resume has been successfully updated
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-    delete:
-      tags:
-        - Resumes
-      summary: Delete base resume by id
-      description: Delete base resume by id
-      operationId: deleteBaseResumeById
-      parameters:
-        - name: baseResumeID
-          in: path
-          description: base resume id
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '204':
-          description: No content
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/resume/tailored:
-    post:
-      tags:
-        - Resumes
-      summary: Create tailored resume
-      description: Create tailored resume derived from chosen base resume. This endpoint creates a copy of base resume under the hood and automatically applies AI suggestions based on chosen job context
-      operationId: createTailoredResume
-      requestBody:
-        description: Tailored resume object
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                job_iD:
-                  type: string
-                  format: uuid
-                  example: 39c1f722-0a17-44b7-a121-03165effc81a
-                base_resume_id:
-                  type: string
-                  format: uuid
-                  example: c6c4bb98-1578-44a2-accb-57112323d510
-      responses:
-        '201':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/base_resume_response'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-    get:
-      tags:
-        - Resumes
-      summary: Get tailored resumes
-      description: Get tailored resumes
-      operationId: getTailoredResumes
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/tailored_resume_response'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/resume/tailored/{tailoredResumeID}:
-    get:
-      tags:
-        - Resumes
-      summary: Get tailored resume by id
-      description: Get tailored resume by id
-      operationId: getTailoredResumeById
-      parameters:
-        - name: tailoredResumeID
-          in: path
-          description: tailored resume id
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/tailored_resume_response'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-    put:
-      tags:
-        - Resumes
-      summary: Update tailored resume by id
-      description: |
-        This endpoint allows users to update an existing resume by providing the ID of the target resume and a new resume data in JsonSchema format.
-        Upon successful update, the server responds with the updated resume resource.
-      operationId: updateTailoredResumeById
-      parameters:
-        - name: tailoredResumeID
-          in: path
-          description: tailored resume id
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Tailored resume has been successfully updated
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-    delete:
-      tags:
-        - Resumes
-      summary: Delete tailored resume by id
-      description: Delete tailored resume by id
-      operationId: deleteTailoredResumeById
-      parameters:
-        - name: tailoredResumeID
-          in: path
-          description: tailored resume id
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '204':
-          description: No content
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/resume/templates:
-    get:
-      tags:
-        - Resumes
-      summary: Get resume templates
-      description: Get resume templates
-      operationId: getResumeTemplates
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Resume_template'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/resume/templates/{templateID}:
-    get:
-      tags:
-        - Resumes
-      summary: Get resume template by id
-      description: Get resume template by id
-      operationId: getResumeTemplateByID
-      parameters:
-        - name: templateID
-          in: path
-          description: templateID
-          required: true
-          schema:
-            type: string
-            format: uuid
-            example: 2ad3189c-7f7c-4c63-b417-cc9db69f03bc
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Resume_template'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/resume/score:
-    post:
-      tags:
-        - Resumes
-      summary: Get resume score
-      description: Get resume score
-      operationId: getResumeScore
-      requestBody:
-        required: true
-        description: This is my test description.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Resume'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Score'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
   /api/v1/login:
     post:
       tags:
@@ -2137,7 +1404,6 @@ paths:
           required: true
           schema:
             type: string
-            format: jwt
       responses:
         '200':
           description: Successful operation
@@ -2148,6 +1414,39 @@ paths:
                 properties:
                   message:
                     type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/enroll:
+    post:
+      tags:
+        - Users
+      summary: Enroll user to university
+      description: Enrolls the authenticated user to a university
+      operationId: enrollUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                university:
+                  type: string
+              required:
+                - university
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/JSONValidationFailedError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -2194,7 +1493,63 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Contact'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/self/university:
+    get:
+      tags:
+        - Users
+      summary: Get self university
+      description: Get the university object associated with the authenticated user
+      operationId: getSelfUniversity
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  domain:
+                    type: string
+                  created_at:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/v1/universities/{universityID}/students:
+    get:
+      tags:
+        - Users
+      summary: Get students by university ID
+      description: Get students associated with a specific university
+      operationId: getStudentsByUniversityID
+      parameters:
+        - in: path
+          name: universityID
+          description: ID of the university
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '400':
+          $ref: '#/components/responses/IDValidationFailedError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -2219,45 +1574,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/users/contacts/{id}:
-    patch:
-      tags:
-        - Users
-      summary: Update contact Kanban position
-      description: The endpoint updates saved contact position on Kanban board.
-      operationId: updateContactKanbanPosition
-      requestBody:
-        description: Kanban position's data
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/KanbanPosition'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '400':
-          description: |
-            One of provided parameters is incorrect: contactID or body.
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/IDValidationFailedError'
-                  - $ref: '#/components/schemas/JSONValidationFailedError'
-                  - $ref: '#/components/schemas/InvalidKanbanStatusError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/users/conversations:
+  /api/v1/users/users/conversations:
     get:
       tags:
         - Users
@@ -2281,9 +1598,9 @@ paths:
     post:
       tags:
         - Users
-      summary: Set user LinkedIn identifiers
-      description: Set linkedIn urn and slug for the authenticated user
-      operationId: setUserLinkedInIdentifiers
+      summary: Set self user URN
+      description: Set self user URN and LinkedIn ID for the authenticated user
+      operationId: setSelfUserURN
       requestBody:
         required: true
         content:
@@ -2293,7 +1610,7 @@ paths:
               properties:
                 urn:
                   type: string
-                slug:
+                linkedin_id:
                   type: string
       responses:
         '200':
@@ -2311,61 +1628,6 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/v1/users/self/statistics:
-    get:
-      tags:
-        - Users
-      summary: Get app usage statistics for current user
-      description: |
-        The endpoint aggregates and returns usage statistics for the dashboard pages. It returns weekly goals and challenges info. 
-      operationId: getUsageStatisticsForUser
-      parameters:
-        - name: date
-          in: query
-          description: |
-            The date and time from which aggregation should begin. The frontend client is expected to send time.Now(), the parameter is only used because of the time difference between the user and the server 
-          required: true
-          schema:
-            type: string
-            format: date
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UsageStatistics'
-        '400':
-          description: |
-            The date parameter is invalid or empty. It is required and should have the correct format: YYYY-MM-DD.
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/DateParamValidationFailed'
-                  - $ref: '#/components/schemas/DataParamIsEmptyError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /api/v1/leaderboard:
-    get:
-      tags:
-        - Leaderboard
-      summary: Get Leaderboard
-      description: This endpoint returns the leaderboard of the current user and their cohort.
-      operationId: getLeaderboard
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Leaderboard'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     BearerAuth:
@@ -2373,6 +1635,75 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    JobInfo:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Job title
+        linkedin_url:
+          type: string
+          format: uri
+          description: LinkedIn URL
+      required:
+        - title
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Application ID
+        status:
+          type: string
+          enum:
+            - saved
+            - networking
+            - applying
+            - applied
+            - interviewing
+            - offer
+            - archive
+          description: Application status
+        company_id:
+          type: string
+          description: Company ID
+        company_name:
+          type: string
+          description: Company name
+        industry:
+          type: string
+          description: Industry
+        logo_url:
+          type: string
+          format: uri
+          description: Logo URL
+        linkedin_url:
+          type: string
+          format: uri
+          description: LinkedIn URL
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobInfo'
+          description: List of jobs associated with the application
+      required:
+        - status
+        - company_id
+        - company_name
+        - industry
+        - logo_url
+        - linkedin_url
+        - jobs
+    IDValidationFailedError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - The supplied ID format is invalid
+          description: ID validation failed (not UUID)
+      required:
+        - error
     UnauthorizedError:
       type: object
       properties:
@@ -2393,85 +1724,6 @@ components:
           description: Internal server error message
       required:
         - error
-    JobInfo:
-      type: object
-      properties:
-        title:
-          type: string
-          description: Job title
-        linkedin_url:
-          type: string
-          format: uri
-          description: LinkedIn URL
-      required:
-        - title
-    Application:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Application ID
-          example: ed96665b-211f-4a03-a5ca-cd4ac2d74647
-        status:
-          type: string
-          enum:
-            - saved
-            - networking
-            - applying
-            - applied
-            - interviewing
-            - offer
-            - archive
-          description: Application status
-        ordering:
-          type: integer
-          description: Tile position on Kanban board.
-        company_id:
-          type: string
-          description: Company ID
-          example: 04a32379-f2fa-43cb-902f-5f0033677dfa
-        company_name:
-          type: string
-          description: Company name
-          example: Google
-        industry:
-          type: string
-          description: Industry
-        logo_url:
-          type: string
-          format: uri
-          description: Logo URL
-        linkedin_url:
-          type: string
-          format: uri
-          description: LinkedIn URL
-        jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobInfo'
-          description: List of jobs associated with the application
-        updated_at:
-          type: string
-          format: date-time
-          description: Time of last update (create, status change) of application tile.
-      required:
-        - status
-        - company_id
-        - company_name
-        - industry
-        - logo_url
-        - linkedin_url
-        - jobs
-    IDValidationFailedError:
-      type: object
-      properties:
-        error:
-          type: string
-          enum:
-            - The supplied ID format is invalid
-          description: ID validation failed (not UUID)
-      required:
-        - error
     Tile:
       type: object
       properties:
@@ -2479,8 +1731,6 @@ components:
           type: string
         status:
           type: string
-        ordering:
-          type: integer
     JSONValidationFailedError:
       type: object
       properties:
@@ -2502,9 +1752,8 @@ components:
           type: string
           description: Company name
         short_description:
-          type:
-            - 'null'
-            - string
+          type: string
+          nullable: true
           description: Short description of the company
         overview:
           type: string
@@ -2528,34 +1777,29 @@ components:
           format: uri
           description: LinkedIn profile URL of the company
         twitter_url:
-          type:
-            - 'null'
-            - string
+          type: string
           format: uri
+          nullable: true
           description: Twitter profile URL of the company
         industry:
           type: string
           description: Industry of the company as on LinkedIn
         careeros_industry:
-          type:
-            - 'null'
-            - string
+          type: string
+          nullable: true
           description: Industry of the company as on CareerOs
         application_id:
-          type:
-            - 'null'
-            - string
+          type: string
           format: uuid
+          nullable: true
           description: ID of the associated application (if any)
         application_status:
-          type:
-            - 'null'
-            - string
+          type: string
+          nullable: true
           description: Status of the associated application (if any)
         source:
-          type:
-            - 'null'
-            - string
+          type: string
+          nullable: true
           description: Source of the company information
         tags:
           type: array
@@ -2570,74 +1814,14 @@ components:
         - logo_url
         - linkedin_url
         - industry
-    MessageCount:
-      type: object
-      properties:
-        messages_sent:
-          type: integer
-          description: Number of messages sent
-          example: 12
-        messages_received:
-          type: integer
-          description: Number of messages received
-          example: 16
-    Student:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Student ID
-          example: 61c99bca-0680-4756-ab9e-7d0f24565eee
-        first_name:
-          type: string
-          description: Student first name
-          example: Alex
-        last_name:
-          type: string
-          description: Student last name
-          example: Naidiuk
-        email:
-          type: string
-          format: email
-          description: Student email
-          example: alek.naidiuk@gmail.com
-        role:
-          type: string
-          description: Student role
-        university_id:
-          type: string
-          format: uuid
-          example: 51a16608-fdb9-4675-a8c3-9bc8c15710bb
-        applications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Application'
-        messages_count:
-          $ref: '#/components/schemas/MessageCount'
     ErrorResponse:
       type: object
       properties:
         error:
           type: string
           description: Error message
-          example: Error message
       required:
         - error
-    CompanySearchFields:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the target company
-        linkedin_slug:
-          type: string
-          description: |
-            The LinkedIn slug of the target company (the part of the LinkedIn URL after the last slash, 
-            e.g. 'google' for https://www.linkedin.com/company/google/)
-      required:
-        - name
-        - linkedin_slug
     Job:
       type: object
       properties:
@@ -2728,15 +1912,6 @@ components:
         - logo_url
         - name
         - overview
-    NotFoundError:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error message
-          example: 'Entity with id: 1 not found'
-      required:
-        - error
     CurrentPosition:
       type: object
       properties:
@@ -2753,10 +1928,9 @@ components:
           type: string
           description: Location of the current position
         company_id:
-          type:
-            - 'null'
-            - string
+          type: string
           format: uuid
+          nullable: true
           description: ID of the company of the current position
     Contact:
       type: object
@@ -2792,10 +1966,9 @@ components:
           format: uri
           description: LinkedIn profile URL of the contact
         linkedin_urn:
-          type:
-            - 'null'
-            - string
+          type: string
           format: uri
+          nullable: true
           description: LinkedIn profile URN of the contact
         linkedin_connection_status:
           type: string
@@ -3009,16 +2182,6 @@ components:
         title:
           type: string
           example: Cloud Engineer
-        deadline:
-          type: string
-          format: date-time
-          description: The field reflects the Applicaton deadline provided by the user.
-        rolling_date:
-          type: boolean
-        posted_on:
-          type: string
-          format: date-time
-          description: The field contains the date when a job was posted.
       required:
         - company_name
         - description
@@ -3026,19 +2189,6 @@ components:
         - location
         - source
         - title
-    JobPatch:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Job ID
-        deadline:
-          type: string
-          format: date-time
-          description: The field reflects the Applicaton deadline provided by the user.
-        rolling_date:
-          type: boolean
     Template:
       type: object
       properties:
@@ -3056,17 +2206,15 @@ components:
           type: string
           description: Template name
         email_subject:
-          type:
-            - 'null'
-            - string
+          type: string
+          nullable: true
           description: Email subject of the template
         message:
           type: string
           description: Template message
         email_subject_template:
-          type:
-            - 'null'
-            - string
+          type: string
+          nullable: true
           description: Email subject template of the template
         message_template:
           type: string
@@ -3081,684 +2229,13 @@ components:
         - message
         - message_template
         - ordering
-    Basics_location:
-      type: object
-      properties:
-        address:
-          type: string
-          example: 2712 Broadway St
-        postalCode:
-          type: string
-          example: CA 94115
-        city:
-          type: string
-          example: San Francisco
-        countryCode:
-          type: string
-          example: US
-        region:
-          type: string
-          example: US
-    Basics_profile:
-      type: object
-      properties:
-        network:
-          type: string
-          example: Twitter
-        username:
-          type: string
-          example: john
-        url:
-          type: string
-          example: https://twitter.com/john
-    Basics:
-      type: object
-      properties:
-        name:
-          type: string
-          example: John Doe
-        label:
-          type: string
-          example: Programmer
-        image:
-          type: string
-          example: https://static.vecteezy.com/system/resources/previews/023/654/784/non_2x/golden-logo-template-free-png.png
-        emails:
-          type:
-            - 'null'
-            - array
-          items:
-            type: string
-          example:
-            - test@thecareeros.com
-            - test@gmail.com
-        phone_numbers:
-          type:
-            - 'null'
-            - array
-          items:
-            type: string
-          example:
-            - +4 23 223 2313
-            - '+380680223232'
-        url:
-          type: string
-          example: '+380671234567'
-        summary:
-          type: string
-          example: A summary of John Doe…
-        location:
-          type: object
-          $ref: '#/components/schemas/Basics_location'
-        work_permit:
-          type:
-            - 'null'
-            - array
-          items:
-            type: string
-        nationality:
-          type:
-            - 'null'
-            - array
-          items:
-            type: string
-        profiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Basics_profile'
-    Work:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Company
-        position:
-          type: string
-          example: President
-        url:
-          type: string
-          example: https://company.com
-        startDate:
-          type: string
-          format: date
-          example: '2013-01-01'
-        endDate:
-          type: string
-          format: date
-          example: '2014-01-01'
-        summary:
-          type: string
-          example: Description…
-        highlights:
-          type: array
-          items:
-            type: string
-          example:
-            - Started the company
-    Volunteer:
-      type: object
-      properties:
-        organization:
-          type: array
-          items:
-            type: string
-          example: Organization
-        position:
-          type: string
-          example: Senior
-        url:
-          type: string
-          format: uri
-          example: https://organization.com
-        startDate:
-          type: string
-          format: date
-          example: '2011-01-01'
-        endDate:
-          type: string
-          format: date
-          example: '2011-01-01'
-        summary:
-          type: string
-          example: A brief summary or description of the volunteering experience.
-        highlights:
-          type: array
-          items:
-            type: string
-          example: Example
-    Education:
-      type: object
-      properties:
-        institution:
-          type: string
-          example: University
-        url:
-          type: string
-          format: uri
-          example: https://institution.com
-        area:
-          type: string
-          example: Software Development
-        studyType:
-          type: string
-          example: Bachelor
-        startDate:
-          type: string
-          format: date
-          example: '2011-01-01'
-        endDate:
-          type: string
-          format: date
-          example: '2013-01-01'
-        score:
-          type: number
-          format: float
-          example: 4
-        courses:
-          type: array
-          items:
-            type: string
-          example: React Native developer
-    Award:
-      type: object
-      properties:
-        title:
-          type: string
-          example: Award
-        date:
-          type: string
-          format: date
-          example: '2014-11-01'
-        awarder:
-          type: string
-          example: Company
-        summary:
-          type: string
-          example: There is no spoon.
-    Certification:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Certification
-        date:
-          type: string
-          format: date
-          example: '2011-01-01'
-        area:
-          type: string
-          example: Software Development
-        issuer:
-          type: string
-          example: Company
-        url:
-          type: string
-          format: uri
-          example: https://institution.com
-    Publication:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Publication
-        publisher:
-          type: string
-          example: Company
-        releaseDate:
-          type: string
-          format: date
-          example: '2014-10-01'
-        url:
-          type: string
-          format: uri
-          example: https://institution.com
-        summary:
-          type: string
-          example: Description…
-    Skill:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Web Development
-        level:
-          type: string
-          example: Company
-        keywords:
-          type: array
-          items:
-            type: string
-            example: JavaScript
-    Language:
-      type: object
-      properties:
-        language:
-          type: string
-          example: English
-        fluency:
-          type: string
-          example: Native speaker
-    Interest:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Wildlife
-        keywords:
-          type: array
-          items:
-            type: string
-            example: Ferrets
-    Reference:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Jane Doe
-        reference:
-          type: string
-          example: Reference…
-    Project:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Project
-        startDate:
-          type: string
-          format: date
-          example: '2011-01-01'
-        endDate:
-          type: string
-          format: date
-          example: '2013-01-01'
-        description:
-          type: string
-          example: Description...
-        highlights:
-          type: array
-          items:
-            type: string
-          example:
-            - Won award at AIHacks 2016
-            - Won award at AIHacks 2017
-        url:
-          type: string
-          format: uri
-          example: https://project.com
-    Additional_information:
-      type: object
-      properties:
-        bullets:
-          type:
-            - 'null'
-            - array
-          items:
-            type: string
-          example:
-            - Some information here
-        gmatscore:
-          type:
-            - 'null'
-            - string
-          example: '305'
-    Resume:
-      type: object
-      properties:
-        basics:
-          $ref: '#/components/schemas/Basics'
-        work:
-          type: array
-          items:
-            $ref: '#/components/schemas/Work'
-        volunteer:
-          type: array
-          items:
-            $ref: '#/components/schemas/Volunteer'
-        education:
-          type: array
-          items:
-            $ref: '#/components/schemas/Education'
-        awards:
-          type: array
-          items:
-            $ref: '#/components/schemas/Award'
-        certifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Certification'
-        publications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Publication'
-        skills:
-          type: array
-          items:
-            $ref: '#/components/schemas/Skill'
-        languages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Language'
-        interests:
-          type: array
-          items:
-            $ref: '#/components/schemas/Interest'
-        references:
-          type: array
-          items:
-            $ref: '#/components/schemas/Reference'
-        projects:
-          type: array
-          items:
-            $ref: '#/components/schemas/Project'
-        additional_information:
-          $ref: '#/components/schemas/Additional_information'
-    Resume_template:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 8de6cfbf-9cef-439a-91d3-1f93b91ce84a
-        university_id:
-          type: string
-          format: uuid
-          example: a4bd6f2b-fb4e-48ec-909d-42b71953f3ed
-        name:
-          type:
-            - 'null'
-            - string
-          example: ESMT
-        preview_image:
-          type: string
-          format: uri
-          example: https://www.example.com/image.jpg
-        created_at:
-          type: string
-          format: date
-        updated_at:
-          type: string
-          format: date
-    base_resume_response:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 5f994df8-3c0f-4eda-8bcf-db4aeb35d43f
-        user_id:
-          type: string
-          example: 7d7f5b28-0c7c-4af9-8a15-e421e71ec39b
-        preview_url:
-          type: string
-          example: https://placehold.co/100x500
-        title:
-          type: string
-          example: My resume
-        resume:
-          $ref: '#/components/schemas/Resume'
-        resume_template:
-          $ref: '#/components/schemas/Resume_template'
-        created_at:
-          type: string
-          format: date
-        updated_at:
-          type: string
-          format: date
-    tailored_resume_response:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 5f994df8-3c0f-4eda-8bcf-db4aeb35d43f
-        user_id:
-          type: string
-          example: 7d7f5b28-0c7c-4af9-8a15-e421e71ec39b
-        preview_url:
-          type: string
-          example: https://placehold.co/100x500
-        job_id:
-          type: string
-          example: 39c1f722-0a17-44b7-a121-03165effc81a
-        base_resume_id:
-          type: string
-          example: c6c4bb98-1578-44a2-accb-57112323d510
-        title:
-          type: string
-          example: My resume
-        resume:
-          $ref: '#/components/schemas/Resume'
-        resume_template:
-          $ref: '#/components/schemas/Resume_template'
-        created_at:
-          type: string
-          format: date
-        updated_at:
-          type: string
-          format: date
-    Block:
-      type: object
-      properties:
-        value:
-          type:
-            - integer
-            - boolean
-          example: 3
-        percentage_score:
-          type: integer
-          example: 50
-        feedback:
-          type: string
-          example: Please, update fields...
-        link:
-          type:
-            - 'null'
-            - integer
-          example: https://www.thecareeros.com
-    Overall-length:
-      type: object
-      properties:
-        number_of_positions:
-          $ref: '#/components/schemas/Block'
-        number_of_total_bullets:
-          $ref: '#/components/schemas/Block'
-        number_of_total_words:
-          $ref: '#/components/schemas/Block'
-        percent_score:
-          type: integer
-          example: 50
-        weight:
-          type: integer
-          example: 4
-    Bullets-balance:
-      type: object
-      properties:
-        average_bullets_per_position:
-          $ref: '#/components/schemas/Block'
-        average_words_per_bullet:
-          $ref: '#/components/schemas/Block'
-        average_percent_score:
-          $ref: '#/components/schemas/Block'
-        percent_score:
-          type: integer
-          example: 50
-        weight:
-          type: integer
-          example: 4
-    Bullets-quality:
-      type: object
-      properties:
-        percentage_of_strong_action_verbs:
-          $ref: '#/components/schemas/Block'
-        percentage_of_bullets_starting_with_strong_action_verbs:
-          $ref: '#/components/schemas/Block'
-        percentage_of_quantify_outcomes:
-          $ref: '#/components/schemas/Block'
-        percent_score:
-          type: integer
-          example: 50
-        weight:
-          type: integer
-          example: 7
-    Skills:
-      type: object
-      properties:
-        number_of_total_skills_listed:
-          $ref: '#/components/schemas/Block'
-        percent_score:
-          type: integer
-          example: 50
-        weight:
-          type: integer
-          example: 2
-    Consistency:
-      type: object
-      properties:
-        all_bullets_start_with_capital_letter:
-          $ref: '#/components/schemas/Block'
-        all_bullets_end_with_period_or_none:
-          $ref: '#/components/schemas/Block'
-        overusage_of_action_verbs_in_bullets:
-          $ref: '#/components/schemas/Block'
-        avoided_words_used_in_bullets:
-          $ref: '#/components/schemas/Block'
-        percent_score:
-          type: integer
-          example: 50
-        weight:
-          type: integer
-          example: 4
-    Score:
-      type: object
-      properties:
-        overall_length:
-          $ref: '#/components/schemas/Overall-length'
-        bullets_balance:
-          $ref: '#/components/schemas/Bullets-balance'
-        bullets_quality:
-          $ref: '#/components/schemas/Bullets-quality'
-        skills:
-          $ref: '#/components/schemas/Skills'
-        consistency:
-          $ref: '#/components/schemas/Consistency'
-        score:
-          type: integer
-          example: 42
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the user.
-        first_name:
-          type: string
-          description: The user's first name.
-        last_name:
-          type: string
-          description: The user's last name.
-        email:
-          type: string
-          description: The user's email address.
-        linkedin_slug:
-          type: string
-          description: The slug part of the user's LinkedIn profile.
-        linkedin_urn:
-          type: string
-          description: The URN part of the user's LinkedIn profile, uniquely identifying the user on LinkedIn.
-        linkedin_identifiers_updated_at:
-          type: string
-          format: date-time
-          description: The timestamp when the LinkedIn identifiers were last updated.
-      required:
-        - id
-        - first_name
-        - last_name
-        - email
-    KanbanPosition:
-      type: object
-      properties:
-        column:
-          type: integer
-        row:
-          type: integer
-    InvalidKanbanStatusError:
-      type: object
-      properties:
-        error:
-          type: string
-          enum:
-            - The provided status is not supported
-          description: |
-            The Kanban status is an ENUM and supports specific value.
-      required:
-        - error
-    UsageStatistics:
-      type: object
-      properties:
-        weekly_goals:
-          type: object
-          properties:
-            saved_companies:
-              type: integer
-            saved_contacts:
-              type: integer
-            sent_linkedin_invitations:
-              type: integer
-        challenges:
-          type: object
-          properties:
-            saved_companies:
-              type: integer
-            saved_contacts:
-              type: integer
-            sent_linkedin_invitations:
-              type: integer
-    DateParamValidationFailed:
-      type: object
-      properties:
-        error:
-          type: string
-          enum:
-            - The date parameter is invalid
-          description: The date parameter has an invalid format. It should be YYYY-MM-DD.
-      required:
-        - error
-    DataParamIsEmptyError:
-      type: object
-      properties:
-        error:
-          type: string
-          enum:
-            - The date parameter must be supplied and cannot be empty
-          description: |
-            The date parameter must be supplied and cannot be empty.
-      required:
-        - error
-    StudentWithQuests:
-      type: object
-      properties:
-        first_name:
-          type: string
-          description: The first name of the current user. The names of the other students are hidden.
-        last_name:
-          type: string
-          description: The last name of the current user. The names of the other students are hidden.
-        completed_quests:
-          type: integer
-          format: int32
-          description: This field reflects the count of the completed quests for each student in the cohort.
-    Leaderboard:
-      type: object
-      properties:
-        university_name:
-          type: string
-          description: The name of the university where the current user studies.
-        cohort_name:
-          type: string
-          description: The name of the cohort of the university.
-        students:
-          type: array
-          items:
-            $ref: '#/components/schemas/StudentWithQuests'
   responses:
+    IDValidationFailedError:
+      description: Failed to parse ID as UUID
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IDValidationFailedError'
     UnauthorizedError:
       description: Failed to validate JWT token
       content:
@@ -3771,12 +2248,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/InternalServerError'
-    IDValidationFailedError:
-      description: Failed to parse ID as UUID
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/IDValidationFailedError'
     JSONValidationFailedError:
       description: Failed to parse request body to JSON schema
       content:
