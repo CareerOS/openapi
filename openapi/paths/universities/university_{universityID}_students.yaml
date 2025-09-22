@@ -1,8 +1,9 @@
 get:
   tags:
     - Universities
-  summary: Get students by university ID
-  description: Get students associated with a specific university
+    - Career Advisor App
+  summary: Get students by university id
+  description: Get students assigned to the specific university
   operationId: getStudentsByUniversityID
   parameters:
     - in: path
