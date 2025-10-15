@@ -1,0 +1,76 @@
+get:
+  tags:
+    - Universities
+  summary: Get alumni by ID
+  description: Retrieve detailed profile information for a specific alumni
+  operationId: getAlumByID
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Alumni ID
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Alumni profile retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+              profile_picture:
+                type: string
+                format: uri
+              bio:
+                type: string
+              linkedin_url:
+                type: string
+                format: uri
+              graduation_year:
+                type: integer
+              cohort:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+              career_summary:
+                type: object
+                properties:
+                  current_company:
+                    type: string
+                  current_title:
+                    type: string
+                  experience:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        company:
+                          type: string
+                        title:
+                          type: string
+                        duration:
+                          type: string
+              tags:
+                type: array
+                items:
+                  type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

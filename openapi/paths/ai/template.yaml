@@ -1,0 +1,60 @@
+post:
+  tags:
+    - AI
+  summary: Generate message template
+  description: Generate a personalized message template using AI based on context
+  operationId: generateTemplate
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - context
+            - message_type
+          properties:
+            context:
+              type: object
+              description: Context information for template generation
+              properties:
+                contact_name:
+                  type: string
+                company_name:
+                  type: string
+                job_title:
+                  type: string
+                user_background:
+                  type: string
+            message_type:
+              type: string
+              enum: [cold_outreach, follow_up, thank_you, introduction]
+              description: Type of message to generate
+            tone:
+              type: string
+              enum: [professional, casual, friendly, formal]
+              description: Desired tone of the message
+  responses:
+    '200':
+      description: Template generated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              template:
+                type: string
+                description: Generated message template
+              suggestions:
+                type: array
+                items:
+                  type: string
+                description: Alternative phrases or suggestions
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      description: AI generation failed

@@ -1,0 +1,33 @@
+get:
+  tags:
+    - Contacts
+  summary: Get contact with chat info
+  description: Retrieve contact details including chat/messaging information
+  operationId: getContactWithChatID
+  security:
+    - BearerAuth: []
+  parameters:
+    - $ref: ../../components/parameters/ContactIDPath.yaml
+  responses:
+    '200':
+      description: Contact retrieved successfully
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: ../../components/schemas/Contact.yaml
+              - type: object
+                properties:
+                  chat_id:
+                    type: string
+                    description: Chat channel ID for this contact
+                  last_message_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  unread_count:
+                    type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

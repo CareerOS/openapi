@@ -1,0 +1,44 @@
+post:
+  tags:
+    - Resume
+  summary: Request resume review
+  description: Submit a base resume for review by a career advisor
+  operationId: requestResumeReview
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - base_resume_id
+          properties:
+            base_resume_id:
+              type: string
+              format: uuid
+            notes:
+              type: string
+              description: Optional notes or questions for the reviewer
+  responses:
+    '201':
+      description: Review requested successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              review_id:
+                type: string
+                format: uuid
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+    '409':
+      description: Resume already in review

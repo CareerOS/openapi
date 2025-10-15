@@ -1,5 +1,16 @@
 # CareerOS OpenAPI Specification
 
+This repository contains the OpenAPI 3.1 specification for the CareerOS API, documenting all endpoints for the career development platform.
+
+## API Overview
+
+The CareerOS API is organized into several distinct API groups:
+
+- **Public API V1** (`/public/v1`) - Public endpoints for login flows, OAuth, and WebSocket connections
+- **API V1** (`/api/v1`) - Main authenticated API for students and advisors (500+ endpoints)
+- **API V2** (`/api/v2`) - Career Advisor application with analytics and student management
+- **Integrations API** (`/integrations`) - Partner integration endpoints (API key required)
+- **Webhook API** (`/webhook`) - Receive webhooks from external services
 
 ## Working with this repo
 

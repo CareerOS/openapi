@@ -1,0 +1,69 @@
+get:
+  tags:
+    - Jobs
+  summary: Search jobs
+  description: Search for job postings with various filters
+  operationId: searchJobs
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: query
+      in: query
+      description: Search query string
+      schema:
+        type: string
+      example: Software Engineer
+    - name: location
+      in: query
+      description: Job location filter
+      schema:
+        type: string
+      example: Berlin, Germany
+    - name: industry
+      in: query
+      description: Industry filter
+      schema:
+        type: string
+      example: Technology
+    - name: job_type
+      in: query
+      description: Job type filter
+      schema:
+        type: string
+        enum: [full-time, part-time, internship, contract]
+    - name: experience_level
+      in: query
+      description: Experience level filter
+      schema:
+        type: string
+        enum: [entry, mid, senior, executive]
+    - name: remote
+      in: query
+      description: Filter for remote jobs
+      schema:
+        type: boolean
+    - $ref: ../../components/parameters/Limit.yaml
+    - $ref: ../../components/parameters/Offset.yaml
+  responses:
+    '200':
+      description: Jobs retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              jobs:
+                type: array
+                items:
+                  $ref: ../../components/schemas/Job.yaml
+              total:
+                type: integer
+                description: Total number of matching jobs
+              limit:
+                type: integer
+              offset:
+                type: integer
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

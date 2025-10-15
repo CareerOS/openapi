@@ -1,0 +1,47 @@
+get:
+  tags:
+    - Advisor
+  summary: Get advisors with their cohorts
+  description: Retrieve all advisors in the university with their assigned cohorts
+  operationId: getAdvisorsWithCohorts
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Advisors retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                advisor_id:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+                email:
+                  type: string
+                profile_picture:
+                  type: string
+                  format: uri
+                cohorts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      cohort_id:
+                        type: string
+                        format: uuid
+                      cohort_name:
+                        type: string
+                      student_count:
+                        type: integer
+                is_external:
+                  type: boolean
+                  description: Whether the advisor is an external advisor
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml

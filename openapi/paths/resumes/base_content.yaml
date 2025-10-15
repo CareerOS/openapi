@@ -1,0 +1,128 @@
+patch:
+  tags:
+    - Resume
+  summary: Update base resume content
+  description: Update the content sections of a base resume
+  operationId: updateBaseResumeContent
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Base resume ID
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            personal_info:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                location:
+                  type: string
+                linkedin_url:
+                  type: string
+                website_url:
+                  type: string
+            summary:
+              type: string
+              description: Professional summary
+            work_experience:
+              type: array
+              items:
+                type: object
+                properties:
+                  company:
+                    type: string
+                  title:
+                    type: string
+                  location:
+                    type: string
+                  start_date:
+                    type: string
+                  end_date:
+                    type: string
+                    nullable: true
+                  current:
+                    type: boolean
+                  description:
+                    type: array
+                    items:
+                      type: string
+            education:
+              type: array
+              items:
+                type: object
+                properties:
+                  institution:
+                    type: string
+                  degree:
+                    type: string
+                  field_of_study:
+                    type: string
+                  start_date:
+                    type: string
+                  end_date:
+                    type: string
+                  gpa:
+                    type: string
+                    nullable: true
+            skills:
+              type: array
+              items:
+                type: string
+            languages:
+              type: array
+              items:
+                type: object
+                properties:
+                  language:
+                    type: string
+                  proficiency:
+                    type: string
+            certifications:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  issuer:
+                    type: string
+                  date:
+                    type: string
+                  url:
+                    type: string
+                    nullable: true
+  responses:
+    '200':
+      description: Resume content updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              updated_at:
+                type: string
+                format: date-time
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

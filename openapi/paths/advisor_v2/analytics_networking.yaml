@@ -1,0 +1,72 @@
+get:
+  tags:
+    - Advisor
+  summary: Get networking statistics
+  description: Retrieve networking analytics for the university/cohort
+  operationId: getNetworkingStats
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: cohort_ids
+      in: query
+      description: Filter by cohort IDs (comma-separated)
+      schema:
+        type: string
+    - name: date_from
+      in: query
+      description: Start date for analytics
+      schema:
+        type: string
+        format: date
+    - name: date_to
+      in: query
+      description: End date for analytics
+      schema:
+        type: string
+        format: date
+  responses:
+    '200':
+      description: Networking statistics retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              total_connections:
+                type: integer
+                description: Total connections made
+              total_messages:
+                type: integer
+                description: Total messages sent
+              avg_connections_per_student:
+                type: number
+                format: float
+              avg_messages_per_student:
+                type: number
+                format: float
+              top_networkers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    student_id:
+                      type: string
+                      format: uuid
+                    student_name:
+                      type: string
+                    connections_count:
+                      type: integer
+              connection_trends:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                      format: date
+                    count:
+                      type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml

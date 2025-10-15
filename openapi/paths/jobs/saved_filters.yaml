@@ -1,0 +1,71 @@
+get:
+  tags:
+    - Jobs
+  summary: Get saved job filters
+  description: Retrieve user's saved job search filters
+  operationId: getUserSavedJobFilters
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Saved filters retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+                filters:
+                  type: object
+                  additionalProperties: true
+                created_at:
+                  type: string
+                  format: date-time
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+
+post:
+  tags:
+    - Jobs
+  summary: Create saved job filter
+  description: Save a job search filter for quick access
+  operationId: createSavedJobFilter
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name for the saved filter
+            filters:
+              type: object
+              description: Filter parameters
+              additionalProperties: true
+  responses:
+    '201':
+      description: Filter saved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              message:
+                type: string
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

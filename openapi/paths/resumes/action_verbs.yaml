@@ -1,0 +1,35 @@
+get:
+  tags:
+    - Resume
+  summary: Get action verbs
+  description: Retrieve a list of recommended action verbs for resume writing
+  operationId: getActionVerbs
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Action verbs retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              action_verbs:
+                type: array
+                items:
+                  type: string
+                description: List of recommended action verbs
+              avoided_verbs:
+                type: array
+                items:
+                  type: string
+                description: List of verbs to avoid
+              categories:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+                description: Action verbs organized by category (e.g., leadership, technical, communication)
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

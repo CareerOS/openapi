@@ -1,0 +1,71 @@
+get:
+  tags:
+    - Applications
+  summary: Get applications (V2)
+  description: Retrieve user's job applications with enhanced tracking (V2 API)
+  operationId: getApplicationsV2
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: status
+      in: query
+      description: Filter by application status
+      schema:
+        type: string
+        enum: [saved, applied, interviewing, offered, rejected, accepted, archived]
+    - name: company_id
+      in: query
+      description: Filter by company ID
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Applications retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                company:
+                  $ref: ../../components/schemas/Company.yaml
+                jobs:
+                  type: array
+                  items:
+                    $ref: ../../components/schemas/Job.yaml
+                status:
+                  type: string
+                  enum: [saved, applied, interviewing, offered, rejected, accepted, archived]
+                ordering:
+                  type: integer
+                  description: Position in kanban board
+                deadline:
+                  type: string
+                  format: date-time
+                  nullable: true
+                notes:
+                  type: string
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  nullable: true
+                hiring_score:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  nullable: true
+                  description: AI-calculated hiring probability score
+                created_at:
+                  type: string
+                  format: date-time
+                updated_at:
+                  type: string
+                  format: date-time
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

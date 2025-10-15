@@ -1,0 +1,56 @@
+get:
+  tags:
+    - Gamification
+  summary: Get leaderboards
+  description: Retrieve gamification leaderboards for different time ranges
+  operationId: getLeaderboards
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: time_range
+      in: query
+      description: Time range for leaderboard
+      schema:
+        type: string
+        enum: [week, month, all_time]
+        default: week
+    - name: scope
+      in: query
+      description: Leaderboard scope
+      schema:
+        type: string
+        enum: [cohort, university, global]
+        default: cohort
+  responses:
+    '200':
+      description: Leaderboards retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              leaderboard:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    rank:
+                      type: integer
+                    user_id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    xp:
+                      type: integer
+                    level:
+                      type: integer
+              user_position:
+                type: object
+                properties:
+                  rank:
+                    type: integer
+                  xp:
+                    type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

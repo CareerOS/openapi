@@ -1,0 +1,87 @@
+get:
+  tags:
+    - Events
+  summary: Search events
+  description: Search for events with various filters
+  operationId: searchEventsStudents
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: query
+      in: query
+      description: Search query string
+      schema:
+        type: string
+    - name: type
+      in: query
+      description: Event type filter
+      schema:
+        type: string
+        enum: [workshop, networking, career_fair, webinar, company_presentation]
+    - name: date_from
+      in: query
+      description: Start date filter (ISO 8601)
+      schema:
+        type: string
+        format: date
+    - name: date_to
+      in: query
+      description: End date filter (ISO 8601)
+      schema:
+        type: string
+        format: date
+    - name: status
+      in: query
+      description: Event status filter
+      schema:
+        type: string
+        enum: [upcoming, ongoing, past]
+    - $ref: ../../components/parameters/Limit.yaml
+    - $ref: ../../components/parameters/Offset.yaml
+  responses:
+    '200':
+      description: Events retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              events:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    type:
+                      type: string
+                    start_time:
+                      type: string
+                      format: date-time
+                    end_time:
+                      type: string
+                      format: date-time
+                    location:
+                      type: string
+                    is_virtual:
+                      type: boolean
+                    max_participants:
+                      type: integer
+                    registered_count:
+                      type: integer
+                    organizer:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        logo_url:
+                          type: string
+              total:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

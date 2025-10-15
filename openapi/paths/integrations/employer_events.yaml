@@ -1,0 +1,39 @@
+get:
+  tags:
+    - Employer
+  summary: Search employer events
+  description: Search and retrieve events for an employer
+  operationId: searchEventsEmployer
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: status
+      in: query
+      description: Event status filter
+      schema:
+        type: string
+        enum: [draft, published, cancelled]
+    - name: date_from
+      in: query
+      description: Start date filter
+      schema:
+        type: string
+        format: date
+    - $ref: ../../components/parameters/Limit.yaml
+    - $ref: ../../components/parameters/Offset.yaml
+  responses:
+    '200':
+      description: Events retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              events:
+                type: array
+                items:
+                  type: object
+              total:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

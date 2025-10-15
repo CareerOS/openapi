@@ -1,0 +1,38 @@
+get:
+  tags:
+    - Companies
+  summary: Explore companies
+  description: Get curated companies organized by categories for exploration
+  operationId: getExploreCompanies
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: industry
+      in: query
+      description: Filter by industry
+      schema:
+        type: string
+    - name: size
+      in: query
+      description: Filter by company size
+      schema:
+        type: string
+    - name: tags
+      in: query
+      description: Filter by tags (comma-separated)
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Companies retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties:
+              type: array
+              items:
+                $ref: ../../components/schemas/Company.yaml
+            description: Companies organized by category (e.g., "Top Startups", "Fortune 500", "Trending")
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Events
+  summary: Download event ICS file
+  description: Download calendar file (.ics) for the event
+  operationId: downloadEventICS
+  security:
+    - BearerAuth: []
+  parameters:
+    - $ref: ../../components/parameters/EventIDPath.yaml
+  responses:
+    '200':
+      description: ICS file generated successfully
+      content:
+        text/calendar:
+          schema:
+            type: string
+            format: binary
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

@@ -1,0 +1,12 @@
+description: User does not have permission to access this resource
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Forbidden
+        message:
+          type: string
+          example: Insufficient permissions

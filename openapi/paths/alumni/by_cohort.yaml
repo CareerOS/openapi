@@ -1,0 +1,58 @@
+get:
+  tags:
+    - Universities
+  summary: Get alumni by cohort
+  description: Retrieve alumni profiles for a specific cohort
+  operationId: getAlumniByCohortID
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: cohortID
+      in: path
+      required: true
+      description: Cohort ID
+      schema:
+        type: string
+        format: uuid
+    - $ref: ../../components/parameters/Limit.yaml
+    - $ref: ../../components/parameters/Offset.yaml
+  responses:
+    '200':
+      description: Alumni retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              alumni:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    profile_picture:
+                      type: string
+                      format: uri
+                    current_company:
+                      type: string
+                    current_title:
+                      type: string
+                    linkedin_url:
+                      type: string
+                      format: uri
+                    graduation_year:
+                      type: integer
+                    tags:
+                      type: array
+                      items:
+                        type: string
+              total:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

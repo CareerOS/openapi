@@ -1,10 +1,21 @@
 openapi: 3.1.0
 
 info:
-  title: CareerOS OpenAPI
-  description: CareerOS API documentation. [Learn more](https://thecareeros.com).
-  contact: {}
-  version: 1.3.2
+  title: CareerOS API
+  description: |
+    CareerOS API documentation for the career development platform.
+
+    ## API Versions
+    - **Public API V1**: Public endpoints for company, job, and event discovery
+    - **API V1**: Main authenticated API for students and career advisors
+    - **API V2**: Career Advisor application endpoints
+    - **Webhook API**: Endpoints for receiving webhooks from external services
+
+    [Learn more about CareerOS](https://thecareeros.com)
+  contact:
+    name: CareerOS API Support
+    url: https://thecareeros.com
+  version: 2.0.0
   license:
     name: CareerOS internal usage license
     url: https://github.com/CareerOS/openapi/blob/main/LICENSE_TCOS
@@ -12,9 +23,47 @@ info:
 servers:
   - url: https://api.thecareeros.com
     description: Production server
+  - url: https://api-dev.thecareeros.com
+    description: Development server
+
+tags:
+  - name: Public
+    description: Public endpoints (no authentication required)
+  - name: Users
+    description: User profile and account management
+  - name: Companies
+    description: Company search, profiles, and management
+  - name: Jobs
+    description: Job search, saved jobs, and applications
+  - name: Contacts
+    description: Professional contacts and networking
+  - name: Applications
+    description: Job application tracking and management
+  - name: Resume
+    description: Resume creation, editing, and management (Resume OS module)
+  - name: Events
+    description: Event discovery, registration, and management
+  - name: Universities
+    description: University and cohort management
+  - name: Advisor
+    description: Career advisor-specific endpoints
+  - name: AI
+    description: AI-powered features and insights
+  - name: Webhooks
+    description: Webhook endpoints for external services
 
 paths:
-  # Public API section
+  # ==========================================
+  # WEBHOOK API (API Key Protected)
+  # ==========================================
+  /webhook/documents/scan-results:
+    $ref: paths/webhooks/documents_scan_results.yaml
+
+  # ==========================================
+  # PUBLIC API V1
+  # ==========================================
+
+  # Login Flow
   /public/v1/universities:
     $ref: paths/public/universities.yaml
   /public/v1/universities/{universityID}/providers:
@@ -22,33 +71,52 @@ paths:
   /public/v1/universities/{universityID}/providers/{providerName}:
     $ref: paths/public/universities_{universityID}_providers_{providerName}.yaml
 
-  #  Applications
-  /api/v1/applications:
-    $ref: paths/applications/index.yaml
 
-  #  Universities
-  /api/v1/enroll:
-    $ref: paths/universities/enroll.yaml
-  /api/v1/self/university:
-    $ref: paths/universities/self_university.yaml
-  /api/v1/universities/{universityID}/students:
-    $ref: paths/universities/university_{universityID}_students.yaml
-  /api/v1/cohort/{cohortID}/students:
-    $ref: paths/universities/cohorts_by_id_students.yaml
-  /api/v1/university/{universityID}/cohorts:
-    $ref: paths/universities/cohorts_by_university_id.yaml
+  # ==========================================
+  # API V1 - Main Application API
+  # ==========================================
 
-  #  Companies
+  # User Management
+  /api/v1/users/self:
+    $ref: paths/users/self.yaml
+  /api/v1/users/self/profile:
+    $ref: paths/users/self_profile.yaml
+
+  # Companies
   /api/v1/companies:
     $ref: paths/companies/index.yaml
   /api/v1/companies/issaved:
     $ref: paths/companies/issaved.yaml
   /api/v1/companies/{id}:
     $ref: paths/companies/by_id.yaml
+  /api/v1/companies/{id}/profile:
+    $ref: paths/companies/profile.yaml
   /api/v1/companies/search/{name}:
     $ref: paths/companies/search_by_name.yaml
+  /api/v1/companies/explore:
+    $ref: paths/companies/explore.yaml
+  /api/v1/companies/top-saved:
+    $ref: paths/companies/top_saved.yaml
+  /api/v1/companies/locations:
+    $ref: paths/companies/locations.yaml
+  /api/v1/companies/sizes:
+    $ref: paths/companies/sizes.yaml
+  /api/v1/companies/tags:
+    $ref: paths/companies/tags.yaml
 
-  #  Contacts
+  # Jobs
+  /api/v1/jobs:
+    $ref: paths/jobs/index.yaml
+  /api/v1/jobs/{id}:
+    $ref: paths/jobs/by_id.yaml
+  /api/v1/jobs/issaved:
+    $ref: paths/jobs/issaved.yaml
+  /api/v1/jobs/search:
+    $ref: paths/jobs/search.yaml
+  /api/v1/jobs/savedfilters:
+    $ref: paths/jobs/saved_filters.yaml
+
+  # Contacts
   /api/v1/contacts:
     $ref: paths/contacts/index.yaml
   /api/v1/contacts/issaved:
@@ -57,52 +125,95 @@ paths:
     $ref: paths/contacts/by_id.yaml
   /api/v1/contacts/{id}/email:
     $ref: paths/contacts/by_id_email.yaml
+  /api/v1/contacts/{id}/chat:
+    $ref: paths/contacts/by_chat.yaml
   /api/v1/contacts/bycompany/{id}:
     $ref: paths/contacts/bycompany_id.yaml
-  /api/v1/contacts/bycompany/{id}/byuser/{userID}:
-    $ref: paths/contacts/bycompany_id_byuser_id.yaml
+  /api/v1/contacts/bystatus/{status}:
+    $ref: paths/contacts/bystatus.yaml
 
-  #  Favorite Companies
-  /api/v1/companies/favorite:
-    $ref: paths/favorite/index.yaml
-  /api/v1/companies/favorite/{id}:
-    $ref: paths/favorite/by_id.yaml
+  # Applications
+  /api/v1/applications:
+    $ref: paths/applications/index.yaml
 
-  #  Jobs
-  /api/v1/jobs:
-    $ref: paths/jobs/index.yaml
-  /api/v1/jobs/{id}:
-    $ref: paths/jobs/by_id.yaml
-  /api/v1/jobs/issaved:
-    $ref: paths/jobs/issaved.yaml
-
-  # Resumes
+  # Resume OS
   /api/v1/resume/base:
-    $ref: paths/resumes/base.yaml
+    $ref: paths/resumes/base_list.yaml
+  /api/v1/resume/base/empty:
+    $ref: paths/resumes/base_empty.yaml
+  /api/v1/resume/base/copy:
+    $ref: paths/resumes/base_copy.yaml
   /api/v1/resume/base/{baseResumeID}:
     $ref: paths/resumes/base_{resumeID}.yaml
-  /api/v1/resume/tailored:
-    $ref: paths/resumes/tailored.yaml
-  /api/v1/resume/tailored/{tailoredResumeID}:
-    $ref: paths/resumes/tailored_{resumeID}.yaml
+  /api/v1/resume/base/{id}/content:
+    $ref: paths/resumes/base_content.yaml
+  /api/v1/resume/base/{id}/status:
+    $ref: paths/resumes/base_status.yaml
   /api/v1/resume/templates:
     $ref: paths/resumes/templates.yaml
   /api/v1/resume/templates/{templateID}:
     $ref: paths/resumes/templates_{templateID}.yaml
-  /api/v1/resume/score:
-    $ref: paths/resumes/score.yaml
+  /api/v1/resume/score/action-verbs:
+    $ref: paths/resumes/action_verbs.yaml
+  /api/v1/resume/score/{baseResumeID}:
+    $ref: paths/resumes/score_get.yaml
+  /api/v1/resume/review:
+    $ref: paths/resumes/review_request.yaml
+  /api/v1/resume/review/counts:
+    $ref: paths/resumes/review_counts.yaml
 
-  #  Users
-  /api/v1/login:
-    $ref: paths/users/login.yaml
-  /api/v1/users/{id}:
-    $ref: paths/users/by_id.yaml
-  /api/v1/users/self:
-    $ref: paths/users/self.yaml
-  /api/v1/users/contacts:
-    $ref: paths/users/contacts.yaml
-  /api/v1/users/contacts/{id}:
-    $ref: paths/users/contacts_by_id.yaml
+  # Events (Students)
+  /api/v1/events/search:
+    $ref: paths/events/search.yaml
+  /api/v1/events/{eventId}:
+    $ref: paths/events/by_id.yaml
+  /api/v1/events/{eventId}/apply:
+    $ref: paths/events/apply.yaml
+  /api/v1/events/{eventId}/cancel:
+    $ref: paths/events/cancel.yaml
+  /api/v1/events/{eventId}/speakers:
+    $ref: paths/events/speakers.yaml
+  /api/v1/events/{eventId}/download-ics:
+    $ref: paths/events/download_ics.yaml
+
+  # AI Features
+  /api/v1/ai/job-extraction:
+    $ref: paths/ai/job_extraction.yaml
+
+  # University & Cohorts
+  /api/v1/users/self/university:
+    $ref: paths/universities/self_university.yaml
+  /api/v1/university/{universityID}/cohorts:
+    $ref: paths/universities/cohorts_by_university_id.yaml
+
+  # Alumni
+  /api/v1/alumn/cohort/{cohortID}:
+    $ref: paths/alumni/by_cohort.yaml
+  /api/v1/alumn/university/{universityID}:
+    $ref: paths/alumni/by_university.yaml
+  /api/v1/alumn/{id}:
+    $ref: paths/alumni/by_id.yaml
+
+  # ==========================================
+  # API V2 - Career Advisor Application
+  # ==========================================
+
+  /api/v2/university/students:
+    $ref: paths/advisor_v2/students.yaml
+  /api/v2/university/students/{id}/summary:
+    $ref: paths/advisor_v2/student_summary.yaml
+  /api/v2/university/students/{id}/contacts:
+    $ref: paths/advisor_v2/student_contacts.yaml
+  /api/v2/university/student/{id}/notes:
+    $ref: paths/advisor_v2/student_notes.yaml
+  /api/v2/university/analytics/networking:
+    $ref: paths/advisor_v2/analytics_networking.yaml
+  /api/v2/university/analytics/companies/top:
+    $ref: paths/advisor_v2/analytics_companies.yaml
+  /api/v2/university/advisors/with-cohorts:
+    $ref: paths/advisor_v2/advisors_cohorts.yaml
+  /api/v2/applications:
+    $ref: paths/applications/v2_get.yaml
 
 components:
   securitySchemes:
@@ -110,6 +221,154 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: Auth0 JWT token authentication
+
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for integration partners
+
+  responses:
+    UnauthorizedError:
+      description: Failed to validate JWT token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - Failed to validate JWT token
+                description: JWT token validation failed (expired, invalid, etc.)
+            required:
+              - error
+
+    ForbiddenError:
+      description: User does not have permission to access this resource
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Forbidden
+              message:
+                type: string
+                example: Insufficient permissions
+
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Not found
+              message:
+                type: string
+                example: The requested resource was not found
+
+    ValidationError:
+      description: Request validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Validation failed
+              message:
+                type: string
+                example: One or more fields are invalid
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    message:
+                      type: string
+
+  parameters:
+    UserIDPath:
+      name: userID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: User ID
+
+    CompanyIDPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Company ID
+
+    JobIDPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Job ID
+
+    ContactIDPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Contact ID
+
+    EventIDPath:
+      name: eventId
+      in: path
+      required: true
+      description: Unique identifier for the event
+      schema:
+        type: string
+        format: uuid
+
+    UniversityIDPath:
+      name: universityID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: University ID
+
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of results to return
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+
+    Offset:
+      name: offset
+      in: query
+      description: Number of results to skip (for pagination)
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
 
 security:
   - BearerAuth: []

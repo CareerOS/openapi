@@ -1,0 +1,44 @@
+patch:
+  tags:
+    - Resume
+  summary: Replace job ID for tailored resume
+  description: Update or replace the associated job ID for a tailored resume
+  operationId: replaceJobIDForTailoredResume
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Tailored resume ID
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            job_id:
+              type: string
+              format: uuid
+              nullable: true
+              description: New job ID or null to remove association
+  responses:
+    '200':
+      description: Job ID updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
