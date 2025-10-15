@@ -1,9 +1,9 @@
 get:
   tags:
-    - CalendarOS (BETA)
+    - Calendar
   summary: Get appointment details
   description: |
-    **[BETA - CalendarOS]** Retrieve detailed information about a specific appointment.
+    Retrieve detailed information about a specific appointment.
   operationId: getAppointmentById
   security:
     - BearerAuth: []
@@ -102,10 +102,10 @@ get:
 
 put:
   tags:
-    - CalendarOS (BETA)
+    - Calendar
   summary: Update appointment
   description: |
-    **[BETA - CalendarOS]** Update appointment details.
+    Update appointment details.
 
     **Students** can update: student_notes
     **Advisors** can update: all fields
@@ -174,10 +174,10 @@ put:
 
 delete:
   tags:
-    - CalendarOS (BETA)
+    - Calendar
   summary: Cancel appointment
   description: |
-    **[BETA - CalendarOS]** Cancel an appointment. Both students and advisors can cancel appointments.
+    Cancel an appointment. Both students and advisors can cancel appointments.
   operationId: cancelAppointment
   security:
     - BearerAuth: []

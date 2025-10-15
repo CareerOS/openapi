@@ -35,7 +35,7 @@ info:
     - **CalendarOS** - Complete appointment scheduling with confirmation and attendance tracking
     - **Agreements** - Three-way internship agreement management with electronic signatures
     - **Employers** - Employer registration, profile management, and team collaboration
-    - **Custom Fields** - Institution-specific field definitions and dropdown management
+    - **Custom Fields (BETA)** - Institution-specific field definitions and dropdown management
 
     **PROPOSAL:**
     - **Reports API** - Comprehensive analytics with multi-format export (JSON, CSV, PDF)
@@ -151,7 +151,7 @@ tags:
       Unified reporting API providing student activity reports, progress tracking,
       and cohort-level analytics. Supports multiple export formats (JSON, CSV, PDF)
       for integration with institutional systems and stakeholder reporting.
-  - name: CalendarOS
+  - name: Calendar
     description: |
       Appointment scheduling and calendar management (CalendarOS module).
 
@@ -161,20 +161,20 @@ tags:
       email confirmations, meeting platform integration, and comprehensive scheduling analytics.
   - name: Agreements
     description: |
-     Three-way internship agreement management system.
+      Three-way internship agreement management system (AgreementsOS module).
 
-      Comprehensive workflow for creating, signing, and managing internship agreements between
-      students, employers, and universities. Features include electronic signatures from all
-      three parties, agreement modification with signature reset, notification system for all
+      AgreementsOS provides a comprehensive workflow for creating, signing, and managing internship
+      agreements between students, employers, and universities. Features include electronic signatures
+      from all three parties, agreement modification with signature reset, notification system for all
       parties, complete audit trail, and document management. Supports the full lifecycle from
       draft creation through execution and completion.
   - name: Employers
     description: |
-      Employer registration and organization management.
+      Employer registration and organization management (EmployersOS module).
 
-      Complete employer onboarding and management system including organization registration,
-      profile management, multi-user access control, and account settings. Enables employers to
-      register their organization, add team members with role-based permissions, manage company
+      EmployersOS provides a complete employer onboarding and management system including organization
+      registration, profile management, multi-user access control, and account settings. Enables employers
+      to register their organization, add team members with role-based permissions, manage company
       branding and public profile, configure notification preferences, and set up integrations
       with ATS and calendar systems. Supports the full employer lifecycle from initial registration
       through ongoing account management.
@@ -379,7 +379,7 @@ paths:
     $ref: paths/reports/jobs_by_id_runs_by_run_id_results.yaml
 
   # ==========================================
-  # APPOINTMENTS API (BETA) - CalendarOS
+  # APPOINTMENTS API - CalendarOS
   # ==========================================
 
   /api/v1/appointments:
@@ -394,7 +394,7 @@ paths:
     $ref: paths/appointments/availability.yaml
 
   # ==========================================
-  # INTERNSHIP AGREEMENTS API (BETA)
+  # INTERNSHIP AGREEMENTS API
   # ==========================================
 
   /api/v1/agreements/internship:
@@ -409,7 +409,7 @@ paths:
     $ref: paths/agreements/internship_signatures.yaml
 
   # ==========================================
-  # EMPLOYERS API (BETA)
+  # EMPLOYERS API
   # ==========================================
 
   /api/v1/employers/register:

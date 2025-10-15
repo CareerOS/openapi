@@ -1,9 +1,9 @@
 get:
   tags:
-    - CalendarOS (BETA)
+    - Calendar
   summary: Get advisor availability
   description: |
-    **[BETA - CalendarOS]** Retrieve available time slots for booking appointments with an advisor.
+    Retrieve available time slots for booking appointments with an advisor.
 
     Returns open time slots based on the advisor's availability schedule and
     existing bookings.
@@ -93,10 +93,10 @@ get:
 
 put:
   tags:
-    - CalendarOS (BETA)
+    - Calendar
   summary: Update advisor availability schedule
   description: |
-    **[BETA - CalendarOS]** Set or update the availability schedule for an advisor.
+    Set or update the availability schedule for an advisor.
 
     Define recurring weekly availability and specific date overrides.
 

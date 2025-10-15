@@ -1,6 +1,6 @@
 get:
   tags:
-    - Universities
+    - Alumni
   summary: Get alumni by ID
   description: Retrieve detailed profile information for a specific alumni
   operationId: getAlumByID

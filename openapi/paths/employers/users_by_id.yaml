@@ -1,9 +1,9 @@
 get:
   tags:
-    - Employers (BETA)
+    - Employers
   summary: Get employer user details
   description: |
-    **[BETA]** Retrieve detailed information about a specific employer user.
+    Retrieve detailed information about a specific employer user.
   operationId: getEmployerUser
   security:
     - BearerAuth: []
@@ -84,10 +84,10 @@ get:
 
 put:
   tags:
-    - Employers (BETA)
+    - Employers
   summary: Update employer user
   description: |
-    **[BETA]** Update employer user information and permissions.
+    Update employer user information and permissions.
 
     Admins can update any user. Users can update their own profile (limited fields).
   operationId: updateEmployerUser
@@ -168,10 +168,10 @@ put:
 
 delete:
   tags:
-    - Employers (BETA)
+    - Employers
   summary: Remove employer user
   description: |
-    **[BETA]** Remove a user from the employer organization.
+    Remove a user from the employer organization.
 
     User's access is immediately revoked. This action cannot be undone.
     Admins only. Cannot remove the last admin user.

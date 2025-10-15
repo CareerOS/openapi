@@ -1,9 +1,9 @@
 post:
   tags:
-    - Agreements (BETA)
+    - Agreements
   summary: Sign internship agreement
   description: |
-    **[BETA]** Electronically sign an internship agreement.
+    Electronically sign an internship agreement.
 
     **Who can sign**:
     - Students sign on their own behalf

@@ -1,9 +1,9 @@
 post:
   tags:
-    - Agreements (BETA)
+    - Agreements
   summary: Send agreement notifications
   description: |
-    **[BETA]** Send notifications about the agreement to specified parties.
+    Send notifications about the agreement to specified parties.
 
     **Use cases**:
     - Request signatures from parties who haven't signed

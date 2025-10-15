@@ -1,9 +1,9 @@
 get:
   tags:
-    - Employers (BETA)
+    - Employers
   summary: List employer users
   description: |
-    **[BETA]** Retrieve all users associated with the employer organization.
+    Retrieve all users associated with the employer organization.
 
     Returns company recruiters, HR contacts, and other authorized users who can
     access the employer portal and manage job postings, applications, and events.
@@ -107,10 +107,10 @@ get:
 
 post:
   tags:
-    - Employers (BETA)
+    - Employers
   summary: Add employer user
   description: |
-    **[BETA]** Add a new user to the employer organization.
+    Add a new user to the employer organization.
 
     Sends an invitation email to the new user with account activation link.
     Only employer admins can add new users.

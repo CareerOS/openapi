@@ -29,7 +29,7 @@ The CareerOS API is organized into multiple API versions and feature modules:
 - **CalendarOS** - Complete appointment scheduling with confirmation and attendance tracking
 - **Agreements** - Three-way internship agreement management with electronic signatures
 - **Employers** - Employer registration, profile management, and team collaboration
-- **Custom Fields** - Institution-specific field definitions and dropdown management
+- **Custom Fields (BETA)** - Institution-specific field definitions and dropdown management
 
 **PROPOSAL:**
 - **Reports API** - Comprehensive analytics with multi-format export (JSON, CSV, PDF)

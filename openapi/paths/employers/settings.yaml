@@ -1,9 +1,9 @@
 get:
   tags:
-    - Employers (BETA)
+    - Employers
   summary: Get employer settings
   description: |
-    **[BETA]** Retrieve employer organization settings and preferences.
+    Retrieve employer organization settings and preferences.
 
     Includes notification preferences, integration settings, and account configuration.
   operationId: getEmployerSettings
@@ -111,10 +111,10 @@ get:
 
 put:
   tags:
-    - Employers (BETA)
+    - Employers
   summary: Update employer settings
   description: |
-    **[BETA]** Update employer organization settings and preferences.
+    Update employer organization settings and preferences.
 
     Admin users can modify all settings. Other users may have limited access.
   operationId: updateEmployerSettings

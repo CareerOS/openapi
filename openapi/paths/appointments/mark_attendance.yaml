@@ -1,9 +1,9 @@
 post:
   tags:
-    - CalendarOS (BETA)
+    - Calendar
   summary: Mark appointment attendance
   description: |
-    **[BETA - CalendarOS]** Mark whether the student attended the appointment.
+    Mark whether the student attended the appointment.
 
     This endpoint allows advisors to record attendance after an appointment.
     Marking attendance automatically updates the appointment status to `completed`

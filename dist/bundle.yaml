@@ -34,7 +34,7 @@ info:
     - **CalendarOS** - Complete appointment scheduling with confirmation and attendance tracking
     - **Agreements** - Three-way internship agreement management with electronic signatures
     - **Employers** - Employer registration, profile management, and team collaboration
-    - **Custom Fields** - Institution-specific field definitions and dropdown management
+    - **Custom Fields (BETA)** - Institution-specific field definitions and dropdown management
 
     **PROPOSAL:**
     - **Reports API** - Comprehensive analytics with multi-format export (JSON, CSV, PDF)
@@ -149,7 +149,7 @@ tags:
       Unified reporting API providing student activity reports, progress tracking,
       and cohort-level analytics. Supports multiple export formats (JSON, CSV, PDF)
       for integration with institutional systems and stakeholder reporting.
-  - name: CalendarOS
+  - name: Calendar
     description: |
       Appointment scheduling and calendar management (CalendarOS module).
 
@@ -159,20 +159,20 @@ tags:
       email confirmations, meeting platform integration, and comprehensive scheduling analytics.
   - name: Agreements
     description: |
-      Three-way internship agreement management system.
+      Three-way internship agreement management system (AgreementsOS module).
 
-       Comprehensive workflow for creating, signing, and managing internship agreements between
-       students, employers, and universities. Features include electronic signatures from all
-       three parties, agreement modification with signature reset, notification system for all
-       parties, complete audit trail, and document management. Supports the full lifecycle from
-       draft creation through execution and completion.
+      AgreementsOS provides a comprehensive workflow for creating, signing, and managing internship
+      agreements between students, employers, and universities. Features include electronic signatures
+      from all three parties, agreement modification with signature reset, notification system for all
+      parties, complete audit trail, and document management. Supports the full lifecycle from
+      draft creation through execution and completion.
   - name: Employers
     description: |
-      Employer registration and organization management.
+      Employer registration and organization management (EmployersOS module).
 
-      Complete employer onboarding and management system including organization registration,
-      profile management, multi-user access control, and account settings. Enables employers to
-      register their organization, add team members with role-based permissions, manage company
+      EmployersOS provides a complete employer onboarding and management system including organization
+      registration, profile management, multi-user access control, and account settings. Enables employers
+      to register their organization, add team members with role-based permissions, manage company
       branding and public profile, configure notification preferences, and set up integrations
       with ATS and calendar systems. Supports the full employer lifecycle from initial registration
       through ongoing account management.
@@ -3321,7 +3321,7 @@ paths:
   /api/v1/alumn/cohort/{cohortID}:
     get:
       tags:
-        - Universities
+        - Alumni
       summary: Get alumni by cohort
       description: Retrieve alumni profiles for a specific cohort
       operationId: getAlumniByCohortID
@@ -3380,7 +3380,7 @@ paths:
   /api/v1/alumn/university/{universityID}:
     get:
       tags:
-        - Universities
+        - Alumni
       summary: Get alumni by university
       description: Retrieve all alumni profiles for a specific university
       operationId: getAlumniByUniversityID
@@ -3456,7 +3456,7 @@ paths:
   /api/v1/alumn/{id}:
     get:
       tags:
-        - Universities
+        - Alumni
       summary: Get alumni by ID
       description: Retrieve detailed profile information for a specific alumni
       operationId: getAlumByID
@@ -4908,10 +4908,10 @@ paths:
   /api/v1/appointments:
     get:
       tags:
-        - CalendarOS (BETA)
+        - Calendar
       summary: List appointments
       description: |
-        **[BETA - CalendarOS]** Retrieve appointments with flexible filtering.
+        Retrieve appointments with flexible filtering.
 
         **Access**:
         - Students: See their own appointments
@@ -5088,10 +5088,10 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
     post:
       tags:
-        - CalendarOS (BETA)
+        - Calendar
       summary: Book appointment
       description: |
-        **[BETA - CalendarOS]** Create a new appointment booking.
+        Create a new appointment booking.
 
         **Student booking**: Creates appointment with `pending` status, awaiting advisor confirmation
         **Advisor booking**: Creates appointment with `confirmed` status automatically
@@ -5218,10 +5218,10 @@ paths:
   /api/v1/appointments/{id}:
     get:
       tags:
-        - CalendarOS (BETA)
+        - Calendar
       summary: Get appointment details
       description: |
-        **[BETA - CalendarOS]** Retrieve detailed information about a specific appointment.
+        Retrieve detailed information about a specific appointment.
       operationId: getAppointmentById
       security:
         - BearerAuth: []
@@ -5341,10 +5341,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
     put:
       tags:
-        - CalendarOS (BETA)
+        - Calendar
       summary: Update appointment
       description: |
-        **[BETA - CalendarOS]** Update appointment details.
+        Update appointment details.
 
         **Students** can update: student_notes
         **Advisors** can update: all fields
@@ -5425,10 +5425,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
     delete:
       tags:
-        - CalendarOS (BETA)
+        - Calendar
       summary: Cancel appointment
       description: |
-        **[BETA - CalendarOS]** Cancel an appointment. Both students and advisors can cancel appointments.
+        Cancel an appointment. Both students and advisors can cancel appointments.
       operationId: cancelAppointment
       security:
         - BearerAuth: []
@@ -5483,10 +5483,10 @@ paths:
   /api/v1/appointments/{id}/confirm:
     post:
       tags:
-        - CalendarOS (BETA)
+        - Calendar
       summary: Confirm appointment booking
       description: |
-        **[BETA - CalendarOS]** Confirm a pending appointment booking.
+        Confirm a pending appointment booking.
 
         When a student books an appointment, it starts in `pending` status. The advisor
         must confirm the booking to change status to `confirmed`.
@@ -5570,10 +5570,10 @@ paths:
   /api/v1/appointments/{id}/mark-attendance:
     post:
       tags:
-        - CalendarOS (BETA)
+        - Calendar
       summary: Mark appointment attendance
       description: |
-        **[BETA - CalendarOS]** Mark whether the student attended the appointment.
+        Mark whether the student attended the appointment.
 
         This endpoint allows advisors to record attendance after an appointment.
         Marking attendance automatically updates the appointment status to `completed`
@@ -5675,10 +5675,10 @@ paths:
   /api/v1/appointments/availability:
     get:
       tags:
-        - CalendarOS (BETA)
+        - Calendar
       summary: Get advisor availability
       description: |
-        **[BETA - CalendarOS]** Retrieve available time slots for booking appointments with an advisor.
+        Retrieve available time slots for booking appointments with an advisor.
 
         Returns open time slots based on the advisor's availability schedule and
         existing bookings.
@@ -5767,10 +5767,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
     put:
       tags:
-        - CalendarOS (BETA)
+        - Calendar
       summary: Update advisor availability schedule
       description: |
-        **[BETA - CalendarOS]** Set or update the availability schedule for an advisor.
+        Set or update the availability schedule for an advisor.
 
         Define recurring weekly availability and specific date overrides.
 
@@ -5880,10 +5880,10 @@ paths:
   /api/v1/agreements/internship:
     get:
       tags:
-        - Agreements (BETA)
+        - Agreements
       summary: List internship agreements
       description: |
-        **[BETA]** Retrieve internship agreements with filtering options.
+        Retrieve internship agreements with filtering options.
 
         **Access**:
         - Students: See their own agreements
@@ -6039,10 +6039,10 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
     post:
       tags:
-        - Agreements (BETA)
+        - Agreements
       summary: Create internship agreement
       description: |
-        **[BETA]** Create a new three-way internship agreement between student, employer, and university.
+        Create a new three-way internship agreement between student, employer, and university.
 
         **Who can create**:
         - Students can initiate for themselves
@@ -6212,10 +6212,10 @@ paths:
   /api/v1/agreements/internship/{id}:
     get:
       tags:
-        - Agreements (BETA)
+        - Agreements
       summary: Get internship agreement details
       description: |
-        **[BETA]** Retrieve complete details of a specific internship agreement.
+        Retrieve complete details of a specific internship agreement.
 
         Returns full agreement content, signature status, and audit trail.
       operationId: getInternshipAgreement
@@ -6506,10 +6506,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
     put:
       tags:
-        - Agreements (BETA)
+        - Agreements
       summary: Update internship agreement
       description: |
-        **[BETA]** Modify internship agreement content.
+        Modify internship agreement content.
 
         **Rules**:
         - Only `draft` or `pending_signatures` agreements can be modified
@@ -6638,10 +6638,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
     delete:
       tags:
-        - Agreements (BETA)
+        - Agreements
       summary: Cancel internship agreement
       description: |
-        **[BETA]** Cancel or void an internship agreement.
+        Cancel or void an internship agreement.
 
         **Rules**:
         - Draft agreements can be deleted
@@ -6701,10 +6701,10 @@ paths:
   /api/v1/agreements/internship/{id}/sign:
     post:
       tags:
-        - Agreements (BETA)
+        - Agreements
       summary: Sign internship agreement
       description: |
-        **[BETA]** Electronically sign an internship agreement.
+        Electronically sign an internship agreement.
 
         **Who can sign**:
         - Students sign on their own behalf
@@ -6844,10 +6844,10 @@ paths:
   /api/v1/agreements/internship/{id}/notify:
     post:
       tags:
-        - Agreements (BETA)
+        - Agreements
       summary: Send agreement notifications
       description: |
-        **[BETA]** Send notifications about the agreement to specified parties.
+        Send notifications about the agreement to specified parties.
 
         **Use cases**:
         - Request signatures from parties who haven't signed
@@ -6959,10 +6959,10 @@ paths:
   /api/v1/agreements/internship/{id}/signatures:
     get:
       tags:
-        - Agreements (BETA)
+        - Agreements
       summary: Get agreement signature status
       description: |
-        **[BETA]** Retrieve detailed signature status and audit trail for an internship agreement.
+        Retrieve detailed signature status and audit trail for an internship agreement.
 
         Shows which parties have signed, when they signed, and complete signature history.
       operationId: getAgreementSignatures
@@ -7130,10 +7130,10 @@ paths:
   /api/v1/employers/register:
     post:
       tags:
-        - Employers (BETA)
+        - Employers
       summary: Register new employer organization
       description: |
-        **[BETA]** Register a new employer organization on the CareerOS platform.
+        Register a new employer organization on the CareerOS platform.
 
         This endpoint creates a new employer account with initial company profile,
         primary contact, and access credentials. The registration can be initiated by:
@@ -7317,10 +7317,10 @@ paths:
   /api/v1/employers/profile:
     get:
       tags:
-        - Employers (BETA)
+        - Employers
       summary: Get employer profile
       description: |
-        **[BETA]** Retrieve the employer organization profile.
+        Retrieve the employer organization profile.
 
         Returns complete company information including branding, locations, benefits,
         and public-facing details visible to students.
@@ -7478,10 +7478,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
     put:
       tags:
-        - Employers (BETA)
+        - Employers
       summary: Update employer profile
       description: |
-        **[BETA]** Update employer organization profile information.
+        Update employer organization profile information.
 
         Employer admins can update company details, branding, locations, and public-facing content.
       operationId: updateEmployerProfile
@@ -7579,10 +7579,10 @@ paths:
   /api/v1/employers/users:
     get:
       tags:
-        - Employers (BETA)
+        - Employers
       summary: List employer users
       description: |
-        **[BETA]** Retrieve all users associated with the employer organization.
+        Retrieve all users associated with the employer organization.
 
         Returns company recruiters, HR contacts, and other authorized users who can
         access the employer portal and manage job postings, applications, and events.
@@ -7699,10 +7699,10 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
     post:
       tags:
-        - Employers (BETA)
+        - Employers
       summary: Add employer user
       description: |
-        **[BETA]** Add a new user to the employer organization.
+        Add a new user to the employer organization.
 
         Sends an invitation email to the new user with account activation link.
         Only employer admins can add new users.
@@ -7823,10 +7823,10 @@ paths:
   /api/v1/employers/users/{user_id}:
     get:
       tags:
-        - Employers (BETA)
+        - Employers
       summary: Get employer user details
       description: |
-        **[BETA]** Retrieve detailed information about a specific employer user.
+        Retrieve detailed information about a specific employer user.
       operationId: getEmployerUser
       security:
         - BearerAuth: []
@@ -7913,10 +7913,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
     put:
       tags:
-        - Employers (BETA)
+        - Employers
       summary: Update employer user
       description: |
-        **[BETA]** Update employer user information and permissions.
+        Update employer user information and permissions.
 
         Admins can update any user. Users can update their own profile (limited fields).
       operationId: updateEmployerUser
@@ -8002,10 +8002,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
     delete:
       tags:
-        - Employers (BETA)
+        - Employers
       summary: Remove employer user
       description: |
-        **[BETA]** Remove a user from the employer organization.
+        Remove a user from the employer organization.
 
         User's access is immediately revoked. This action cannot be undone.
         Admins only. Cannot remove the last admin user.
@@ -8059,10 +8059,10 @@ paths:
   /api/v1/employers/settings:
     get:
       tags:
-        - Employers (BETA)
+        - Employers
       summary: Get employer settings
       description: |
-        **[BETA]** Retrieve employer organization settings and preferences.
+        Retrieve employer organization settings and preferences.
 
         Includes notification preferences, integration settings, and account configuration.
       operationId: getEmployerSettings
@@ -8183,10 +8183,10 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
     put:
       tags:
-        - Employers (BETA)
+        - Employers
       summary: Update employer settings
       description: |
-        **[BETA]** Update employer organization settings and preferences.
+        Update employer organization settings and preferences.
 
         Admin users can modify all settings. Other users may have limited access.
       operationId: updateEmployerSettings

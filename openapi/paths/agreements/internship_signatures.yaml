@@ -1,9 +1,9 @@
 get:
   tags:
-    - Agreements (BETA)
+    - Agreements
   summary: Get agreement signature status
   description: |
-    **[BETA]** Retrieve detailed signature status and audit trail for an internship agreement.
+    Retrieve detailed signature status and audit trail for an internship agreement.
 
     Shows which parties have signed, when they signed, and complete signature history.
   operationId: getAgreementSignatures

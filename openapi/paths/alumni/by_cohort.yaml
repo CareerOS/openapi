@@ -1,6 +1,6 @@
 get:
   tags:
-    - Universities
+    - Alumni
   summary: Get alumni by cohort
   description: Retrieve alumni profiles for a specific cohort
   operationId: getAlumniByCohortID

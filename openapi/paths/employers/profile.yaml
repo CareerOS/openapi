@@ -1,9 +1,9 @@
 get:
   tags:
-    - Employers (BETA)
+    - Employers
   summary: Get employer profile
   description: |
-    **[BETA]** Retrieve the employer organization profile.
+    Retrieve the employer organization profile.
 
     Returns complete company information including branding, locations, benefits,
     and public-facing details visible to students.
@@ -144,10 +144,10 @@ get:
 
 put:
   tags:
-    - Employers (BETA)
+    - Employers
   summary: Update employer profile
   description: |
-    **[BETA]** Update employer organization profile information.
+    Update employer organization profile information.
 
     Employer admins can update company details, branding, locations, and public-facing content.
   operationId: updateEmployerProfile

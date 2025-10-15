@@ -1,9 +1,9 @@
 get:
   tags:
-    - Agreements (BETA)
+    - Agreements
   summary: Get internship agreement details
   description: |
-    **[BETA]** Retrieve complete details of a specific internship agreement.
+    Retrieve complete details of a specific internship agreement.
 
     Returns full agreement content, signature status, and audit trail.
   operationId: getInternshipAgreement
@@ -262,10 +262,10 @@ get:
 
 put:
   tags:
-    - Agreements (BETA)
+    - Agreements
   summary: Update internship agreement
   description: |
-    **[BETA]** Modify internship agreement content.
+    Modify internship agreement content.
 
     **Rules**:
     - Only `draft` or `pending_signatures` agreements can be modified
@@ -391,10 +391,10 @@ put:
 
 delete:
   tags:
-    - Agreements (BETA)
+    - Agreements
   summary: Cancel internship agreement
   description: |
-    **[BETA]** Cancel or void an internship agreement.
+    Cancel or void an internship agreement.
 
     **Rules**:
     - Draft agreements can be deleted

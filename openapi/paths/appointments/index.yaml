@@ -1,9 +1,9 @@
 get:
   tags:
-    - CalendarOS (BETA)
+    - Calendar
   summary: List appointments
   description: |
-    **[BETA - CalendarOS]** Retrieve appointments with flexible filtering.
+    Retrieve appointments with flexible filtering.
 
     **Access**:
     - Students: See their own appointments
@@ -149,10 +149,10 @@ get:
 
 post:
   tags:
-    - CalendarOS (BETA)
+    - Calendar
   summary: Book appointment
   description: |
-    **[BETA - CalendarOS]** Create a new appointment booking.
+    Create a new appointment booking.
 
     **Student booking**: Creates appointment with `pending` status, awaiting advisor confirmation
     **Advisor booking**: Creates appointment with `confirmed` status automatically

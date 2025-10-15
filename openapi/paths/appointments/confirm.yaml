@@ -1,9 +1,9 @@
 post:
   tags:
-    - CalendarOS (BETA)
+    - Calendar
   summary: Confirm appointment booking
   description: |
-    **[BETA - CalendarOS]** Confirm a pending appointment booking.
+    Confirm a pending appointment booking.
 
     When a student books an appointment, it starts in `pending` status. The advisor
     must confirm the booking to change status to `confirmed`.

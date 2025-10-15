@@ -1,9 +1,9 @@
 post:
   tags:
-    - Employers (BETA)
+    - Employers
   summary: Register new employer organization
   description: |
-    **[BETA]** Register a new employer organization on the CareerOS platform.
+    Register a new employer organization on the CareerOS platform.
 
     This endpoint creates a new employer account with initial company profile,
     primary contact, and access credentials. The registration can be initiated by:
