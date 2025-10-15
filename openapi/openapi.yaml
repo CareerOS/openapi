@@ -12,10 +12,9 @@ info:
     ## 🚀 Quick Start
 
     **New to CareerOS?** Get started in minutes:
-    1. Review our [Getting Started Guide](./GETTING_STARTED.md)
-    2. Authenticate using JWT tokens ([Authentication Guide](./AUTHENTICATION.md))
-    3. Make your first API call to `/api/v1/users/self`
-    4. Explore our comprehensive endpoint documentation below
+    1. Authenticate using JWT tokens ([Authentication Guide](./AUTHENTICATION.md))
+    2. Make your first API call to `/api/v1/users/self`
+    3. Explore our comprehensive endpoint documentation below
 
     ## 📚 API Organization
 
