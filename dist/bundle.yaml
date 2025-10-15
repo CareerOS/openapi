@@ -80,64 +80,18 @@ info:
     See our [Authentication Guide](./AUTHENTICATION.md) for detailed implementation.
 
     ## 📖 Documentation Resources
-
-    - **[Getting Started Guide](./GETTING_STARTED.md)** - Step-by-step onboarding with code examples
     - **[Authentication Guide](./AUTHENTICATION.md)** - Security, tokens, and best practices
-    - **[API Improvements Summary](./API_IMPROVEMENTS_SUMMARY.md)** - Why CareerOS stands out
     - **OpenAPI Specification** - Complete machine-readable API documentation (this document)
-
-    ## 💬 BETA Features & Feedback
-
-    Several advanced features are in **BETA** status. These are fully functional and production-ready,
-    but may evolve based on partner feedback:
-
-    - **CalendarOS** - Appointment scheduling and calendar management
-    - **Agreements API** - Internship agreement workflow
-    - **Employers API** - Employer onboarding and management
-    - **Custom Fields API** - Institution-specific extensions
-
-    **We welcome your feedback!**
-    - Technical feedback: api-feedback@thecareeros.com
-    - Feature requests: product@thecareeros.com
-    - Integration support: api-support@thecareeros.com
 
     ## 🌟 What Makes CareerOS Different
 
     ✅ **Comprehensive** - 100+ endpoints covering the complete career development lifecycle
-    ✅ **Modern** - Built on OpenAPI 3.1.0 with industry-standard practices
+    ✅ **Modern** - Built on OpenAPI 3.0.0 with industry-standard practices
     ✅ **Intelligent** - AI-powered resume scoring, job extraction, and student insights
     ✅ **Flexible** - Custom fields and dropdown values for institution-specific needs
     ✅ **Integrated** - ATS and calendar integrations out of the box
     ✅ **Developer-Friendly** - Extensive documentation, code examples, and responsive support
     ✅ **Production-Ready** - Stable API with clear versioning and deprecation policies
-
-    ## 📊 API Statistics
-
-    - **100+ Total Endpoints**
-    - **9 Feature Modules** (5 stable, 4 BETA, 1 proposal)
-    - **Multi-Format Exports** (JSON, CSV, PDF)
-    - **Real-Time Capabilities** (WebSockets, Webhooks)
-    - **Enterprise Integrations** (ATS, Calendar, SSO)
-
-    ## 🚦 Rate Limits
-
-    | Endpoint Type | Rate Limit | Window |
-    |---------------|------------|--------|
-    | Public API | 100 requests | 1 minute |
-    | Authenticated API | 300 requests | 1 minute |
-    | Search Endpoints | 60 requests | 1 minute |
-    | Advisor V2 API | 500 requests | 1 minute |
-
-    ## 🔗 Learn More
-
-    - **Website**: [https://thecareeros.com](https://thecareeros.com)
-    - **API Support**: api-support@thecareeros.com
-    - **Status Page**: https://status.thecareeros.com
-    - **API Feedback**: api-feedback@thecareeros.com
-
-    ---
-
-    and make your first API call today! 🚀
   contact:
     name: CareerOS API Support
     email: oleksii@thecareeros.com
