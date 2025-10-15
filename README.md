@@ -4,9 +4,7 @@ This repository contains the OpenAPI 3.1 specification for the CareerOS API - a 
 
 ## 🚀 Quick Links
 
-- **[Getting Started Guide](./GETTING_STARTED.md)** - Complete onboarding with code examples
 - **[Authentication Guide](./AUTHENTICATION.md)** - Security and token management
-- **[API Improvements Summary](./API_IMPROVEMENTS_SUMMARY.md)** - Why CareerOS stands out
 - **[OpenAPI Specification](./openapi/openapi.yaml)** - Complete API documentation
 
 ## API Overview
@@ -28,8 +26,6 @@ The CareerOS API is organized into multiple API versions and feature modules:
 - **AlumniOS** - Alumni networking and mentorship connections
 - **Jobs & Companies** - Advanced search, tracking, and application management
 - **AI Features** - Intelligent job extraction and content analysis
-
-**BETA Modules** (Production-ready, evolving based on feedback):
 - **CalendarOS** - Complete appointment scheduling with confirmation and attendance tracking
 - **Agreements** - Three-way internship agreement management with electronic signatures
 - **Employers** - Employer registration, profile management, and team collaboration

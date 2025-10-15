@@ -83,4 +83,3 @@ Add referenced schemas/responses to `components/` directory.
 - [OpenAPI 3.1 Spec](https://spec.openapis.org/oas/v3.1.0)
 - [Redocly Docs](https://redocly.com/docs/)
 - [Full README](./README.md)
-- [Migration Guide](./MIGRATION_GUIDE.md)

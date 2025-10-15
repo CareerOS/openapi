@@ -11,10 +11,9 @@ info:
     ## 🚀 Quick Start
 
     **New to CareerOS?** Get started in minutes:
-    1. Review our [Getting Started Guide](./GETTING_STARTED.md)
-    2. Authenticate using JWT tokens ([Authentication Guide](./AUTHENTICATION.md))
-    3. Make your first API call to `/api/v1/users/self`
-    4. Explore our comprehensive endpoint documentation below
+    1. Authenticate using JWT tokens ([Authentication Guide](./AUTHENTICATION.md))
+    2. Make your first API call to `/api/v1/users/self`
+    3. Explore our comprehensive endpoint documentation below
 
     ## 📚 API Organization
 
@@ -32,8 +31,6 @@ info:
     - **AlumniOS** - Alumni networking and mentorship connections
     - **Jobs & Companies** - Advanced search, tracking, and application management
     - **AI Features** - Intelligent job extraction and content analysis
-
-    **BETA Modules** (Production-ready, evolving based on feedback):
     - **CalendarOS** - Complete appointment scheduling with confirmation and attendance tracking
     - **Agreements** - Three-way internship agreement management with electronic signatures
     - **Employers** - Employer registration, profile management, and team collaboration
@@ -140,11 +137,10 @@ info:
 
     ---
 
-    **Ready to build something great?** Start with our [Getting Started Guide](./GETTING_STARTED.md)
     and make your first API call today! 🚀
   contact:
     name: CareerOS API Support
-    email: api-support@thecareeros.com
+    email: oleksii@thecareeros.com
     url: https://thecareeros.com
   version: 2.0.0
   license:
@@ -153,8 +149,6 @@ info:
 servers:
   - url: https://api.thecareeros.com
     description: Production server
-  - url: https://api-dev.thecareeros.com
-    description: Development server
 security:
   - BearerAuth: []
 tags:
@@ -201,26 +195,26 @@ tags:
       Unified reporting API providing student activity reports, progress tracking,
       and cohort-level analytics. Supports multiple export formats (JSON, CSV, PDF)
       for integration with institutional systems and stakeholder reporting.
-  - name: CalendarOS (BETA)
+  - name: CalendarOS
     description: |
-      **[BETA]** Appointment scheduling and calendar management (CalendarOS module).
+      Appointment scheduling and calendar management (CalendarOS module).
 
       CalendarOS provides a complete appointment booking workflow including availability
       checking, appointment creation, confirmation, attendance tracking, and calendar
       management. Supports both student-initiated and advisor-initiated scheduling with
       email confirmations, meeting platform integration, and comprehensive scheduling analytics.
-  - name: Agreements (BETA)
+  - name: Agreements
     description: |
-      **[BETA]** Three-way internship agreement management system.
+      Three-way internship agreement management system.
 
-      Comprehensive workflow for creating, signing, and managing internship agreements between
-      students, employers, and universities. Features include electronic signatures from all
-      three parties, agreement modification with signature reset, notification system for all
-      parties, complete audit trail, and document management. Supports the full lifecycle from
-      draft creation through execution and completion.
-  - name: Employers (BETA)
+       Comprehensive workflow for creating, signing, and managing internship agreements between
+       students, employers, and universities. Features include electronic signatures from all
+       three parties, agreement modification with signature reset, notification system for all
+       parties, complete audit trail, and document management. Supports the full lifecycle from
+       draft creation through execution and completion.
+  - name: Employers
     description: |
-      **[BETA]** Employer registration and organization management.
+      Employer registration and organization management.
 
       Complete employer onboarding and management system including organization registration,
       profile management, multi-user access control, and account settings. Enables employers to

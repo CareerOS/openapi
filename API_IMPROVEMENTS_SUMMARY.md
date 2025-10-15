@@ -126,9 +126,7 @@ CareerOS is built on industry-leading standards and modern architectural pattern
 
 CareerOS provides extensive documentation to help developers integrate quickly and successfully:
 
-- **Getting Started Guide** - Step-by-step onboarding for new developers
 - **Authentication Guide** - Detailed security and token management documentation
-- **Code Examples** - Sample code in JavaScript, Python, and cURL
 - **OpenAPI Specification** - Complete, machine-readable API documentation
 - **Common Use Cases** - Real-world examples for both students and advisors
 
@@ -368,11 +366,10 @@ The Reports API is in **PROPOSAL** status, meaning we're actively designing it b
 ## Getting Started
 
 ### Quick Start
-1. Review the [Getting Started Guide](./GETTING_STARTED.md)
-2. Obtain authentication credentials
-3. Make your first API call to `/api/v1/users/self`
-4. Explore endpoints relevant to your use case
-5. Integrate into your application
+1. Obtain authentication credentials
+2. Make your first API call to `/api/v1/users/self`
+3. Explore endpoints relevant to your use case
+4. Integrate into your application
 
 ## Conclusion
 
@@ -381,8 +378,6 @@ CareerOS represents a modern, comprehensive approach to career development platf
 The platform combines the best of modern technology—OpenAPI standards, JWT authentication, real-time capabilities, AI-powered features—with practical, real-world features that students and advisors use every day.
 
 Whether you're building a custom student portal, integrating with existing systems, or creating mobile applications, CareerOS provides the APIs and documentation you need to succeed.
-
-**Ready to get started?** Check out the [Getting Started Guide](./GETTING_STARTED.md) and make your first API call today.
 
 ---
 
