@@ -1,0 +1,225 @@
+get:
+  tags:
+    - Custom Fields (BETA)
+  summary: Get custom field definition
+  description: |
+    **[BETA]** Retrieve a specific custom field definition including all dropdown values.
+  operationId: getCustomField
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Custom field ID
+  responses:
+    '200':
+      description: Custom field retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              entity_type:
+                type: string
+              field_name:
+                type: string
+              display_label:
+                type: string
+              field_type:
+                type: string
+              is_required:
+                type: boolean
+              is_searchable:
+                type: boolean
+              is_visible_to_students:
+                type: boolean
+              is_visible_to_employers:
+                type: boolean
+              default_value:
+                type: string
+              validation_rules:
+                type: object
+              help_text:
+                type: string
+              sort_order:
+                type: integer
+              status:
+                type: string
+              usage_statistics:
+                type: object
+                properties:
+                  entities_with_value:
+                    type: integer
+                    description: Number of entities that have a value for this field
+                  most_common_values:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: string
+                        count:
+                          type: integer
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+put:
+  tags:
+    - Custom Fields (BETA)
+  summary: Update custom field definition
+  description: |
+    **[BETA]** Update a custom field definition.
+
+    **Note**: Changing field_type may result in data loss for existing values.
+  operationId: updateCustomField
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Custom field ID
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            display_label:
+              type: string
+            is_required:
+              type: boolean
+            is_searchable:
+              type: boolean
+            is_visible_to_students:
+              type: boolean
+            is_visible_to_employers:
+              type: boolean
+            default_value:
+              type: string
+            validation_rules:
+              type: object
+            help_text:
+              type: string
+            sort_order:
+              type: integer
+            status:
+              type: string
+              enum: [active, inactive, archived]
+  responses:
+    '200':
+      description: Custom field updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              updated_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Custom field updated successfully"
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+delete:
+  tags:
+    - Custom Fields (BETA)
+  summary: Delete custom field definition
+  description: |
+    **[BETA]** Delete a custom field definition.
+
+    **Warning**: This will remove the field and all associated data from all entities.
+    This action cannot be undone. Consider setting status to 'archived' instead.
+  operationId: deleteCustomField
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Custom field ID
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            confirm_deletion:
+              type: boolean
+              description: Must be true to confirm deletion
+              example: true
+  responses:
+    '200':
+      description: Custom field deleted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              deleted_at:
+                type: string
+                format: date-time
+              entities_affected:
+                type: integer
+                description: Number of entities that had values for this field
+              message:
+                type: string
+                example: "Custom field and all associated data deleted successfully"
+    '400':
+      description: Confirmation required
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Confirmation required"
+              message:
+                type: string
+                example: "Must confirm deletion by setting confirm_deletion to true"
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

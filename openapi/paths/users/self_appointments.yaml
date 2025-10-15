@@ -1,0 +1,138 @@
+get:
+  tags:
+    - Users
+  summary: Get student appointments
+  description: Retrieve appointments for the logged-in student
+  operationId: getStudentAppointments
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: status
+      in: query
+      description: Filter by appointment status
+      schema:
+        type: string
+        enum: [scheduled, completed, cancelled, no_show]
+    - name: upcoming_only
+      in: query
+      description: Show only upcoming appointments
+      schema:
+        type: boolean
+        default: false
+    - $ref: ../../components/parameters/Limit.yaml
+    - $ref: ../../components/parameters/Offset.yaml
+  responses:
+    '200':
+      description: Appointments retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              appointments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    advisor:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        name:
+                          type: string
+                        title:
+                          type: string
+                        profile_picture:
+                          type: string
+                          format: uri
+                          nullable: true
+                    scheduled_at:
+                      type: string
+                      format: date-time
+                    duration_minutes:
+                      type: integer
+                    type:
+                      type: string
+                      enum: [career_counseling, resume_review, mock_interview, general, other]
+                    status:
+                      type: string
+                      enum: [scheduled, completed, cancelled, no_show]
+                    location:
+                      type: string
+                      nullable: true
+                    student_notes:
+                      type: string
+                      nullable: true
+                    created_at:
+                      type: string
+                      format: date-time
+              total:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+
+post:
+  tags:
+    - Users
+  summary: Request appointment
+  description: Request a new appointment with an advisor
+  operationId: requestAppointment
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - advisor_id
+            - preferred_date
+            - type
+          properties:
+            advisor_id:
+              type: string
+              format: uuid
+              description: ID of the advisor to book with
+            preferred_date:
+              type: string
+              format: date-time
+              description: Preferred appointment time
+            type:
+              type: string
+              enum: [career_counseling, resume_review, mock_interview, general, other]
+            student_notes:
+              type: string
+              description: Student's reason for appointment or topics to discuss
+  responses:
+    '201':
+      description: Appointment request created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              advisor_id:
+                type: string
+                format: uuid
+              scheduled_at:
+                type: string
+                format: date-time
+              status:
+                type: string
+                example: scheduled
+              created_at:
+                type: string
+                format: date-time
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

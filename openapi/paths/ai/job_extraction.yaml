@@ -1,0 +1,61 @@
+post:
+  tags:
+    - AI
+  summary: Extract job details from URL
+  description: Extract and parse job details from a job posting URL using AI
+  operationId: extractJobFromURL
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - url
+          properties:
+            url:
+              type: string
+              format: uri
+              description: URL of the job posting
+              example: https://www.linkedin.com/jobs/view/1234567890
+  responses:
+    '200':
+      description: Job details extracted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              company:
+                type: string
+              location:
+                type: string
+              description:
+                type: string
+              requirements:
+                type: array
+                items:
+                  type: string
+              benefits:
+                type: array
+                items:
+                  type: string
+              salary_range:
+                type: object
+                properties:
+                  min:
+                    type: number
+                  max:
+                    type: number
+                  currency:
+                    type: string
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '422':
+      description: Unable to extract job details from URL

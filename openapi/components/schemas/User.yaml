@@ -22,6 +22,14 @@ properties:
     type: string
     format: date-time
     description: The timestamp when the LinkedIn identifiers were last updated.
+  custom_fields:
+    type: object
+    additionalProperties: true
+    description: |
+      Institution-specific custom fields as key-value pairs. Any field sent in requests that is not part
+      of the standard schema will be stored here and returned in responses.
+
+      Example: `{"esade_program_track": "mba_fulltime", "preferred_industry": "consulting"}`
 required:
   - id
   - first_name

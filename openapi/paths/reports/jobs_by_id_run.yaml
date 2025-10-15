@@ -1,0 +1,81 @@
+post:
+  tags:
+    - Reports (PROPOSAL)
+  summary: Execute a report job
+  description: |
+    **[PROPOSAL]** Run a saved report job and create a new report run.
+
+    This executes the report with the job's configured parameters and returns
+    a run ID that can be used to check status and retrieve results.
+  operationId: executeReportJob
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Report job ID (MD5)
+      schema:
+        type: string
+  requestBody:
+    required: false
+    description: Optional parameter overrides for this specific run
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            parameter_overrides:
+              type: object
+              description: Override specific parameters for this run only
+              properties:
+                from_date:
+                  type: string
+                  format: date
+                to_date:
+                  type: string
+                  format: date
+                format:
+                  type: string
+                  enum: [json, csv, pdf]
+            notify_email:
+              type: string
+              format: email
+              description: Email to notify when this run completes
+  responses:
+    '202':
+      description: Report execution started
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              run_id:
+                type: string
+                description: Unique ID for this report run
+                example: run_xyz789
+              job_id:
+                type: string
+                example: abc123
+              status:
+                type: string
+                enum: [queued, running, completed, failed]
+                example: queued
+              started_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Report execution started. Check status at /api/v1/reports/jobs/{id}/runs/{run_id}"
+              status_url:
+                type: string
+                format: uri
+                example: "/api/v1/reports/jobs/abc123/runs/run_xyz789"
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

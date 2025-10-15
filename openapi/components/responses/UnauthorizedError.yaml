@@ -2,4 +2,12 @@ description: Failed to validate JWT token
 content:
   application/json:
     schema:
-      $ref: ../schemas/errors/UnauthorizedError.yaml
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - Failed to validate JWT token
+          description: JWT token validation failed (expired, invalid, etc.)
+      required:
+        - error

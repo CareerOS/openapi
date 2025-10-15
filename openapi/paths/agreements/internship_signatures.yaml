@@ -1,0 +1,155 @@
+get:
+  tags:
+    - Agreements (BETA)
+  summary: Get agreement signature status
+  description: |
+    **[BETA]** Retrieve detailed signature status and audit trail for an internship agreement.
+
+    Shows which parties have signed, when they signed, and complete signature history.
+  operationId: getAgreementSignatures
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Agreement ID
+  responses:
+    '200':
+      description: Signature status retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              agreement_id:
+                type: string
+                format: uuid
+              agreement_number:
+                type: string
+              overall_status:
+                type: string
+                enum: [pending_signatures, partially_signed, fully_signed]
+              signatures:
+                type: object
+                properties:
+                  student:
+                    type: object
+                    properties:
+                      required:
+                        type: boolean
+                        example: true
+                      signed:
+                        type: boolean
+                      signer_name:
+                        type: string
+                      signed_at:
+                        type: string
+                        format: date-time
+                      signature_method:
+                        type: string
+                        enum: [electronic, digital, wet_signature]
+                      ip_address:
+                        type: string
+                      user_agent:
+                        type: string
+                      email_verified:
+                        type: boolean
+                      comments:
+                        type: string
+                  employer:
+                    type: object
+                    properties:
+                      required:
+                        type: boolean
+                        example: true
+                      signed:
+                        type: boolean
+                      signer_name:
+                        type: string
+                      signer_title:
+                        type: string
+                      organization_name:
+                        type: string
+                      signed_at:
+                        type: string
+                        format: date-time
+                      signature_method:
+                        type: string
+                      ip_address:
+                        type: string
+                      user_agent:
+                        type: string
+                      email_verified:
+                        type: boolean
+                      comments:
+                        type: string
+                  university:
+                    type: object
+                    properties:
+                      required:
+                        type: boolean
+                        example: true
+                      signed:
+                        type: boolean
+                      signer_name:
+                        type: string
+                      signer_title:
+                        type: string
+                      department:
+                        type: string
+                      signed_at:
+                        type: string
+                        format: date-time
+                      signature_method:
+                        type: string
+                      ip_address:
+                        type: string
+                      user_agent:
+                        type: string
+                      email_verified:
+                        type: boolean
+                      comments:
+                        type: string
+              pending_signatures:
+                type: array
+                description: Parties that still need to sign
+                items:
+                  type: string
+                  enum: [student, employer, university]
+              signature_timeline:
+                type: array
+                description: Chronological signature history
+                items:
+                  type: object
+                  properties:
+                    party:
+                      type: string
+                      enum: [student, employer, university]
+                    signer_name:
+                      type: string
+                    action:
+                      type: string
+                      enum: [signed, unsigned, signature_reset]
+                    timestamp:
+                      type: string
+                      format: date-time
+                    reason:
+                      type: string
+              fully_signed_at:
+                type: string
+                format: date-time
+                description: Timestamp when all parties completed signing
+              signature_expiration:
+                type: string
+                format: date-time
+                description: Deadline for completing signatures
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

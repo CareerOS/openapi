@@ -1,0 +1,152 @@
+get:
+  tags:
+    - Users
+  summary: Get student activity report
+  description: |
+    Retrieve comprehensive activity report for the logged-in student.
+
+    This report includes metrics on applications, job searches, networking activities,
+    events, and resume development. Support for multiple export formats (JSON, CSV, PDF)
+    enables integration with external analytics tools and provides flexibility for
+    reporting workflows.
+  operationId: getStudentActivityReport
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: start_date
+      in: query
+      description: Start date for report period (defaults to 30 days ago if not specified)
+      schema:
+        type: string
+        format: date
+      example: "2025-09-01"
+    - name: end_date
+      in: query
+      description: End date for report period (defaults to today if not specified)
+      schema:
+        type: string
+        format: date
+      example: "2025-10-15"
+    - name: format
+      in: query
+      description: Response format for the report
+      schema:
+        type: string
+        enum: [json, csv, pdf]
+        default: json
+      example: json
+    - name: include_timeline
+      in: query
+      description: Include daily activity timeline in response (JSON format only)
+      schema:
+        type: boolean
+        default: true
+  responses:
+    '200':
+      description: Activity report retrieved successfully
+      headers:
+        Content-Disposition:
+          description: Attachment header for CSV and PDF formats
+          schema:
+            type: string
+          example: "attachment; filename=activity_report_2025-10-15.csv"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              period:
+                type: object
+                properties:
+                  start_date:
+                    type: string
+                    format: date
+                  end_date:
+                    type: string
+                    format: date
+              summary:
+                type: object
+                properties:
+                  applications_submitted:
+                    type: integer
+                    description: Total applications submitted
+                  jobs_saved:
+                    type: integer
+                    description: Total jobs saved
+                  companies_researched:
+                    type: integer
+                    description: Total companies viewed
+                  contacts_added:
+                    type: integer
+                    description: Total contacts added
+                  events_attended:
+                    type: integer
+                    description: Total events registered for
+                  resumes_created:
+                    type: integer
+                    description: Total resumes created
+                  advisor_meetings:
+                    type: integer
+                    description: Total advisor appointments
+              applications_by_status:
+                type: object
+                properties:
+                  saved:
+                    type: integer
+                  applied:
+                    type: integer
+                  interviewing:
+                    type: integer
+                  offered:
+                    type: integer
+                  rejected:
+                    type: integer
+                  accepted:
+                    type: integer
+              activity_timeline:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                      format: date
+                    activities:
+                      type: integer
+                      description: Number of activities on this date
+              top_companies:
+                type: array
+                description: Most frequently interacted companies
+                items:
+                  type: object
+                  properties:
+                    company_id:
+                      type: string
+                      format: uuid
+                    company_name:
+                      type: string
+                    interactions:
+                      type: integer
+        text/csv:
+          schema:
+            type: string
+            format: binary
+          example: |
+            Period,Start Date,End Date
+            Report Period,2025-09-01,2025-10-15
+
+            Metric,Count
+            Applications Submitted,15
+            Jobs Saved,42
+            Companies Researched,28
+            Contacts Added,12
+            Events Attended,5
+            Resumes Created,3
+            Advisor Meetings,2
+        application/pdf:
+          schema:
+            type: string
+            format: binary
+            description: PDF formatted activity report with charts and visualizations
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

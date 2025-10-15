@@ -1,0 +1,84 @@
+get:
+  tags:
+    - Reports (PROPOSAL)
+  summary: Download report run results
+  description: |
+    **[PROPOSAL]** Download the generated report data for a completed report run.
+
+    The response format (JSON, CSV, or PDF) matches the format specified when the report was created/executed.
+    The Content-Disposition header will include a suggested filename.
+
+    **Note:** This endpoint only returns data for runs with status 'completed'.
+  operationId: downloadReportResults
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Report job ID (MD5)
+      schema:
+        type: string
+    - name: run_id
+      in: path
+      required: true
+      description: Report run ID
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Report results download
+      headers:
+        Content-Disposition:
+          schema:
+            type: string
+          description: Suggested filename for download
+          example: "attachment; filename=student_activity_report_2025-10-15_run_xyz789.csv"
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Report data in JSON format
+            example:
+              {
+                "report_metadata": {
+                  "job_id": "abc123",
+                  "run_id": "run_xyz789",
+                  "generated_at": "2025-10-15T10:30:00Z",
+                  "parameters": {...}
+                },
+                "data": [...],
+                "summary": {...}
+              }
+        text/csv:
+          schema:
+            type: string
+            format: binary
+            description: Report data in CSV format with header row
+        application/pdf:
+          schema:
+            type: string
+            format: binary
+            description: Report data in PDF format with formatted layout
+    '400':
+      description: Report run not yet completed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Report not ready"
+              message:
+                type: string
+                example: "This report run is still in progress. Current status: running"
+              status:
+                type: string
+                enum: [queued, running, failed]
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

@@ -1,0 +1,27 @@
+get:
+  tags:
+    - Companies
+  summary: Get top saved companies
+  description: Retrieve most saved companies across the platform
+  operationId: getTopSavedCompanies
+  security:
+    - BearerAuth: []
+  parameters:
+    - $ref: ../../components/parameters/Limit.yaml
+  responses:
+    '200':
+      description: Top saved companies retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                company:
+                  $ref: ../../components/schemas/Company.yaml
+                saves_count:
+                  type: integer
+                  description: Number of students who saved this company
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

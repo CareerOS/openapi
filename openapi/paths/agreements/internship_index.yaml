@@ -1,0 +1,301 @@
+get:
+  tags:
+    - Agreements (BETA)
+  summary: List internship agreements
+  description: |
+    **[BETA]** Retrieve internship agreements with filtering options.
+
+    **Access**:
+    - Students: See their own agreements
+    - Employers: See agreements for their organization
+    - University staff: See all agreements for their institution
+  operationId: listInternshipAgreements
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: status
+      in: query
+      description: Filter by agreement status
+      schema:
+        type: string
+        enum: [draft, pending_signatures, partially_signed, fully_signed, active, completed, cancelled, expired]
+    - name: student_id
+      in: query
+      description: Filter by student (university staff only)
+      schema:
+        type: string
+        format: uuid
+    - name: employer_id
+      in: query
+      description: Filter by employer organization
+      schema:
+        type: string
+        format: uuid
+    - name: start_date_from
+      in: query
+      description: Filter agreements with start date from this date
+      schema:
+        type: string
+        format: date
+    - name: start_date_to
+      in: query
+      description: Filter agreements with start date until this date
+      schema:
+        type: string
+        format: date
+    - name: limit
+      in: query
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 100
+    - name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+  responses:
+    '200':
+      description: Agreements retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              agreements:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    agreement_number:
+                      type: string
+                      example: "AGR-2025-001234"
+                    student:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        name:
+                          type: string
+                        email:
+                          type: string
+                    employer:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        organization_name:
+                          type: string
+                        contact_name:
+                          type: string
+                        contact_email:
+                          type: string
+                    university:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        name:
+                          type: string
+                    position_title:
+                      type: string
+                    start_date:
+                      type: string
+                      format: date
+                    end_date:
+                      type: string
+                      format: date
+                    status:
+                      type: string
+                      enum: [draft, pending_signatures, partially_signed, fully_signed, active, completed, cancelled, expired]
+                    signatures:
+                      type: object
+                      properties:
+                        student_signed:
+                          type: boolean
+                        employer_signed:
+                          type: boolean
+                        university_signed:
+                          type: boolean
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+              total:
+                type: integer
+              limit:
+                type: integer
+              offset:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+
+post:
+  tags:
+    - Agreements (BETA)
+  summary: Create internship agreement
+  description: |
+    **[BETA]** Create a new three-way internship agreement between student, employer, and university.
+
+    **Who can create**:
+    - Students can initiate for themselves
+    - University staff can create for any student
+    - Employers can propose for specific students
+
+    Agreement starts in `draft` status and requires signatures from all three parties.
+  operationId: createInternshipAgreement
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - student_id
+            - employer_id
+            - position_title
+            - start_date
+            - end_date
+          properties:
+            student_id:
+              type: string
+              format: uuid
+              description: Student party to the agreement
+            employer_id:
+              type: string
+              format: uuid
+              description: Employer organization ID
+            employer_contact_id:
+              type: string
+              format: uuid
+              description: Specific contact person at employer
+            position_title:
+              type: string
+              example: "Software Engineering Intern"
+            position_description:
+              type: string
+              description: Detailed description of internship role
+            department:
+              type: string
+              example: "Engineering"
+            start_date:
+              type: string
+              format: date
+              example: "2025-06-01"
+            end_date:
+              type: string
+              format: date
+              example: "2025-08-31"
+            hours_per_week:
+              type: number
+              format: float
+              example: 40
+            compensation:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: [paid, unpaid, stipend, academic_credit]
+                amount:
+                  type: number
+                  format: float
+                currency:
+                  type: string
+                  example: "USD"
+                frequency:
+                  type: string
+                  enum: [hourly, weekly, monthly, total]
+            work_location:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: [on_site, remote, hybrid]
+                address:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                country:
+                  type: string
+            learning_objectives:
+              type: array
+              description: Educational objectives and skills to be gained
+              items:
+                type: string
+              example: ["Gain experience in full-stack development", "Learn Agile methodologies"]
+            supervisor:
+              type: object
+              properties:
+                name:
+                  type: string
+                title:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+            additional_terms:
+              type: string
+              description: Any additional terms or conditions
+            send_for_signatures:
+              type: boolean
+              default: false
+              description: Immediately send to all parties for signature
+  responses:
+    '201':
+      description: Agreement created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              agreement_number:
+                type: string
+                example: "AGR-2025-001234"
+              status:
+                type: string
+                enum: [draft, pending_signatures]
+              created_at:
+                type: string
+                format: date-time
+              signatures_required:
+                type: object
+                properties:
+                  student:
+                    type: boolean
+                    example: true
+                  employer:
+                    type: boolean
+                    example: true
+                  university:
+                    type: boolean
+                    example: true
+              message:
+                type: string
+                example: "Internship agreement created successfully. Awaiting signatures from all parties."
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml

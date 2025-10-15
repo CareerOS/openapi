@@ -1,0 +1,110 @@
+get:
+  tags:
+    - Resume
+  summary: Get resume score
+  description: Get the current score and analysis for a base resume
+  operationId: getResumeScore
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: baseResumeID
+      in: path
+      required: true
+      description: Base resume ID
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Resume score retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              overall_score:
+                type: integer
+                minimum: 0
+                maximum: 100
+                description: Overall resume score
+              categories:
+                type: object
+                properties:
+                  impact:
+                    type: object
+                    properties:
+                      score:
+                        type: integer
+                      feedback:
+                        type: array
+                        items:
+                          type: string
+                  brevity:
+                    type: object
+                    properties:
+                      score:
+                        type: integer
+                      feedback:
+                        type: array
+                        items:
+                          type: string
+                  style:
+                    type: object
+                    properties:
+                      score:
+                        type: integer
+                      feedback:
+                        type: array
+                        items:
+                          type: string
+                  sections:
+                    type: object
+                    properties:
+                      score:
+                        type: integer
+                      feedback:
+                        type: array
+                        items:
+                          type: string
+              last_updated:
+                type: string
+                format: date-time
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+put:
+  tags:
+    - Resume
+  summary: Calculate resume score
+  description: Calculate and update the score for a base resume
+  operationId: calculateResumeScore
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: baseResumeID
+      in: path
+      required: true
+      description: Base resume ID
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Resume score calculated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              overall_score:
+                type: integer
+              categories:
+                type: object
+              message:
+                type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

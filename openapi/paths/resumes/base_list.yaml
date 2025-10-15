@@ -1,0 +1,60 @@
+get:
+  tags:
+    - Resume
+  summary: Get base resumes
+  description: Retrieve all base resumes for the authenticated user
+  operationId: getBaseResumes
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: status
+      in: query
+      description: Filter by resume status
+      schema:
+        type: string
+        enum: [draft, in_review, needs_revision, approved, published]
+  responses:
+    '200':
+      description: Resumes retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                title:
+                  type: string
+                template_id:
+                  type: string
+                  format: uuid
+                template_name:
+                  type: string
+                status:
+                  type: string
+                  enum: [draft, in_review, needs_revision, approved, published]
+                preview_url:
+                  type: string
+                  format: uri
+                created_at:
+                  type: string
+                  format: date-time
+                updated_at:
+                  type: string
+                  format: date-time
+                review:
+                  type: object
+                  nullable: true
+                  properties:
+                    reviewer_id:
+                      type: string
+                      format: uuid
+                    reviewer_name:
+                      type: string
+                    status:
+                      type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

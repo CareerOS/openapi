@@ -1,0 +1,36 @@
+get:
+  tags:
+    - Gamification
+  summary: Get user XP
+  description: Retrieve the authenticated user's experience points and level information
+  operationId: getSelfXP
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: XP information retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              total_xp:
+                type: integer
+                description: Total XP earned
+              current_level:
+                type: integer
+                description: Current level
+              current_level_xp:
+                type: integer
+                description: XP in current level
+              next_level_xp:
+                type: integer
+                description: XP needed for next level
+              level_name:
+                type: string
+                description: Name of current level
+              rank:
+                type: integer
+                description: User's rank among peers
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

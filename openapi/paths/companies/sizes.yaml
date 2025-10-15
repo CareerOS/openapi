@@ -1,0 +1,20 @@
+get:
+  tags:
+    - Companies
+  summary: Get company sizes
+  description: Retrieve list of available company size categories
+  operationId: getCompanySizes
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Company sizes retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5000+"]
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

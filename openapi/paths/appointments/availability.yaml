@@ -1,0 +1,199 @@
+get:
+  tags:
+    - CalendarOS (BETA)
+  summary: Get advisor availability
+  description: |
+    **[BETA - CalendarOS]** Retrieve available time slots for booking appointments with an advisor.
+
+    Returns open time slots based on the advisor's availability schedule and
+    existing bookings.
+  operationId: getAdvisorAvailability
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: advisor_id
+      in: query
+      required: true
+      description: Advisor ID to check availability for
+      schema:
+        type: string
+        format: uuid
+    - name: start_date
+      in: query
+      required: true
+      description: Start date for availability window
+      schema:
+        type: string
+        format: date
+      example: "2025-10-20"
+    - name: end_date
+      in: query
+      required: true
+      description: End date for availability window
+      schema:
+        type: string
+        format: date
+      example: "2025-10-27"
+    - name: duration_minutes
+      in: query
+      description: Desired appointment duration (to filter compatible slots)
+      schema:
+        type: integer
+        default: 30
+        minimum: 15
+        maximum: 120
+  responses:
+    '200':
+      description: Availability retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              advisor:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  title:
+                    type: string
+              available_slots:
+                type: array
+                description: List of available time slots
+                items:
+                  type: object
+                  properties:
+                    start_time:
+                      type: string
+                      format: date-time
+                      example: "2025-10-20T09:00:00Z"
+                    end_time:
+                      type: string
+                      format: date-time
+                      example: "2025-10-20T09:30:00Z"
+                    duration_minutes:
+                      type: integer
+                      example: 30
+                    location:
+                      type: string
+                      example: "Office 301"
+                    meeting_platform:
+                      type: string
+                      example: "zoom"
+              timezone:
+                type: string
+                example: "America/New_York"
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+put:
+  tags:
+    - CalendarOS (BETA)
+  summary: Update advisor availability schedule
+  description: |
+    **[BETA - CalendarOS]** Set or update the availability schedule for an advisor.
+
+    Define recurring weekly availability and specific date overrides.
+
+    **Access**: Advisors can only update their own availability
+  operationId: updateAdvisorAvailability
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            timezone:
+              type: string
+              example: "America/New_York"
+              description: Timezone for all time slots
+            weekly_schedule:
+              type: array
+              description: Recurring weekly availability
+              items:
+                type: object
+                required:
+                  - day_of_week
+                  - start_time
+                  - end_time
+                properties:
+                  day_of_week:
+                    type: integer
+                    minimum: 0
+                    maximum: 6
+                    description: Day of week (0=Sunday, 6=Saturday)
+                  start_time:
+                    type: string
+                    example: "09:00"
+                    description: Start time in HH:MM format
+                  end_time:
+                    type: string
+                    example: "17:00"
+                    description: End time in HH:MM format
+                  slot_duration_minutes:
+                    type: integer
+                    default: 30
+                    description: Default slot duration
+                  location:
+                    type: string
+                    description: Default meeting location
+                  meeting_platform:
+                    type: string
+                    enum: [in_person, zoom, teams, google_meet, phone, other]
+            date_overrides:
+              type: array
+              description: Specific date availability overrides (holidays, time off, etc.)
+              items:
+                type: object
+                required:
+                  - date
+                  - available
+                properties:
+                  date:
+                    type: string
+                    format: date
+                  available:
+                    type: boolean
+                    description: Whether available on this date
+                  custom_hours:
+                    type: object
+                    properties:
+                      start_time:
+                        type: string
+                        example: "10:00"
+                      end_time:
+                        type: string
+                        example: "15:00"
+  responses:
+    '200':
+      description: Availability schedule updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              advisor_id:
+                type: string
+                format: uuid
+              timezone:
+                type: string
+              updated_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Availability schedule updated successfully"
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml

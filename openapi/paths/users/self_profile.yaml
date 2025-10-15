@@ -1,0 +1,97 @@
+get:
+  tags:
+    - Users
+  summary: Get user profile
+  description: |
+    Retrieve the authenticated user's profile information.
+
+    **Custom Fields Support:** This endpoint returns any custom fields that have been set for the user profile.
+  operationId: getUserProfile
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: User profile retrieved successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Student.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+put:
+  tags:
+    - Users
+  summary: Update user profile
+  description: |
+    Update the authenticated user's profile information.
+
+    **Custom Fields Support:** You can include arbitrary custom fields in the request body.
+    Any fields not part of the standard schema will be stored and returned in the `custom_fields` object.
+
+    Example:
+    ```json
+    {
+      "first_name": "Maria",
+      "last_name": "Garcia",
+      "esade_program_track": "mba_fulltime",
+      "preferred_industry": "consulting"
+    }
+    ```
+  operationId: updateUserProfile
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Student.yaml
+  responses:
+    '200':
+      description: Profile updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Student.yaml
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+
+patch:
+  tags:
+    - Users
+  summary: Partially update user profile
+  description: Update specific fields of the authenticated user's profile
+  operationId: patchUserProfile
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            headline:
+              type: string
+            bio:
+              type: string
+            location:
+              type: string
+            linkedin_url:
+              type: string
+  responses:
+    '200':
+      description: Profile updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Student.yaml
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

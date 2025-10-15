@@ -1,0 +1,99 @@
+post:
+  tags:
+    - CalendarOS (BETA)
+  summary: Mark appointment attendance
+  description: |
+    **[BETA - CalendarOS]** Mark whether the student attended the appointment.
+
+    This endpoint allows advisors to record attendance after an appointment.
+    Marking attendance automatically updates the appointment status to `completed`
+    or `no_show`.
+
+    **Access**: Advisors only
+  operationId: markAppointmentAttendance
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Appointment ID
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - attended
+          properties:
+            attended:
+              type: boolean
+              description: Whether the student attended the appointment
+            notes:
+              type: string
+              description: Advisor notes from the appointment
+            outcomes:
+              type: array
+              description: Key outcomes or action items from the appointment
+              items:
+                type: string
+              example: ["Updated resume reviewed", "Identified target companies", "Scheduled follow-up"]
+            follow_up_required:
+              type: boolean
+              default: false
+              description: Whether a follow-up appointment is needed
+            follow_up_date:
+              type: string
+              format: date
+              description: Suggested date for follow-up (if required)
+  responses:
+    '200':
+      description: Attendance marked successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              attended:
+                type: boolean
+              status:
+                type: string
+                enum: [completed, no_show]
+              attendance_marked_at:
+                type: string
+                format: date-time
+              outcomes:
+                type: array
+                items:
+                  type: string
+              follow_up_required:
+                type: boolean
+              message:
+                type: string
+                example: "Attendance marked successfully"
+    '400':
+      description: Invalid request - attendance already marked or appointment not yet occurred
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid operation"
+              message:
+                type: string
+                example: "Attendance can only be marked for past appointments"
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

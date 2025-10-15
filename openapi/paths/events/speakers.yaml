@@ -1,0 +1,44 @@
+get:
+  tags:
+    - Events
+  summary: Get event speakers
+  description: Retrieve speakers for a specific event
+  operationId: getEventSpeakers
+  security:
+    - BearerAuth: []
+  parameters:
+    - $ref: ../../components/parameters/EventIDPath.yaml
+  responses:
+    '200':
+      description: Speakers retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+                title:
+                  type: string
+                company:
+                  type: string
+                bio:
+                  type: string
+                profile_picture_url:
+                  type: string
+                  format: uri
+                linkedin_url:
+                  type: string
+                  format: uri
+                is_saved:
+                  type: boolean
+                  description: Whether user has saved this speaker as a contact
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

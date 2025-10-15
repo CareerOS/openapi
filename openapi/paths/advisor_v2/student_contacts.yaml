@@ -1,0 +1,31 @@
+get:
+  tags:
+    - Advisor
+  summary: Get student contacts
+  description: Retrieve all contacts for a specific student
+  operationId: getStudentContacts
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Student ID
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Student contacts retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../../components/schemas/Contact.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

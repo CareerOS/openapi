@@ -1,0 +1,44 @@
+post:
+  tags:
+    - Resume
+  summary: Copy base resume
+  description: Create a copy of an existing base resume
+  operationId: copyBaseResume
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - base_resume_id
+          properties:
+            base_resume_id:
+              type: string
+              format: uuid
+              description: ID of the resume to copy
+            title:
+              type: string
+              description: Title for the new copy
+  responses:
+    '201':
+      description: Resume copied successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              message:
+                type: string
+                example: Resume copied successfully
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

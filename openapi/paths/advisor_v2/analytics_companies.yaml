@@ -1,0 +1,52 @@
+get:
+  tags:
+    - Advisor
+  summary: Get top companies analytics
+  description: Retrieve analytics about top companies students are targeting
+  operationId: getTopCompaniesWithStudents
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: cohort_ids
+      in: query
+      description: Filter by cohort IDs (comma-separated)
+      schema:
+        type: string
+    - $ref: ../../components/parameters/Limit.yaml
+  responses:
+    '200':
+      description: Company analytics retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              companies:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    company_id:
+                      type: string
+                      format: uuid
+                    company_name:
+                      type: string
+                    logo_url:
+                      type: string
+                    industry:
+                      type: string
+                    student_count:
+                      type: integer
+                      description: Number of students targeting this company
+                    applications_count:
+                      type: integer
+                      description: Number of applications to this company
+                    saves_count:
+                      type: integer
+                      description: Number of students who saved this company
+              total:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml

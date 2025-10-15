@@ -1,0 +1,261 @@
+get:
+  tags:
+    - Custom Fields (BETA)
+  summary: List custom field metadata definitions
+  description: |
+    **[BETA]** Retrieve custom field metadata definitions for a specific entity type.
+
+    **Note:** Custom fields can be used WITHOUT pre-defining them. Simply include any key-value pair in your
+    entity requests (students, jobs, companies, applications, events, contacts, agreements, employers, appointments,
+    resumes, alumni) and they will be stored and returned automatically.
+
+    This API is **optional** and provides metadata management for:
+    - Field labels and help text for UI display
+    - Validation rules (min/max length, patterns, etc.)
+    - Field type definitions (text, number, date, select, etc.)
+    - Field visibility controls
+    - Search/filter configuration
+
+    **Use this API when you need:** UI metadata, validation rules, or field type definitions.
+    **Skip this API if:** You just want to store arbitrary key-value pairs (they work out of the box!).
+
+    **Access**: University administrators only
+  operationId: listCustomFields
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: entity_type
+      in: query
+      required: true
+      description: Entity type to retrieve custom fields for
+      schema:
+        type: string
+        enum: [student, job, company, application, event, contact, internship_agreement, employer]
+      example: "student"
+    - name: status
+      in: query
+      description: Filter by field status
+      schema:
+        type: string
+        enum: [active, inactive, archived]
+        default: active
+    - name: include_values
+      in: query
+      description: Include dropdown values for select fields
+      schema:
+        type: boolean
+        default: true
+  responses:
+    '200':
+      description: Custom fields retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              entity_type:
+                type: string
+                enum: [student, job, company, application, event, contact, internship_agreement, employer]
+              custom_fields:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    field_name:
+                      type: string
+                      example: "preferred_industry"
+                    display_label:
+                      type: string
+                      example: "Preferred Industry"
+                    field_type:
+                      type: string
+                      enum: [text, textarea, number, date, boolean, single_select, multi_select, url, email, phone]
+                      description: |
+                        - text: Single line text input
+                        - textarea: Multi-line text input
+                        - number: Numeric value
+                        - date: Date picker
+                        - boolean: Yes/No checkbox
+                        - single_select: Dropdown with single selection
+                        - multi_select: Dropdown with multiple selections
+                        - url: URL/link field
+                        - email: Email address field
+                        - phone: Phone number field
+                    is_required:
+                      type: boolean
+                      description: Whether field is required
+                    is_searchable:
+                      type: boolean
+                      description: Whether field can be used in search/filters
+                    is_visible_to_students:
+                      type: boolean
+                      description: Whether students can see this field
+                    is_visible_to_employers:
+                      type: boolean
+                      description: Whether employers can see this field
+                    default_value:
+                      type: string
+                      description: Default value for the field
+                    validation_rules:
+                      type: object
+                      properties:
+                        min_length:
+                          type: integer
+                        max_length:
+                          type: integer
+                        pattern:
+                          type: string
+                          description: Regex pattern for validation
+                        min_value:
+                          type: number
+                        max_value:
+                          type: number
+                    help_text:
+                      type: string
+                      description: Help text shown to users
+                    sort_order:
+                      type: integer
+                      description: Display order of field
+                    status:
+                      type: string
+                      enum: [active, inactive, archived]
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+              total:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+
+post:
+  tags:
+    - Custom Fields (BETA)
+  summary: Create custom field metadata definition
+  description: |
+    **[BETA]** Create metadata for a custom field (optional).
+
+    **Remember:** You don't need to define custom fields to use them! Any key-value pair sent in entity
+    requests will be automatically stored and returned.
+
+    Create metadata definitions when you need:
+    - UI labels and help text
+    - Validation rules (e.g., min/max values, regex patterns)
+    - Field type specifications (text, number, date, select, etc.)
+    - Visibility controls (hide from students/employers)
+    - Search/filter configuration
+
+    **Access**: University administrators only
+  operationId: createCustomField
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - entity_type
+            - field_name
+            - display_label
+            - field_type
+          properties:
+            entity_type:
+              type: string
+              enum: [student, job, company, application, event, contact, internship_agreement, employer]
+              example: "student"
+            field_name:
+              type: string
+              description: Internal field name (alphanumeric and underscores only)
+              example: "preferred_industry"
+              pattern: "^[a-z0-9_]+$"
+            display_label:
+              type: string
+              example: "Preferred Industry"
+            field_type:
+              type: string
+              enum: [text, textarea, number, date, boolean, single_select, multi_select, url, email, phone]
+            is_required:
+              type: boolean
+              default: false
+            is_searchable:
+              type: boolean
+              default: true
+            is_visible_to_students:
+              type: boolean
+              default: true
+            is_visible_to_employers:
+              type: boolean
+              default: false
+            default_value:
+              type: string
+            validation_rules:
+              type: object
+              properties:
+                min_length:
+                  type: integer
+                max_length:
+                  type: integer
+                pattern:
+                  type: string
+                min_value:
+                  type: number
+                max_value:
+                  type: number
+            help_text:
+              type: string
+            sort_order:
+              type: integer
+  responses:
+    '201':
+      description: Custom field created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              field_name:
+                type: string
+              display_label:
+                type: string
+              field_type:
+                type: string
+              status:
+                type: string
+                example: "active"
+              created_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Custom field created successfully"
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '409':
+      description: Field name already exists
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Duplicate field name"
+              message:
+                type: string
+                example: "A custom field with this name already exists for this entity type"

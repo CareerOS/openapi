@@ -1,0 +1,56 @@
+get:
+  tags:
+    - Gamification
+  summary: Get user challenges
+  description: Retrieve the authenticated user's active and completed challenges
+  operationId: getSelfChallenges
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Challenges retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              active:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    progress:
+                      type: integer
+                      description: Current progress
+                    goal:
+                      type: integer
+                      description: Target to complete challenge
+                    reward_xp:
+                      type: integer
+                    deadline:
+                      type: string
+                      format: date-time
+              completed:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    completed_at:
+                      type: string
+                      format: date-time
+                    earned_xp:
+                      type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

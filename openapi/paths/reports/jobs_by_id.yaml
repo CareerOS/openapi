@@ -1,0 +1,159 @@
+get:
+  tags:
+    - Reports (PROPOSAL)
+  summary: Get report job details
+  description: |
+    **[PROPOSAL]** Retrieve detailed information about a specific report job,
+    including its configuration and execution history summary.
+  operationId: getReportJob
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Report job ID (MD5)
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Report job details retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                example: abc123
+              label:
+                type: string
+              description:
+                type: string
+              report_type:
+                type: string
+              parameters:
+                type: object
+              schedule:
+                type: object
+              last_run:
+                type: string
+                format: date-time
+              run_count:
+                type: integer
+                description: Total number of times this job has been executed
+              created_by:
+                type: string
+                format: uuid
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+put:
+  tags:
+    - Reports (PROPOSAL)
+  summary: Update report job
+  description: |
+    **[PROPOSAL]** Update a saved report job's configuration.
+  operationId: updateReportJob
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Report job ID (MD5)
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            label:
+              type: string
+            description:
+              type: string
+            parameters:
+              type: object
+            schedule:
+              type: object
+  responses:
+    '200':
+      description: Report job updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+              updated_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Report job updated successfully"
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+delete:
+  tags:
+    - Reports (PROPOSAL)
+  summary: Delete report job
+  description: |
+    **[PROPOSAL]** Delete a saved report job.
+
+    **Note:** This will also delete all associated report runs and their results.
+  operationId: deleteReportJob
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Report job ID (MD5)
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Report job deleted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+              deleted_at:
+                type: string
+                format: date-time
+              runs_deleted:
+                type: integer
+                description: Number of report runs that were also deleted
+              message:
+                type: string
+                example: "Report job and all associated runs deleted successfully"
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
