@@ -4,10 +4,7 @@
 
 CareerOS provides a comprehensive API-first platform that empowers career centers, students, and partners to deliver exceptional career development experiences. Built on modern technology standards and designed with both students and advisors in mind, CareerOS offers a complete solution for career services management.
 
-**Version**: 2.0.0
-**Date**: October 15, 2025
 **Total Endpoints**: 100+
-**Feature Modules**: 9 (5 stable, 4 BETA, 1 proposal)
 
 ---
 
@@ -15,7 +12,7 @@ CareerOS provides a comprehensive API-first platform that empowers career center
 
 ### Recently Added Features
 
-#### CalendarOS (BETA) - Appointment Scheduling Module
+#### CalendarOS API - Appointment Scheduling Module
 Complete appointment booking workflow with confirmation and attendance tracking:
 - Recurring availability schedules for advisors
 - Student-initiated booking with pending approval
@@ -24,7 +21,7 @@ Complete appointment booking workflow with confirmation and attendance tracking:
 - Multiple appointment types (counseling, resume review, mock interview, etc.)
 - Meeting platform integration (Zoom, Teams, Google Meet, etc.)
 
-#### Agreements API (BETA) - Three-Way Agreement Management
+#### Agreements API - Three-Way Agreement Management
 Comprehensive internship agreement workflow:
 - Draft agreement creation with internship details
 - Electronic signature workflow for students, employers, and universities
@@ -33,7 +30,7 @@ Comprehensive internship agreement workflow:
 - Modification with signature reset
 - Complete document management
 
-#### Employers API (BETA) - Employer Onboarding & Management
+#### Employers API - Employer Onboarding & Management
 Complete employer lifecycle management:
 - Public registration endpoint (no auth required)
 - Multi-user management with roles (admin, recruiter, hiring_manager, viewer)
@@ -41,7 +38,7 @@ Complete employer lifecycle management:
 - ATS and calendar integrations
 - Profile and settings management
 
-#### Custom Fields API (BETA) - Institution-Specific Extensions
+#### Custom Fields API - Institution-Specific Extensions
 Extend CareerOS with flexible custom field definitions:
 - 10 field types (text, number, date, dropdowns, etc.)
 - Dropdown value management
@@ -215,44 +212,7 @@ Enhanced analytics and management:
 - Cohort reporting
 - Student notes and case management
 
-**Over 97 documented endpoints** covering the complete career development lifecycle
-
----
-
-## Reporting Capabilities
-
-### Student Reports
-
-#### Activity Report (`/api/v1/users/self/reports/activity`)
-Comprehensive tracking of student engagement:
-- Applications submitted by status
-- Jobs saved and researched
-- Companies interacted with
-- Contacts added
-- Events registered for
-- Resumes created
-- Advisor meetings attended
-- Activity timeline visualization
-- Top companies engaged
-
-#### Progress Report (`/api/v1/users/self/reports/progress`)
-Career development tracking:
-- Overall career readiness percentage
-- Milestone completion tracking
-- Skills development assessment
-- Personalized next-step recommendations
-- Category-based progress (resume, networking, applications, events, skills)
-
-### Advisor Reports
-
-#### Cohort Report (`/api/v2/advisor/reports/cohort`)
-Comprehensive cohort-level analytics:
-- **Engagement Metrics**: Active students, login frequency, session duration
-- **Application Metrics**: Total applications, averages, status breakdown
-- **Networking Metrics**: Contact additions, event attendance, averages
-- **Resume Metrics**: Completion rates, average scores, review statistics
-- **Top Companies**: Most targeted by students
-- **Appointment Statistics**: Frequency and engagement levels
+**Over 100 documented endpoints** covering the complete career development lifecycle
 
 ---
 
@@ -328,37 +288,35 @@ Built to support institutions of any size, from small colleges to large universi
 
 ## API Statistics
 
-| Category | Count |
-|----------|-------|
-| **Total Endpoints** | 100+ |
-| **Public APIs** | 10 |
-| **User APIs** | 12 |
-| **Company APIs** | 11 |
-| **Job APIs** | 7 |
-| **Contact APIs** | 8 |
-| **Resume APIs** | 11 |
-| **Event APIs** | 6 |
-| **Alumni APIs** | 3 |
-| **Advisor V1 APIs** | 3 |
-| **Advisor V2 APIs** | 8 |
-| **AI Features** | 1 |
-| **CalendarOS (BETA)** | 5 |
-| **Agreements (BETA)** | 5 |
-| **Employers (BETA)** | 5 |
+| Category                 | Count |
+|--------------------------|-------|
+| **Total Endpoints**      | 100+ |
+| **Public APIs**          | 10 |
+| **User APIs**            | 12 |
+| **Company APIs**         | 11 |
+| **Job APIs**             | 7 |
+| **Contact APIs**         | 8 |
+| **Resume APIs**          | 11 |
+| **Event APIs**           | 6 |
+| **Alumni APIs**          | 3 |
+| **Advisor V1 APIs**      | 3 |
+| **Advisor V2 APIs**      | 8 |
+| **AI Features**          | 1 |
+| **CalendarOS**           | 5 |
+| **Agreements**           | 5 |
+| **Employers**            | 5 |
 | **Custom Fields (BETA)** | 2 |
-| **Reports (PROPOSAL)** | 3 |
-| **Filter Fields** | 1 |
+| **Reports (PROPOSAL)**   | 3 |
+| **Filter Fields**        | 1 |
 
 ### Feature Module Breakdown
 
 **Stable Modules (5):**
-- Resume OS
+- ResumeOS
 - EventOS
 - AlumniOS
 - Jobs & Companies
 - AI Features
-
-**BETA Modules (4):**
 - CalendarOS
 - Agreements API
 - Employers API
@@ -375,16 +333,6 @@ Built to support institutions of any size, from small colleges to large universi
 
 CareerOS marks certain features as **BETA** to indicate:
 
-✅ **Production-Ready**
-- Fully functional and thoroughly tested
-- Complete API documentation
-- Full support from our team
-- Ready for production integration
-
-🔄 **May Evolve**
-- Endpoints may be enhanced based on feedback
-- Request/response structures may be refined
-- New capabilities may be added
 - Naming conventions may be adjusted for clarity
 
 📢 **We Want Your Input**
@@ -392,40 +340,6 @@ CareerOS marks certain features as **BETA** to indicate:
 - Suggest improvements and enhancements
 - Report any issues or challenges
 - Help shape the future of these APIs
-
-### Current BETA Features
-
-#### CalendarOS - Appointment Scheduling
-**Feedback Areas:**
-- Additional appointment types needed
-- Calendar integration requirements (Google, Outlook, etc.)
-- Notification and reminder preferences
-- Reporting and analytics needs
-- Bulk operations and scheduling templates
-
-#### Agreements API - Internship Management
-**Feedback Areas:**
-- Additional agreement types (employment contracts, NDAs, etc.)
-- Signature verification methods
-- Document template requirements
-- Workflow customization options
-- Bulk agreement operations
-
-#### Employers API - Employer Onboarding
-**Feedback Areas:**
-- Additional ATS systems to integrate
-- Custom employer profile fields
-- Permission and role models
-- Employer analytics requirements
-- Bulk import/export capabilities
-
-#### Custom Fields API - Institution Extensions
-**Feedback Areas:**
-- Additional field types needed
-- Advanced validation rules
-- Conditional field visibility
-- Bulk field operations
-- Data migration tools
 
 ### Reports API - Currently a PROPOSAL
 
@@ -440,27 +354,6 @@ The Reports API is in **PROPOSAL** status, meaning we're actively designing it b
 - Report sharing and distribution
 - Data visualization requirements
 
-### How to Provide Feedback
-
-**Technical Feedback & Integration Issues:**
-- Email: api-feedback@thecareeros.com
-- Response Time: Within 24 hours
-
-**Feature Requests & Enhancements:**
-- Email: product@thecareeros.com
-- Response Time: Acknowledged within 48 hours
-
-**Integration Support:**
-- Email: api-support@thecareeros.com
-- Response Time: Within 12 hours (business days)
-
-**What to Include:**
-- Feature or endpoint name
-- Specific feedback or issue
-- Use case description
-- Expected behavior
-- Business value/impact
-
 ### API Versioning & Compatibility
 
 **Our Commitments:**
@@ -472,42 +365,6 @@ The Reports API is in **PROPOSAL** status, meaning we're actively designing it b
 - ✅ Deprecation notices with ample transition time
 - ✅ Backward compatibility whenever possible
 
----
-
-## Use Case Examples
-
-### For Students
-1. **Job Search to Application**
-   - Search jobs → Save interesting positions → Track application status → Get recommendations
-
-2. **Resume Building**
-   - Choose template → Build content → Get AI scoring → Request review → Download final version
-
-3. **Networking Journey**
-   - Find alumni → Add contacts → Send messages → Track relationships → Attend events
-
-4. **Career Progress**
-   - View activity report → Check milestones → Follow recommendations → Schedule advisor meeting
-
-### For Career Advisors
-1. **Student Support**
-   - View cohort analytics → Identify at-risk students → Review student summary → Schedule meeting → Add notes
-
-2. **Program Assessment**
-   - Run cohort reports → Analyze engagement metrics → Compare cohort performance → Export data
-
-3. **Appointment Management**
-   - Set availability → Students book appointments → Conduct sessions → Add notes → Track outcomes
-
-### For Integration Partners
-1. **Job Board Integration**
-   - Use API key authentication → Push jobs to CareerOS → Receive application webhooks
-
-2. **LMS Integration**
-   - Sync student data → Track career activities → Display progress in LMS
-
----
-
 ## Getting Started
 
 ### Quick Start
@@ -516,14 +373,6 @@ The Reports API is in **PROPOSAL** status, meaning we're actively designing it b
 3. Make your first API call to `/api/v1/users/self`
 4. Explore endpoints relevant to your use case
 5. Integrate into your application
-
-### Support Resources
-- **Documentation**: Comprehensive guides and API reference
-- **Code Examples**: JavaScript, Python, cURL samples
-- **API Support**: api-support@thecareeros.com
-- **Status Page**: https://status.thecareeros.com
-
----
 
 ## Conclusion
 
@@ -542,7 +391,7 @@ Whether you're building a custom student portal, integrating with existing syste
 For questions about the CareerOS API:
 - **Technical Documentation**: Review the [API Reference](./openapi.yaml)
 - **Authentication Help**: See [AUTHENTICATION.md](./AUTHENTICATION.md)
-- **Support**: Contact api-support@thecareeros.com
+- **Support**: Contact oleksii@thecareeros.com
 - **Website**: https://thecareeros.com
 
 Let's build something great together!
