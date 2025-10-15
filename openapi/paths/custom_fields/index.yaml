@@ -1,14 +1,23 @@
 get:
   tags:
     - Custom Fields (BETA)
-  summary: List custom field definitions
+  summary: List custom field metadata definitions
   description: |
-    **[BETA]** Retrieve all custom field definitions for a specific entity type.
+    **[BETA]** Retrieve custom field metadata definitions for a specific entity type.
 
-    Custom fields allow institutions to extend standard CareerOS entities with
-    additional fields specific to their needs. Similar to Symplicity's custom fields,
-    these enable institutions to collect additional data on students, jobs, applications,
-    and other entities.
+    **Note:** Custom fields can be used WITHOUT pre-defining them. Simply include any key-value pair in your
+    entity requests (students, jobs, companies, applications, events, contacts, agreements, employers, appointments,
+    resumes, alumni) and they will be stored and returned automatically.
+
+    This API is **optional** and provides metadata management for:
+    - Field labels and help text for UI display
+    - Validation rules (min/max length, patterns, etc.)
+    - Field type definitions (text, number, date, select, etc.)
+    - Field visibility controls
+    - Search/filter configuration
+
+    **Use this API when you need:** UI metadata, validation rules, or field type definitions.
+    **Skip this API if:** You just want to store arbitrary key-value pairs (they work out of the box!).
 
     **Access**: University administrators only
   operationId: listCustomFields
@@ -32,7 +41,7 @@ get:
         default: active
     - name: include_values
       in: query
-      description: Include picklist values for dropdown fields
+      description: Include dropdown values for select fields
       schema:
         type: boolean
         default: true
@@ -75,25 +84,6 @@ get:
                         - url: URL/link field
                         - email: Email address field
                         - phone: Phone number field
-                    picklist_values:
-                      type: array
-                      description: Available options for single_select and multi_select fields
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                            format: uuid
-                          value:
-                            type: string
-                            example: "Technology"
-                          label:
-                            type: string
-                            example: "Technology & Software"
-                          sort_order:
-                            type: integer
-                          is_active:
-                            type: boolean
                     is_required:
                       type: boolean
                       description: Whether field is required
@@ -148,12 +138,19 @@ get:
 post:
   tags:
     - Custom Fields (BETA)
-  summary: Create custom field definition
+  summary: Create custom field metadata definition
   description: |
-    **[BETA]** Create a new custom field definition for an entity type.
+    **[BETA]** Create metadata for a custom field (optional).
 
-    Allows university administrators to add custom fields to collect additional
-    data specific to their institution's needs.
+    **Remember:** You don't need to define custom fields to use them! Any key-value pair sent in entity
+    requests will be automatically stored and returned.
+
+    Create metadata definitions when you need:
+    - UI labels and help text
+    - Validation rules (e.g., min/max values, regex patterns)
+    - Field type specifications (text, number, date, select, etc.)
+    - Visibility controls (hide from students/employers)
+    - Search/filter configuration
 
     **Access**: University administrators only
   operationId: createCustomField
@@ -186,23 +183,6 @@ post:
             field_type:
               type: string
               enum: [text, textarea, number, date, boolean, single_select, multi_select, url, email, phone]
-            picklist_values:
-              type: array
-              description: Required for single_select and multi_select fields
-              items:
-                type: object
-                required:
-                  - value
-                  - label
-                properties:
-                  value:
-                    type: string
-                    example: "technology"
-                  label:
-                    type: string
-                    example: "Technology & Software"
-                  sort_order:
-                    type: integer
             is_required:
               type: boolean
               default: false

@@ -1,0 +1,207 @@
+get:
+  tags:
+    - Reports (PROPOSAL)
+  summary: List saved report jobs
+  description: |
+    **[PROPOSAL]** Retrieve all saved report job configurations.
+
+    A report job is a saved query configuration that can be executed multiple times.
+    Each execution creates a new report run with its own results and status.
+  operationId: listReportJobs
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: report_type
+      in: query
+      description: Filter by report type
+      schema:
+        type: string
+        enum: [student_activity, student_progress, cohort, custom]
+    - name: created_by
+      in: query
+      description: Filter by creator user ID
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Report jobs retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              jobs:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: MD5 ID
+                      example: abc123
+                    label:
+                      type: string
+                      description: Name of the report
+                      example: "Weekly Student Activity Report"
+                    description:
+                      type: string
+                      description: Description of the report
+                      example: "Student activity metrics for cohort 2025"
+                    report_type:
+                      type: string
+                      enum: [student_activity, student_progress, cohort, custom]
+                    parameters:
+                      type: object
+                      description: Report query parameters
+                      properties:
+                        student_ids:
+                          type: array
+                          items:
+                            type: string
+                        cohort_ids:
+                          type: array
+                          items:
+                            type: string
+                        from_date:
+                          type: string
+                          format: date
+                        to_date:
+                          type: string
+                          format: date
+                        format:
+                          type: string
+                          enum: [json, csv, pdf]
+                    schedule:
+                      type: object
+                      description: Optional scheduling configuration
+                      properties:
+                        enabled:
+                          type: boolean
+                        cron:
+                          type: string
+                          example: "0 9 * * 1"
+                        timezone:
+                          type: string
+                          example: "Europe/Madrid"
+                    last_run:
+                      type: string
+                      format: date-time
+                      description: The date and time of the last report run
+                      example: "2025-10-15T09:00:00Z"
+                    created_by:
+                      type: string
+                      format: uuid
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+              total:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+
+post:
+  tags:
+    - Reports (PROPOSAL)
+  summary: Create a saved report job
+  description: |
+    **[PROPOSAL]** Save a report configuration that can be executed multiple times.
+
+    This allows you to create reusable report templates with specific parameters,
+    and optionally schedule them to run automatically.
+  operationId: createReportJob
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - label
+            - report_type
+            - parameters
+          properties:
+            label:
+              type: string
+              description: Name for this report job
+              example: "Weekly Student Activity Report"
+            description:
+              type: string
+              description: Detailed description
+              example: "Weekly activity metrics for MBA cohort 2025"
+            report_type:
+              type: string
+              enum: [student_activity, student_progress, cohort, custom]
+              description: Type of report to generate
+            parameters:
+              type: object
+              description: Report query parameters
+              properties:
+                student_ids:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                cohort_ids:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                from_date:
+                  type: string
+                  format: date
+                to_date:
+                  type: string
+                  format: date
+                format:
+                  type: string
+                  enum: [json, csv, pdf]
+                  default: json
+            schedule:
+              type: object
+              description: Optional automatic scheduling
+              properties:
+                enabled:
+                  type: boolean
+                  default: false
+                cron:
+                  type: string
+                  description: Cron expression for schedule
+                  example: "0 9 * * 1"
+                timezone:
+                  type: string
+                  example: "Europe/Madrid"
+                notify_email:
+                  type: string
+                  format: email
+                  description: Email to notify when report completes
+  responses:
+    '201':
+      description: Report job created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: MD5 ID of the created job
+                example: abc123
+              label:
+                type: string
+              message:
+                type: string
+                example: "Report job created successfully"
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml

@@ -37,7 +37,7 @@ info:
     - **CalendarOS** - Complete appointment scheduling with confirmation and attendance tracking
     - **Agreements** - Three-way internship agreement management with electronic signatures
     - **Employers** - Employer registration, profile management, and team collaboration
-    - **Custom Fields** - Institution-specific field definitions and picklist management
+    - **Custom Fields** - Institution-specific field definitions and dropdown management
 
     **PROPOSAL:**
     - **Reports API** - Comprehensive analytics with multi-format export (JSON, CSV, PDF)
@@ -63,7 +63,7 @@ info:
 
     ### For Administrators
     - Configure custom fields for all entities
-    - Manage picklist values (similar to Symplicity)
+    - Manage dropdown values
     - Oversee internship agreement workflows
     - Handle employer registration and onboarding
     - Access university-wide analytics
@@ -109,7 +109,7 @@ info:
     ✅ **Comprehensive** - 100+ endpoints covering the complete career development lifecycle
     ✅ **Modern** - Built on OpenAPI 3.1.0 with industry-standard practices
     ✅ **Intelligent** - AI-powered resume scoring, job extraction, and student insights
-    ✅ **Flexible** - Custom fields and picklist values for institution-specific needs
+    ✅ **Flexible** - Custom fields and dropdown values for institution-specific needs
     ✅ **Integrated** - ATS and calendar integrations out of the box
     ✅ **Developer-Friendly** - Extensive documentation, code examples, and responsive support
     ✅ **Production-Ready** - Stable API with clear versioning and deprecation policies
@@ -230,13 +230,30 @@ tags:
       through ongoing account management.
   - name: Custom Fields (BETA)
     description: |
-      **[BETA]** Custom field definitions and picklist management.
+      **[BETA]** Flexible custom field system with optional metadata management.
 
-      Similar to Symplicity's custom fields and picklist management, this system allows university
-      administrators to extend standard CareerOS entities with institution-specific fields. Create
-      custom text fields, dropdowns, date pickers, and other input types for students, jobs,
-      applications, and more. Manage picklist values for dropdown fields to ensure consistent data
-      entry. Custom fields are fully searchable and can be used in filters, reports, and exports.
+      **How It Works:**
+      All major entities (students, jobs, companies, applications, events, contacts, agreements, employers,
+      appointments, resumes, alumni) support arbitrary custom fields out of the box. Simply include any
+      key-value pair in your API requests and they will be automatically stored and returned in the
+      `custom_fields` object. No pre-definition required!
+
+      **Example - Just Works:**
+      ```json
+      POST /api/v1/users/self/profile
+      {
+        "first_name": "Maria",
+        "last_name": "Garcia",
+        "esade_program_track": "mba_fulltime",
+        "preferred_industry": "consulting"
+      }
+      ```
+
+      **Optional Metadata API:**
+      The Custom Fields API endpoints (`/api/v1/custom-fields/*`) are **optional** and provide metadata
+      management for UI display labels, validation rules, and visibility controls. Use these
+      endpoints when you need structured definitions for forms, but skip them if you just want to store
+      arbitrary data.
 paths:
   /webhook/documents/scan-results:
     post:
@@ -399,7 +416,11 @@ paths:
       tags:
         - Users
       summary: Get self user info
-      description: Returns a self user info
+      description: |
+        Returns the current user's profile information.
+
+        **Custom Fields Support:** This endpoint returns any custom fields that have been set for the user.
+        Custom fields are institution-specific key-value pairs that can be added without modifying the API schema.
       operationId: getSelfUserInfo
       responses:
         '200':
@@ -417,7 +438,10 @@ paths:
       tags:
         - Users
       summary: Get user profile
-      description: Retrieve the authenticated user's profile information
+      description: |
+        Retrieve the authenticated user's profile information.
+
+        **Custom Fields Support:** This endpoint returns any custom fields that have been set for the user profile.
       operationId: getUserProfile
       security:
         - BearerAuth: []
@@ -436,7 +460,21 @@ paths:
       tags:
         - Users
       summary: Update user profile
-      description: Update the authenticated user's profile information
+      description: |
+        Update the authenticated user's profile information.
+
+        **Custom Fields Support:** You can include arbitrary custom fields in the request body.
+        Any fields not part of the standard schema will be stored and returned in the `custom_fields` object.
+
+        Example:
+        ```json
+        {
+          "first_name": "Maria",
+          "last_name": "Garcia",
+          "esade_program_track": "mba_fulltime",
+          "preferred_industry": "consulting"
+        }
+        ```
       operationId: updateUserProfile
       security:
         - BearerAuth: []
@@ -4126,6 +4164,799 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+  /api/v1/reports/jobs:
+    get:
+      tags:
+        - Reports (PROPOSAL)
+      summary: List saved report jobs
+      description: |
+        **[PROPOSAL]** Retrieve all saved report job configurations.
+
+        A report job is a saved query configuration that can be executed multiple times.
+        Each execution creates a new report run with its own results and status.
+      operationId: listReportJobs
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: report_type
+          in: query
+          description: Filter by report type
+          schema:
+            type: string
+            enum:
+              - student_activity
+              - student_progress
+              - cohort
+              - custom
+        - name: created_by
+          in: query
+          description: Filter by creator user ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Report jobs retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: MD5 ID
+                          example: abc123
+                        label:
+                          type: string
+                          description: Name of the report
+                          example: Weekly Student Activity Report
+                        description:
+                          type: string
+                          description: Description of the report
+                          example: Student activity metrics for cohort 2025
+                        report_type:
+                          type: string
+                          enum:
+                            - student_activity
+                            - student_progress
+                            - cohort
+                            - custom
+                        parameters:
+                          type: object
+                          description: Report query parameters
+                          properties:
+                            student_ids:
+                              type: array
+                              items:
+                                type: string
+                            cohort_ids:
+                              type: array
+                              items:
+                                type: string
+                            from_date:
+                              type: string
+                              format: date
+                            to_date:
+                              type: string
+                              format: date
+                            format:
+                              type: string
+                              enum:
+                                - json
+                                - csv
+                                - pdf
+                        schedule:
+                          type: object
+                          description: Optional scheduling configuration
+                          properties:
+                            enabled:
+                              type: boolean
+                            cron:
+                              type: string
+                              example: 0 9 * * 1
+                            timezone:
+                              type: string
+                              example: Europe/Madrid
+                        last_run:
+                          type: string
+                          format: date-time
+                          description: The date and time of the last report run
+                          example: '2025-10-15T09:00:00Z'
+                        created_by:
+                          type: string
+                          format: uuid
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                  total:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+    post:
+      tags:
+        - Reports (PROPOSAL)
+      summary: Create a saved report job
+      description: |
+        **[PROPOSAL]** Save a report configuration that can be executed multiple times.
+
+        This allows you to create reusable report templates with specific parameters,
+        and optionally schedule them to run automatically.
+      operationId: createReportJob
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - label
+                - report_type
+                - parameters
+              properties:
+                label:
+                  type: string
+                  description: Name for this report job
+                  example: Weekly Student Activity Report
+                description:
+                  type: string
+                  description: Detailed description
+                  example: Weekly activity metrics for MBA cohort 2025
+                report_type:
+                  type: string
+                  enum:
+                    - student_activity
+                    - student_progress
+                    - cohort
+                    - custom
+                  description: Type of report to generate
+                parameters:
+                  type: object
+                  description: Report query parameters
+                  properties:
+                    student_ids:
+                      type: array
+                      items:
+                        type: string
+                        format: uuid
+                    cohort_ids:
+                      type: array
+                      items:
+                        type: string
+                        format: uuid
+                    from_date:
+                      type: string
+                      format: date
+                    to_date:
+                      type: string
+                      format: date
+                    format:
+                      type: string
+                      enum:
+                        - json
+                        - csv
+                        - pdf
+                      default: json
+                schedule:
+                  type: object
+                  description: Optional automatic scheduling
+                  properties:
+                    enabled:
+                      type: boolean
+                      default: false
+                    cron:
+                      type: string
+                      description: Cron expression for schedule
+                      example: 0 9 * * 1
+                    timezone:
+                      type: string
+                      example: Europe/Madrid
+                    notify_email:
+                      type: string
+                      format: email
+                      description: Email to notify when report completes
+      responses:
+        '201':
+          description: Report job created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: MD5 ID of the created job
+                    example: abc123
+                  label:
+                    type: string
+                  message:
+                    type: string
+                    example: Report job created successfully
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+  /api/v1/reports/jobs/{id}:
+    get:
+      tags:
+        - Reports (PROPOSAL)
+      summary: Get report job details
+      description: |
+        **[PROPOSAL]** Retrieve detailed information about a specific report job,
+        including its configuration and execution history summary.
+      operationId: getReportJob
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Report job ID (MD5)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Report job details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: abc123
+                  label:
+                    type: string
+                  description:
+                    type: string
+                  report_type:
+                    type: string
+                  parameters:
+                    type: object
+                  schedule:
+                    type: object
+                  last_run:
+                    type: string
+                    format: date-time
+                  run_count:
+                    type: integer
+                    description: Total number of times this job has been executed
+                  created_by:
+                    type: string
+                    format: uuid
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    put:
+      tags:
+        - Reports (PROPOSAL)
+      summary: Update report job
+      description: |
+        **[PROPOSAL]** Update a saved report job's configuration.
+      operationId: updateReportJob
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Report job ID (MD5)
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                description:
+                  type: string
+                parameters:
+                  type: object
+                schedule:
+                  type: object
+      responses:
+        '200':
+          description: Report job updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  updated_at:
+                    type: string
+                    format: date-time
+                  message:
+                    type: string
+                    example: Report job updated successfully
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    delete:
+      tags:
+        - Reports (PROPOSAL)
+      summary: Delete report job
+      description: |
+        **[PROPOSAL]** Delete a saved report job.
+
+        **Note:** This will also delete all associated report runs and their results.
+      operationId: deleteReportJob
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Report job ID (MD5)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Report job deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  deleted_at:
+                    type: string
+                    format: date-time
+                  runs_deleted:
+                    type: integer
+                    description: Number of report runs that were also deleted
+                  message:
+                    type: string
+                    example: Report job and all associated runs deleted successfully
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /api/v1/reports/jobs/{id}/run:
+    post:
+      tags:
+        - Reports (PROPOSAL)
+      summary: Execute a report job
+      description: |
+        **[PROPOSAL]** Run a saved report job and create a new report run.
+
+        This executes the report with the job's configured parameters and returns
+        a run ID that can be used to check status and retrieve results.
+      operationId: executeReportJob
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Report job ID (MD5)
+          schema:
+            type: string
+      requestBody:
+        required: false
+        description: Optional parameter overrides for this specific run
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                parameter_overrides:
+                  type: object
+                  description: Override specific parameters for this run only
+                  properties:
+                    from_date:
+                      type: string
+                      format: date
+                    to_date:
+                      type: string
+                      format: date
+                    format:
+                      type: string
+                      enum:
+                        - json
+                        - csv
+                        - pdf
+                notify_email:
+                  type: string
+                  format: email
+                  description: Email to notify when this run completes
+      responses:
+        '202':
+          description: Report execution started
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  run_id:
+                    type: string
+                    description: Unique ID for this report run
+                    example: run_xyz789
+                  job_id:
+                    type: string
+                    example: abc123
+                  status:
+                    type: string
+                    enum:
+                      - queued
+                      - running
+                      - completed
+                      - failed
+                    example: queued
+                  started_at:
+                    type: string
+                    format: date-time
+                  message:
+                    type: string
+                    example: Report execution started. Check status at /api/v1/reports/jobs/{id}/runs/{run_id}
+                  status_url:
+                    type: string
+                    format: uri
+                    example: /api/v1/reports/jobs/abc123/runs/run_xyz789
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /api/v1/reports/jobs/{id}/runs:
+    get:
+      tags:
+        - Reports (PROPOSAL)
+      summary: Get report job execution history
+      description: |
+        **[PROPOSAL]** Retrieve the execution history for a specific report job.
+
+        Returns a list of all report runs for this job, including status, timestamps,
+        and result availability.
+      operationId: getReportJobRuns
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Report job ID (MD5)
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Filter by run status
+          schema:
+            type: string
+            enum:
+              - queued
+              - running
+              - completed
+              - failed
+        - name: limit
+          in: query
+          description: Number of runs to return
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          description: Number of runs to skip (pagination)
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+      responses:
+        '200':
+          description: Report runs retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    example: abc123
+                  job_label:
+                    type: string
+                    example: Weekly Student Activity Report
+                  runs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        run_id:
+                          type: string
+                          example: run_xyz789
+                        status:
+                          type: string
+                          enum:
+                            - queued
+                            - running
+                            - completed
+                            - failed
+                        started_at:
+                          type: string
+                          format: date-time
+                        completed_at:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        duration_seconds:
+                          type: integer
+                          description: Execution time in seconds
+                          nullable: true
+                        record_count:
+                          type: integer
+                          description: Number of records in the report
+                          nullable: true
+                        file_size_bytes:
+                          type: integer
+                          description: Size of the generated report file
+                          nullable: true
+                        format:
+                          type: string
+                          enum:
+                            - json
+                            - csv
+                            - pdf
+                        error_message:
+                          type: string
+                          nullable: true
+                          description: Error message if status is 'failed'
+                        triggered_by:
+                          type: string
+                          description: How this run was triggered
+                          enum:
+                            - manual
+                            - scheduled
+                            - api
+                        triggered_by_user:
+                          type: string
+                          format: uuid
+                          nullable: true
+                  total:
+                    type: integer
+                    description: Total number of runs for this job
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /api/v1/reports/jobs/{id}/runs/{run_id}:
+    get:
+      tags:
+        - Reports (PROPOSAL)
+      summary: Get report run status and details
+      description: |
+        **[PROPOSAL]** Retrieve the status and details of a specific report run.
+
+        Use this endpoint to check the execution status and get metadata about the generated report.
+        To download the actual report data, use the `/results` endpoint.
+      operationId: getReportRun
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Report job ID (MD5)
+          schema:
+            type: string
+        - name: run_id
+          in: path
+          required: true
+          description: Report run ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Report run details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  run_id:
+                    type: string
+                    example: run_xyz789
+                  job_id:
+                    type: string
+                    example: abc123
+                  job_label:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                      - queued
+                      - running
+                      - completed
+                      - failed
+                  started_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  duration_seconds:
+                    type: integer
+                    nullable: true
+                  progress_percent:
+                    type: integer
+                    description: Progress percentage for running reports (0-100)
+                    minimum: 0
+                    maximum: 100
+                    nullable: true
+                  parameters:
+                    type: object
+                    description: Parameters used for this run
+                  record_count:
+                    type: integer
+                    description: Number of records in the generated report
+                    nullable: true
+                  file_size_bytes:
+                    type: integer
+                    nullable: true
+                  format:
+                    type: string
+                    enum:
+                      - json
+                      - csv
+                      - pdf
+                  error_message:
+                    type: string
+                    nullable: true
+                  triggered_by:
+                    type: string
+                    enum:
+                      - manual
+                      - scheduled
+                      - api
+                  triggered_by_user:
+                    type: string
+                    format: uuid
+                    nullable: true
+                  results_url:
+                    type: string
+                    format: uri
+                    description: URL to download report results (only if status is 'completed')
+                    nullable: true
+                    example: /api/v1/reports/jobs/abc123/runs/run_xyz789/results
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /api/v1/reports/jobs/{id}/runs/{run_id}/results:
+    get:
+      tags:
+        - Reports (PROPOSAL)
+      summary: Download report run results
+      description: |
+        **[PROPOSAL]** Download the generated report data for a completed report run.
+
+        The response format (JSON, CSV, or PDF) matches the format specified when the report was created/executed.
+        The Content-Disposition header will include a suggested filename.
+
+        **Note:** This endpoint only returns data for runs with status 'completed'.
+      operationId: downloadReportResults
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Report job ID (MD5)
+          schema:
+            type: string
+        - name: run_id
+          in: path
+          required: true
+          description: Report run ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Report results download
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+              description: Suggested filename for download
+              example: attachment; filename=student_activity_report_2025-10-15_run_xyz789.csv
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Report data in JSON format
+                example:
+                  report_metadata:
+                    job_id: abc123
+                    run_id: run_xyz789
+                    generated_at: '2025-10-15T10:30:00Z'
+                    parameters:
+                      ...: null
+                  data:
+                    - ...
+                  summary:
+                    ...: null
+            text/csv:
+              schema:
+                type: string
+                format: binary
+                description: Report data in CSV format with header row
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+                description: Report data in PDF format with formatted layout
+        '400':
+          description: Report run not yet completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Report not ready
+                  message:
+                    type: string
+                    example: 'This report run is still in progress. Current status: running'
+                  status:
+                    type: string
+                    enum:
+                      - queued
+                      - running
+                      - failed
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
   /api/v1/appointments:
     get:
       tags:
@@ -7505,14 +8336,23 @@ paths:
     get:
       tags:
         - Custom Fields (BETA)
-      summary: List custom field definitions
+      summary: List custom field metadata definitions
       description: |
-        **[BETA]** Retrieve all custom field definitions for a specific entity type.
+        **[BETA]** Retrieve custom field metadata definitions for a specific entity type.
 
-        Custom fields allow institutions to extend standard CareerOS entities with
-        additional fields specific to their needs. Similar to Symplicity's custom fields,
-        these enable institutions to collect additional data on students, jobs, applications,
-        and other entities.
+        **Note:** Custom fields can be used WITHOUT pre-defining them. Simply include any key-value pair in your
+        entity requests (students, jobs, companies, applications, events, contacts, agreements, employers, appointments,
+        resumes, alumni) and they will be stored and returned automatically.
+
+        This API is **optional** and provides metadata management for:
+        - Field labels and help text for UI display
+        - Validation rules (min/max length, patterns, etc.)
+        - Field type definitions (text, number, date, select, etc.)
+        - Field visibility controls
+        - Search/filter configuration
+
+        **Use this API when you need:** UI metadata, validation rules, or field type definitions.
+        **Skip this API if:** You just want to store arbitrary key-value pairs (they work out of the box!).
 
         **Access**: University administrators only
       operationId: listCustomFields
@@ -7547,7 +8387,7 @@ paths:
             default: active
         - name: include_values
           in: query
-          description: Include picklist values for dropdown fields
+          description: Include dropdown values for select fields
           schema:
             type: boolean
             default: true
@@ -7608,25 +8448,6 @@ paths:
                             - url: URL/link field
                             - email: Email address field
                             - phone: Phone number field
-                        picklist_values:
-                          type: array
-                          description: Available options for single_select and multi_select fields
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                                format: uuid
-                              value:
-                                type: string
-                                example: Technology
-                              label:
-                                type: string
-                                example: Technology & Software
-                              sort_order:
-                                type: integer
-                              is_active:
-                                type: boolean
                         is_required:
                           type: boolean
                           description: Whether field is required
@@ -7683,12 +8504,19 @@ paths:
     post:
       tags:
         - Custom Fields (BETA)
-      summary: Create custom field definition
+      summary: Create custom field metadata definition
       description: |
-        **[BETA]** Create a new custom field definition for an entity type.
+        **[BETA]** Create metadata for a custom field (optional).
 
-        Allows university administrators to add custom fields to collect additional
-        data specific to their institution's needs.
+        **Remember:** You don't need to define custom fields to use them! Any key-value pair sent in entity
+        requests will be automatically stored and returned.
+
+        Create metadata definitions when you need:
+        - UI labels and help text
+        - Validation rules (e.g., min/max values, regex patterns)
+        - Field type specifications (text, number, date, select, etc.)
+        - Visibility controls (hide from students/employers)
+        - Search/filter configuration
 
         **Access**: University administrators only
       operationId: createCustomField
@@ -7739,23 +8567,6 @@ paths:
                     - url
                     - email
                     - phone
-                picklist_values:
-                  type: array
-                  description: Required for single_select and multi_select fields
-                  items:
-                    type: object
-                    required:
-                      - value
-                      - label
-                    properties:
-                      value:
-                        type: string
-                        example: technology
-                      label:
-                        type: string
-                        example: Technology & Software
-                      sort_order:
-                        type: integer
                 is_required:
                   type: boolean
                   default: false
@@ -7838,7 +8649,7 @@ paths:
         - Custom Fields (BETA)
       summary: Get custom field definition
       description: |
-        **[BETA]** Retrieve a specific custom field definition including all picklist values.
+        **[BETA]** Retrieve a specific custom field definition including all dropdown values.
       operationId: getCustomField
       security:
         - BearerAuth: []
@@ -7869,22 +8680,6 @@ paths:
                     type: string
                   field_type:
                     type: string
-                  picklist_values:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          format: uuid
-                        value:
-                          type: string
-                        label:
-                          type: string
-                        sort_order:
-                          type: integer
-                        is_active:
-                          type: boolean
                   is_required:
                     type: boolean
                   is_searchable:
@@ -7938,7 +8733,6 @@ paths:
         **[BETA]** Update a custom field definition.
 
         **Note**: Changing field_type may result in data loss for existing values.
-        Adding/removing picklist values will not affect existing data.
       operationId: updateCustomField
       security:
         - BearerAuth: []
@@ -7959,23 +8753,6 @@ paths:
               properties:
                 display_label:
                   type: string
-                picklist_values:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        format: uuid
-                        description: Include ID to update existing value, omit to create new
-                      value:
-                        type: string
-                      label:
-                        type: string
-                      sort_order:
-                        type: integer
-                      is_active:
-                        type: boolean
                 is_required:
                   type: boolean
                 is_searchable:
@@ -9015,6 +9792,14 @@ components:
           type: string
           format: date-time
           description: The timestamp when the LinkedIn identifiers were last updated.
+        custom_fields:
+          type: object
+          additionalProperties: true
+          description: |
+            Institution-specific custom fields as key-value pairs. Any field sent in requests that is not part
+            of the standard schema will be stored here and returned in responses.
+
+            Example: `{"esade_program_track": "mba_fulltime", "preferred_industry": "consulting"}`
       required:
         - id
         - first_name

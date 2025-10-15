@@ -1,0 +1,95 @@
+get:
+  tags:
+    - Reports (PROPOSAL)
+  summary: Get report run status and details
+  description: |
+    **[PROPOSAL]** Retrieve the status and details of a specific report run.
+
+    Use this endpoint to check the execution status and get metadata about the generated report.
+    To download the actual report data, use the `/results` endpoint.
+  operationId: getReportRun
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Report job ID (MD5)
+      schema:
+        type: string
+    - name: run_id
+      in: path
+      required: true
+      description: Report run ID
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Report run details retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              run_id:
+                type: string
+                example: run_xyz789
+              job_id:
+                type: string
+                example: abc123
+              job_label:
+                type: string
+              status:
+                type: string
+                enum: [queued, running, completed, failed]
+              started_at:
+                type: string
+                format: date-time
+              completed_at:
+                type: string
+                format: date-time
+                nullable: true
+              duration_seconds:
+                type: integer
+                nullable: true
+              progress_percent:
+                type: integer
+                description: Progress percentage for running reports (0-100)
+                minimum: 0
+                maximum: 100
+                nullable: true
+              parameters:
+                type: object
+                description: Parameters used for this run
+              record_count:
+                type: integer
+                description: Number of records in the generated report
+                nullable: true
+              file_size_bytes:
+                type: integer
+                nullable: true
+              format:
+                type: string
+                enum: [json, csv, pdf]
+              error_message:
+                type: string
+                nullable: true
+              triggered_by:
+                type: string
+                enum: [manual, scheduled, api]
+              triggered_by_user:
+                type: string
+                format: uuid
+                nullable: true
+              results_url:
+                type: string
+                format: uri
+                description: URL to download report results (only if status is 'completed')
+                nullable: true
+                example: "/api/v1/reports/jobs/abc123/runs/run_xyz789/results"
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

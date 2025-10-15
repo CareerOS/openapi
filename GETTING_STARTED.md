@@ -86,14 +86,14 @@ CareerOS provides multiple API versions optimized for different use cases:
 
 **Start Here:**
 1. `/api/v1/custom-fields` - Configure institution-specific fields (BETA)
-2. `/api/v1/filterfields` - Manage picklist values
+2. `/api/v1/filterfields` - Manage dropdown values
 3. `/api/v2/advisor/reports/cohort` - University-wide analytics
 4. `/api/v1/employers/register` - Employer onboarding (BETA)
 5. `/api/v1/agreements/internship` - Agreement management (BETA)
 
 **Key Features:**
 - Custom field definitions for all entities
-- Picklist value management
+- Dropdown value management
 - Employer registration workflow
 - Multi-party agreement system
 - Advanced reporting capabilities
@@ -495,79 +495,110 @@ PUT /api/v1/employers/settings
 }
 ```
 
-### Custom Fields API (BETA) (`/api/v1/custom-fields/*`)
-**Institution-specific data extensions**
+### Custom Fields (BETA) - Dynamic & Flexible
+**Zero-configuration custom data for all entities**
 
-Extend standard CareerOS entities with custom fields tailored to your institution's needs:
+CareerOS supports **arbitrary custom fields** on all major entities without requiring pre-definition!
 
-**Field Types:**
-- `text` - Single line text input
-- `textarea` - Multi-line text
-- `number` - Numeric values
-- `date` - Date picker
-- `boolean` - Yes/No checkbox
-- `single_select` - Dropdown (single choice)
-- `multi_select` - Dropdown (multiple choices)
-- `url` - URL/link field
-- `email` - Email address
-- `phone` - Phone number
+**How It Works:**
+Simply include any key-value pair in your API requests. Fields not part of the standard schema are automatically stored and returned in the `custom_fields` object.
 
-**Picklist Management:**
-- Define dropdown values for select fields
-- Sort order and active status
-- Value labels and internal values
-- Institution-specific taxonomies
-
-**Supported Entities:**
+**Supported Entities (11 modules):**
 - Students
 - Jobs
 - Companies
 - Applications
-- Events
+- Events (EventOS)
 - Contacts
 - Internship Agreements
 - Employers
+- Appointments (CalendarOS)
+- Resumes (ResumeOS)
+- Alumni (AlumniOS)
 
-**Visibility Controls:**
-- Show/hide from students
-- Show/hide from employers
-- Searchable/filterable
-- Required/optional
+**Example - It Just Works:**
+```bash
+# Send custom fields in any request
+PUT /api/v1/users/self/profile
+{
+  "first_name": "Maria",
+  "last_name": "Garcia",
+  "email": "maria@university.edu",
+  "program_track": "mba_fulltime",
+  "preferred_industry": "consulting",
+  "work_authorization": "us_citizen",
+  "career_interests": ["strategy", "innovation"]
+}
+
+# Response includes custom fields
+{
+  "id": "uuid",
+  "first_name": "Maria",
+  "last_name": "Garcia",
+  "email": "maria@university.edu",
+  "custom_fields": {
+    "program_track": "mba_fulltime",
+    "preferred_industry": "consulting",
+    "work_authorization": "us_citizen",
+    "career_interests": ["strategy", "innovation"]
+  }
+}
+
+# Works for ALL entities
+POST /api/v1/applications
+{
+  "job_id": "uuid",
+  "status": "applied",
+  "application_source": "career_fair",
+  "notes_from_recruiter": "Strong candidate",
+  "internal_rating": 4.5
+}
+```
+
+**Optional Metadata API (`/api/v1/custom-fields/*`):**
+
+When you need UI forms, validation, or dropdown management, use the optional metadata API:
 
 ```bash
-# Create custom field
+# Define metadata for a custom field (optional)
 POST /api/v1/custom-fields
 {
   "entity_type": "student",
   "field_name": "preferred_industry",
   "display_label": "Preferred Industry",
   "field_type": "single_select",
-  "picklist_values": [
-    {"value": "technology", "label": "Technology & Software"},
-    {"value": "finance", "label": "Finance & Banking"},
-    {"value": "healthcare", "label": "Healthcare & Life Sciences"}
-  ],
+  "help_text": "Select your preferred industry",
   "is_searchable": true,
   "is_visible_to_students": true
 }
 
-# Get custom fields for entity type
+# Get metadata definitions
 GET /api/v1/custom-fields?entity_type=student&status=active
 
-# Update field
+# Update metadata
 PUT /api/v1/custom-fields/{id}
 {
-  "picklist_values": [
-    // Add new option
-    {"value": "consulting", "label": "Consulting", "sort_order": 4}
-  ]
+  "display_label": "Industry Preference",
+  "help_text": "Choose your target industry"
 }
 ```
 
-### Filter Fields API (`/api/v1/filterfields`)
-**Standardized picklist values across all entities**
+**Use Metadata API When You Need:**
+- ✅ UI form labels and help text
+- ✅ Validation rules (required, min/max, patterns)
+- ✅ Field type definitions
+- ✅ Visibility controls
+- ✅ Search/filter configuration
 
-Retrieve all available filter options (picklist values) for consistent data entry and powerful filtering:
+**Skip Metadata API If:**
+- ✅ You just want to store arbitrary key-value data (it works automatically!)
+- ✅ You're handling validation in your application layer
+- ✅ You don't need UI form definitions
+
+### Filter Fields API (`/api/v1/filterfields`)
+**Standardized dropdown values across all entities**
+
+Retrieve all available filter options (dropdown values) for consistent data entry and powerful filtering:
 
 **Categories:**
 - **Companies** - locations, sizes, tags/industries
@@ -576,7 +607,7 @@ Retrieve all available filter options (picklist values) for consistent data entr
 - **Students** - class years, student levels, majors, minors, GPA ranges, work authorization
 - **Applications** - statuses, sources
 - **Internships** - agreement statuses, compensation types, work locations
-- **Custom Fields** - Institution-defined picklist values
+- **Custom Fields** - Institution-defined dropdown values
 
 ```bash
 # Get all filter fields
@@ -955,7 +986,7 @@ Employer registration, profile management, and team collaboration.
 - Reporting requirements
 
 #### Custom Fields API (`/api/v1/custom-fields/*`)
-Institution-specific field definitions and picklist management.
+Institution-specific field definitions and dropdown management.
 
 **Feedback Welcome:**
 - Additional field types

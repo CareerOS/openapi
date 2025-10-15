@@ -2,7 +2,10 @@ get:
   tags:
     - Users
   summary: Get user profile
-  description: Retrieve the authenticated user's profile information
+  description: |
+    Retrieve the authenticated user's profile information.
+
+    **Custom Fields Support:** This endpoint returns any custom fields that have been set for the user profile.
   operationId: getUserProfile
   security:
     - BearerAuth: []
@@ -22,7 +25,21 @@ put:
   tags:
     - Users
   summary: Update user profile
-  description: Update the authenticated user's profile information
+  description: |
+    Update the authenticated user's profile information.
+
+    **Custom Fields Support:** You can include arbitrary custom fields in the request body.
+    Any fields not part of the standard schema will be stored and returned in the `custom_fields` object.
+
+    Example:
+    ```json
+    {
+      "first_name": "Maria",
+      "last_name": "Garcia",
+      "esade_program_track": "mba_fulltime",
+      "preferred_industry": "consulting"
+    }
+    ```
   operationId: updateUserProfile
   security:
     - BearerAuth: []

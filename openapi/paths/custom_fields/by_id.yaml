@@ -3,7 +3,7 @@ get:
     - Custom Fields (BETA)
   summary: Get custom field definition
   description: |
-    **[BETA]** Retrieve a specific custom field definition including all picklist values.
+    **[BETA]** Retrieve a specific custom field definition including all dropdown values.
   operationId: getCustomField
   security:
     - BearerAuth: []
@@ -34,22 +34,6 @@ get:
                 type: string
               field_type:
                 type: string
-              picklist_values:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                    value:
-                      type: string
-                    label:
-                      type: string
-                    sort_order:
-                      type: integer
-                    is_active:
-                      type: boolean
               is_required:
                 type: boolean
               is_searchable:
@@ -104,7 +88,6 @@ put:
     **[BETA]** Update a custom field definition.
 
     **Note**: Changing field_type may result in data loss for existing values.
-    Adding/removing picklist values will not affect existing data.
   operationId: updateCustomField
   security:
     - BearerAuth: []
@@ -125,23 +108,6 @@ put:
           properties:
             display_label:
               type: string
-            picklist_values:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                    description: Include ID to update existing value, omit to create new
-                  value:
-                    type: string
-                  label:
-                    type: string
-                  sort_order:
-                    type: integer
-                  is_active:
-                    type: boolean
             is_required:
               type: boolean
             is_searchable:

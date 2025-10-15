@@ -38,7 +38,7 @@ info:
     - **CalendarOS** - Complete appointment scheduling with confirmation and attendance tracking
     - **Agreements** - Three-way internship agreement management with electronic signatures
     - **Employers** - Employer registration, profile management, and team collaboration
-    - **Custom Fields** - Institution-specific field definitions and picklist management
+    - **Custom Fields** - Institution-specific field definitions and dropdown management
 
     **PROPOSAL:**
     - **Reports API** - Comprehensive analytics with multi-format export (JSON, CSV, PDF)
@@ -64,7 +64,7 @@ info:
 
     ### For Administrators
     - Configure custom fields for all entities
-    - Manage picklist values (similar to Symplicity)
+    - Manage dropdown values
     - Oversee internship agreement workflows
     - Handle employer registration and onboarding
     - Access university-wide analytics
@@ -110,7 +110,7 @@ info:
     ✅ **Comprehensive** - 100+ endpoints covering the complete career development lifecycle
     ✅ **Modern** - Built on OpenAPI 3.1.0 with industry-standard practices
     ✅ **Intelligent** - AI-powered resume scoring, job extraction, and student insights
-    ✅ **Flexible** - Custom fields and picklist values for institution-specific needs
+    ✅ **Flexible** - Custom fields and dropdown values for institution-specific needs
     ✅ **Integrated** - ATS and calendar integrations out of the box
     ✅ **Developer-Friendly** - Extensive documentation, code examples, and responsive support
     ✅ **Production-Ready** - Stable API with clear versioning and deprecation policies
@@ -232,13 +232,30 @@ tags:
       through ongoing account management.
   - name: Custom Fields (BETA)
     description: |
-      **[BETA]** Custom field definitions and picklist management.
+      **[BETA]** Flexible custom field system with optional metadata management.
 
-      Similar to Symplicity's custom fields and picklist management, this system allows university
-      administrators to extend standard CareerOS entities with institution-specific fields. Create
-      custom text fields, dropdowns, date pickers, and other input types for students, jobs,
-      applications, and more. Manage picklist values for dropdown fields to ensure consistent data
-      entry. Custom fields are fully searchable and can be used in filters, reports, and exports.
+      **How It Works:**
+      All major entities (students, jobs, companies, applications, events, contacts, agreements, employers,
+      appointments, resumes, alumni) support arbitrary custom fields out of the box. Simply include any
+      key-value pair in your API requests and they will be automatically stored and returned in the
+      `custom_fields` object. No pre-definition required!
+
+      **Example - Just Works:**
+      ```json
+      POST /api/v1/users/self/profile
+      {
+        "first_name": "Maria",
+        "last_name": "Garcia",
+        "esade_program_track": "mba_fulltime",
+        "preferred_industry": "consulting"
+      }
+      ```
+
+      **Optional Metadata API:**
+      The Custom Fields API endpoints (`/api/v1/custom-fields/*`) are **optional** and provide metadata
+      management for UI display labels, validation rules, and visibility controls. Use these
+      endpoints when you need structured definitions for forms, but skip them if you just want to store
+      arbitrary data.
 
 paths:
   # ==========================================
@@ -398,6 +415,20 @@ paths:
     $ref: paths/reports/student_progress.yaml
   /api/v1/reports/cohort:
     $ref: paths/reports/cohort.yaml
+
+  # Report Jobs - Saved report configurations
+  /api/v1/reports/jobs:
+    $ref: paths/reports/jobs_index.yaml
+  /api/v1/reports/jobs/{id}:
+    $ref: paths/reports/jobs_by_id.yaml
+  /api/v1/reports/jobs/{id}/run:
+    $ref: paths/reports/jobs_by_id_run.yaml
+  /api/v1/reports/jobs/{id}/runs:
+    $ref: paths/reports/jobs_by_id_runs.yaml
+  /api/v1/reports/jobs/{id}/runs/{run_id}:
+    $ref: paths/reports/jobs_by_id_runs_by_run_id.yaml
+  /api/v1/reports/jobs/{id}/runs/{run_id}/results:
+    $ref: paths/reports/jobs_by_id_runs_by_run_id_results.yaml
 
   # ==========================================
   # APPOINTMENTS API (BETA) - CalendarOS

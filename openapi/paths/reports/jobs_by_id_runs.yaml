@@ -1,0 +1,112 @@
+get:
+  tags:
+    - Reports (PROPOSAL)
+  summary: Get report job execution history
+  description: |
+    **[PROPOSAL]** Retrieve the execution history for a specific report job.
+
+    Returns a list of all report runs for this job, including status, timestamps,
+    and result availability.
+  operationId: getReportJobRuns
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Report job ID (MD5)
+      schema:
+        type: string
+    - name: status
+      in: query
+      description: Filter by run status
+      schema:
+        type: string
+        enum: [queued, running, completed, failed]
+    - name: limit
+      in: query
+      description: Number of runs to return
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 100
+    - name: offset
+      in: query
+      description: Number of runs to skip (pagination)
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+  responses:
+    '200':
+      description: Report runs retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              job_id:
+                type: string
+                example: abc123
+              job_label:
+                type: string
+                example: "Weekly Student Activity Report"
+              runs:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    run_id:
+                      type: string
+                      example: run_xyz789
+                    status:
+                      type: string
+                      enum: [queued, running, completed, failed]
+                    started_at:
+                      type: string
+                      format: date-time
+                    completed_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                    duration_seconds:
+                      type: integer
+                      description: Execution time in seconds
+                      nullable: true
+                    record_count:
+                      type: integer
+                      description: Number of records in the report
+                      nullable: true
+                    file_size_bytes:
+                      type: integer
+                      description: Size of the generated report file
+                      nullable: true
+                    format:
+                      type: string
+                      enum: [json, csv, pdf]
+                    error_message:
+                      type: string
+                      nullable: true
+                      description: Error message if status is 'failed'
+                    triggered_by:
+                      type: string
+                      description: How this run was triggered
+                      enum: [manual, scheduled, api]
+                    triggered_by_user:
+                      type: string
+                      format: uuid
+                      nullable: true
+              total:
+                type: integer
+                description: Total number of runs for this job
+              limit:
+                type: integer
+              offset:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

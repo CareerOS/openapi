@@ -42,9 +42,9 @@ Complete employer lifecycle management:
 - Profile and settings management
 
 #### Custom Fields API (BETA) - Institution-Specific Extensions
-Extend CareerOS with custom fields similar to Symplicity:
+Extend CareerOS with flexible custom field definitions:
 - 10 field types (text, number, date, dropdowns, etc.)
-- Picklist value management for dropdowns
+- Dropdown value management
 - 8 supported entities (students, jobs, companies, applications, events, contacts, agreements, employers)
 - Visibility controls for students and employers
 - Searchable and filterable fields

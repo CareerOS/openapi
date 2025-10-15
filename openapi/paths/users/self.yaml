@@ -2,7 +2,11 @@ get:
   tags:
     - Users
   summary: Get self user info
-  description: Returns a self user info
+  description: |
+    Returns the current user's profile information.
+
+    **Custom Fields Support:** This endpoint returns any custom fields that have been set for the user.
+    Custom fields are institution-specific key-value pairs that can be added without modifying the API schema.
   operationId: getSelfUserInfo
   responses:
     '200':
