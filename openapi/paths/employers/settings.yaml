@@ -1,0 +1,210 @@
+get:
+  tags:
+    - Employers (BETA)
+  summary: Get employer settings
+  description: |
+    **[BETA]** Retrieve employer organization settings and preferences.
+
+    Includes notification preferences, integration settings, and account configuration.
+  operationId: getEmployerSettings
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Settings retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              notifications:
+                type: object
+                properties:
+                  new_applications:
+                    type: boolean
+                    description: Notify when students apply to jobs
+                  application_status_changes:
+                    type: boolean
+                  event_registrations:
+                    type: boolean
+                  system_announcements:
+                    type: boolean
+                  notification_email:
+                    type: string
+                    format: email
+                    description: Email for notifications (if different from primary)
+              application_settings:
+                type: object
+                properties:
+                  require_cover_letter:
+                    type: boolean
+                  require_resume:
+                    type: boolean
+                  custom_application_questions:
+                    type: boolean
+                  auto_reply_enabled:
+                    type: boolean
+                  auto_reply_message:
+                    type: string
+              branding:
+                type: object
+                properties:
+                  primary_color:
+                    type: string
+                    example: "#0066CC"
+                  custom_email_template:
+                    type: boolean
+                  email_signature:
+                    type: string
+              integrations:
+                type: object
+                properties:
+                  ats_integration:
+                    type: object
+                    properties:
+                      enabled:
+                        type: boolean
+                      provider:
+                        type: string
+                        enum: [greenhouse, lever, workday, taleo, custom]
+                      sync_enabled:
+                        type: boolean
+                  calendar_integration:
+                    type: object
+                    properties:
+                      enabled:
+                        type: boolean
+                      provider:
+                        type: string
+                        enum: [google, outlook, custom]
+              privacy:
+                type: object
+                properties:
+                  show_salary_ranges:
+                    type: boolean
+                  public_profile:
+                    type: boolean
+                    description: Make company profile visible to all students
+                  share_application_data:
+                    type: boolean
+              partnership_preferences:
+                type: object
+                properties:
+                  preferred_universities:
+                    type: array
+                    items:
+                      type: string
+                      format: uuid
+                  target_student_levels:
+                    type: array
+                    items:
+                      type: string
+                      enum: [freshman, sophomore, junior, senior, graduate, alumni]
+                  interested_in_career_fairs:
+                    type: boolean
+                  interested_in_on_campus_recruiting:
+                    type: boolean
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+
+put:
+  tags:
+    - Employers (BETA)
+  summary: Update employer settings
+  description: |
+    **[BETA]** Update employer organization settings and preferences.
+
+    Admin users can modify all settings. Other users may have limited access.
+  operationId: updateEmployerSettings
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            notifications:
+              type: object
+              properties:
+                new_applications:
+                  type: boolean
+                application_status_changes:
+                  type: boolean
+                event_registrations:
+                  type: boolean
+                system_announcements:
+                  type: boolean
+                notification_email:
+                  type: string
+                  format: email
+            application_settings:
+              type: object
+              properties:
+                require_cover_letter:
+                  type: boolean
+                require_resume:
+                  type: boolean
+                custom_application_questions:
+                  type: boolean
+                auto_reply_enabled:
+                  type: boolean
+                auto_reply_message:
+                  type: string
+            branding:
+              type: object
+              properties:
+                primary_color:
+                  type: string
+                custom_email_template:
+                  type: boolean
+                email_signature:
+                  type: string
+            privacy:
+              type: object
+              properties:
+                show_salary_ranges:
+                  type: boolean
+                public_profile:
+                  type: boolean
+                share_application_data:
+                  type: boolean
+            partnership_preferences:
+              type: object
+              properties:
+                preferred_universities:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                target_student_levels:
+                  type: array
+                  items:
+                    type: string
+                interested_in_career_fairs:
+                  type: boolean
+                interested_in_on_campus_recruiting:
+                  type: boolean
+  responses:
+    '200':
+      description: Settings updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              updated_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Settings updated successfully"
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml

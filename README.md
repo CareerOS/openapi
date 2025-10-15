@@ -1,16 +1,73 @@
 # CareerOS OpenAPI Specification
 
-This repository contains the OpenAPI 3.1 specification for the CareerOS API, documenting all endpoints for the career development platform.
+This repository contains the OpenAPI 3.1 specification for the CareerOS API - a comprehensive, modern API platform for career development and student success.
+
+## 🚀 Quick Links
+
+- **[Getting Started Guide](./GETTING_STARTED.md)** - Complete onboarding with code examples
+- **[Authentication Guide](./AUTHENTICATION.md)** - Security and token management
+- **[API Improvements Summary](./API_IMPROVEMENTS_SUMMARY.md)** - Why CareerOS stands out
+- **[OpenAPI Specification](./openapi/openapi.yaml)** - Complete API documentation
 
 ## API Overview
 
-The CareerOS API is organized into several distinct API groups:
+The CareerOS API is organized into multiple API versions and feature modules:
 
-- **Public API V1** (`/public/v1`) - Public endpoints for login flows, OAuth, and WebSocket connections
-- **API V1** (`/api/v1`) - Main authenticated API for students and advisors (500+ endpoints)
-- **API V2** (`/api/v2`) - Career Advisor application with analytics and student management
-- **Integrations API** (`/integrations`) - Partner integration endpoints (API key required)
-- **Webhook API** (`/webhook`) - Receive webhooks from external services
+### Core API Versions
+
+- **Public API V1** (`/public/v1/*`) - Public endpoints for discovery and authentication (no auth required)
+- **API V1** (`/api/v1/*`) - Main authenticated API with 100+ endpoints for students and advisors
+- **API V2** (`/api/v2/*`) - Enhanced career advisor tools with advanced analytics
+- **Webhook API** (`/webhook/*`) - Real-time notifications from external services
+
+### Feature Modules
+
+**Stable Modules:**
+- **Resume OS** - AI-powered resume building, scoring, and review workflow
+- **EventOS** - Career event discovery, registration, and calendar integration
+- **AlumniOS** - Alumni networking and mentorship connections
+- **Jobs & Companies** - Advanced search, tracking, and application management
+- **AI Features** - Intelligent job extraction and content analysis
+
+**BETA Modules** (Production-ready, evolving based on feedback):
+- **CalendarOS** - Complete appointment scheduling with confirmation and attendance tracking
+- **Agreements** - Three-way internship agreement management with electronic signatures
+- **Employers** - Employer registration, profile management, and team collaboration
+- **Custom Fields** - Institution-specific field definitions and picklist management
+
+**PROPOSAL:**
+- **Reports API** - Comprehensive analytics with multi-format export (JSON, CSV, PDF)
+
+## Key Features
+
+### For Students
+- Search jobs, companies, and events
+- Build and score resumes with AI
+- Track applications and networking
+- Connect with alumni mentors
+- Schedule advisor appointments
+- Access personal progress reports
+
+### For Career Advisors
+- View student progress across cohorts
+- AI-generated student summaries
+- Manage appointment scheduling
+- Access cohort-level analytics
+- Track engagement metrics
+- Export comprehensive reports
+
+### For Administrators
+- Configure custom fields for all entities
+- Manage picklist values (similar to Symplicity)
+- Oversee internship agreement workflows
+- Handle employer registration and onboarding
+- Access university-wide analytics
+
+### For Integration Partners
+- API key authentication for server-to-server
+- Webhook support for real-time updates
+- ATS integrations (Greenhouse, Lever, Workday, Taleo)
+- Calendar integrations (Google, Outlook)
 
 ## Working with this repo
 

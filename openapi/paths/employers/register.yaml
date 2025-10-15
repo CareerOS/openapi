@@ -1,0 +1,174 @@
+post:
+  tags:
+    - Employers (BETA)
+  summary: Register new employer organization
+  description: |
+    **[BETA]** Register a new employer organization on the CareerOS platform.
+
+    This endpoint creates a new employer account with initial company profile,
+    primary contact, and access credentials. The registration can be initiated by:
+    - Employers self-registering through the platform
+    - University staff inviting employers
+    - System administrators creating employer accounts
+
+    Upon successful registration, an activation email is sent to the primary contact.
+  operationId: registerEmployer
+  security: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - organization_name
+            - industry
+            - primary_contact
+          properties:
+            organization_name:
+              type: string
+              description: Official company/organization name
+              example: "Tech Innovations Inc."
+            legal_name:
+              type: string
+              description: Legal entity name (if different from organization name)
+              example: "Tech Innovations Corporation"
+            industry:
+              type: string
+              description: Primary industry sector
+              example: "Technology"
+            company_size:
+              type: string
+              enum: [startup_1_10, small_11_50, medium_51_200, large_201_500, enterprise_501_plus]
+              description: Organization size range
+            founded_year:
+              type: integer
+              example: 2015
+              minimum: 1800
+            website:
+              type: string
+              format: uri
+              example: "https://www.techinnovations.com"
+            description:
+              type: string
+              description: Brief company description
+              example: "Leading provider of innovative software solutions"
+            headquarters:
+              type: object
+              required:
+                - address
+                - city
+                - country
+              properties:
+                address:
+                  type: string
+                  example: "123 Innovation Drive"
+                address_line_2:
+                  type: string
+                city:
+                  type: string
+                  example: "San Francisco"
+                state:
+                  type: string
+                  example: "CA"
+                postal_code:
+                  type: string
+                  example: "94105"
+                country:
+                  type: string
+                  example: "United States"
+            primary_contact:
+              type: object
+              required:
+                - first_name
+                - last_name
+                - email
+              properties:
+                first_name:
+                  type: string
+                  example: "Sarah"
+                last_name:
+                  type: string
+                  example: "Johnson"
+                email:
+                  type: string
+                  format: email
+                  example: "sarah.johnson@techinnovations.com"
+                phone:
+                  type: string
+                  example: "+1-415-555-0123"
+                title:
+                  type: string
+                  example: "Recruiting Manager"
+                department:
+                  type: string
+                  example: "Human Resources"
+            registration_source:
+              type: string
+              enum: [self_registration, university_invitation, career_fair, partner_referral, admin_created]
+              default: self_registration
+            universities:
+              type: array
+              description: Universities the employer wants to connect with
+              items:
+                type: string
+                format: uuid
+            agreed_to_terms:
+              type: boolean
+              description: Acceptance of terms of service
+              example: true
+  responses:
+    '201':
+      description: Employer registered successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              employer_id:
+                type: string
+                format: uuid
+              organization_name:
+                type: string
+              status:
+                type: string
+                enum: [pending_verification, active]
+                example: "pending_verification"
+              primary_contact:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  email:
+                    type: string
+                  activation_sent:
+                    type: boolean
+              activation_url:
+                type: string
+                format: uri
+                description: URL for account activation (included in email)
+              created_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Employer registered successfully. Activation email sent to primary contact."
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '409':
+      description: Organization already registered
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Duplicate registration"
+              message:
+                type: string
+                example: "An organization with this name or email is already registered."
+              existing_employer_id:
+                type: string
+                format: uuid

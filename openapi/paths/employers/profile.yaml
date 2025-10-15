@@ -1,0 +1,239 @@
+get:
+  tags:
+    - Employers (BETA)
+  summary: Get employer profile
+  description: |
+    **[BETA]** Retrieve the employer organization profile.
+
+    Returns complete company information including branding, locations, benefits,
+    and public-facing details visible to students.
+  operationId: getEmployerProfile
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Employer profile retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              organization_name:
+                type: string
+              legal_name:
+                type: string
+              slug:
+                type: string
+                example: "tech-innovations-inc"
+                description: URL-friendly identifier
+              status:
+                type: string
+                enum: [pending_verification, active, suspended, inactive]
+              industry:
+                type: string
+              company_size:
+                type: string
+                enum: [startup_1_10, small_11_50, medium_51_200, large_201_500, enterprise_501_plus]
+              founded_year:
+                type: integer
+              website:
+                type: string
+                format: uri
+              description:
+                type: string
+              logo_url:
+                type: string
+                format: uri
+              banner_url:
+                type: string
+                format: uri
+              social_media:
+                type: object
+                properties:
+                  linkedin:
+                    type: string
+                    format: uri
+                  twitter:
+                    type: string
+                  facebook:
+                    type: string
+                  instagram:
+                    type: string
+              headquarters:
+                type: object
+                properties:
+                  address:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  country:
+                    type: string
+                  postal_code:
+                    type: string
+              additional_locations:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    location_name:
+                      type: string
+                    address:
+                      type: string
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    country:
+                      type: string
+              culture_values:
+                type: array
+                description: Company culture and values
+                items:
+                  type: string
+                example: ["Innovation", "Collaboration", "Diversity & Inclusion"]
+              benefits:
+                type: array
+                description: Employee benefits offered
+                items:
+                  type: string
+                example: ["Health Insurance", "401k Matching", "Remote Work Options"]
+              diversity_statement:
+                type: string
+              statistics:
+                type: object
+                properties:
+                  active_job_postings:
+                    type: integer
+                  total_hires_this_year:
+                    type: integer
+                  student_applications:
+                    type: integer
+              partner_universities:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    university_id:
+                      type: string
+                      format: uuid
+                    university_name:
+                      type: string
+                    partnership_level:
+                      type: string
+                      enum: [basic, preferred, exclusive]
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+put:
+  tags:
+    - Employers (BETA)
+  summary: Update employer profile
+  description: |
+    **[BETA]** Update employer organization profile information.
+
+    Employer admins can update company details, branding, locations, and public-facing content.
+  operationId: updateEmployerProfile
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            organization_name:
+              type: string
+            industry:
+              type: string
+            company_size:
+              type: string
+              enum: [startup_1_10, small_11_50, medium_51_200, large_201_500, enterprise_501_plus]
+            founded_year:
+              type: integer
+            website:
+              type: string
+              format: uri
+            description:
+              type: string
+            logo_url:
+              type: string
+              format: uri
+            banner_url:
+              type: string
+              format: uri
+            social_media:
+              type: object
+              properties:
+                linkedin:
+                  type: string
+                twitter:
+                  type: string
+                facebook:
+                  type: string
+                instagram:
+                  type: string
+            headquarters:
+              type: object
+              properties:
+                address:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                country:
+                  type: string
+                postal_code:
+                  type: string
+            culture_values:
+              type: array
+              items:
+                type: string
+            benefits:
+              type: array
+              items:
+                type: string
+            diversity_statement:
+              type: string
+  responses:
+    '200':
+      description: Profile updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              updated_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Employer profile updated successfully"
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml

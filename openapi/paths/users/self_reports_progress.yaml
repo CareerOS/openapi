@@ -1,0 +1,133 @@
+get:
+  tags:
+    - Users
+  summary: Get career progress report
+  description: |
+    Retrieve career development progress tracking for the logged-in student.
+
+    This report provides insights into overall career readiness, milestone completion,
+    skills development, and personalized recommendations for next steps. Supports
+    multiple export formats (JSON, CSV, PDF) for sharing progress with advisors
+    or integrating with portfolio systems.
+  operationId: getStudentProgressReport
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: format
+      in: query
+      description: Response format for the report
+      schema:
+        type: string
+        enum: [json, csv, pdf]
+        default: json
+      example: json
+    - name: include_recommendations
+      in: query
+      description: Include personalized recommendations in response
+      schema:
+        type: boolean
+        default: true
+  responses:
+    '200':
+      description: Progress report retrieved successfully
+      headers:
+        Content-Disposition:
+          description: Attachment header for CSV and PDF formats
+          schema:
+            type: string
+          example: "attachment; filename=progress_report_2025-10-15.pdf"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              overall_progress:
+                type: object
+                properties:
+                  completion_percentage:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: Overall career readiness score
+                  milestones_completed:
+                    type: integer
+                  total_milestones:
+                    type: integer
+              milestones:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                      example: "Create resume"
+                    category:
+                      type: string
+                      enum: [resume, networking, applications, events, skills]
+                    completed:
+                      type: boolean
+                    completed_at:
+                      type: string
+                      format: date-time
+                      nullable: true
+                    description:
+                      type: string
+              skills_development:
+                type: object
+                properties:
+                  resume_score:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    nullable: true
+                  networking_strength:
+                    type: string
+                    enum: [beginner, developing, proficient, advanced]
+                  application_readiness:
+                    type: string
+                    enum: [not_ready, getting_ready, ready, highly_prepared]
+              recommendations:
+                type: array
+                description: Personalized recommendations for next steps
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      example: "Attend a career fair"
+                    description:
+                      type: string
+                    priority:
+                      type: string
+                      enum: [low, medium, high]
+                    action_url:
+                      type: string
+                      format: uri
+                      nullable: true
+        text/csv:
+          schema:
+            type: string
+            format: binary
+          example: |
+            Overall Progress,Completion Percentage,Milestones Completed,Total Milestones
+            Career Readiness,75,12,16
+
+            Milestone,Category,Completed,Completed Date
+            Create resume,resume,true,2025-09-15T10:30:00Z
+            Attend career fair,events,true,2025-10-01T14:00:00Z
+            Add 5 contacts,networking,false,
+            Submit first application,applications,true,2025-10-10T09:00:00Z
+
+            Skills Development,Score/Level
+            Resume Score,85
+            Networking Strength,proficient
+            Application Readiness,ready
+        application/pdf:
+          schema:
+            type: string
+            format: binary
+            description: PDF formatted progress report with visualizations and milestone timeline
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

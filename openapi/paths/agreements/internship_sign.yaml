@@ -1,0 +1,130 @@
+post:
+  tags:
+    - Agreements (BETA)
+  summary: Sign internship agreement
+  description: |
+    **[BETA]** Electronically sign an internship agreement.
+
+    **Who can sign**:
+    - Students sign on their own behalf
+    - Employer representatives sign on behalf of their organization
+    - University coordinators/staff sign on behalf of the institution
+
+    Signatures are legally binding and captured with timestamp, IP address, and authentication data.
+    Once all three parties have signed, the agreement status changes to `fully_signed` and becomes active.
+  operationId: signInternshipAgreement
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Agreement ID
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - signature_acceptance
+          properties:
+            signature_acceptance:
+              type: boolean
+              description: Explicit acceptance of agreement terms
+              example: true
+            signature_name:
+              type: string
+              description: Full name for signature (for employer/university signers)
+              example: "Dr. Sarah Johnson"
+            signature_title:
+              type: string
+              description: Title/position of signer (for employer/university signers)
+              example: "Director of Career Services"
+            signature_method:
+              type: string
+              enum: [electronic, digital, wet_signature]
+              default: electronic
+              description: Method of signature capture
+            comments:
+              type: string
+              description: Optional comments from signer
+            notify_other_parties:
+              type: boolean
+              default: true
+              description: Notify other parties that signature has been completed
+  responses:
+    '200':
+      description: Agreement signed successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              agreement_number:
+                type: string
+              signed_by:
+                type: string
+                enum: [student, employer, university]
+              signed_at:
+                type: string
+                format: date-time
+              signature_status:
+                type: object
+                properties:
+                  student_signed:
+                    type: boolean
+                  employer_signed:
+                    type: boolean
+                  university_signed:
+                    type: boolean
+                  all_signed:
+                    type: boolean
+              agreement_status:
+                type: string
+                enum: [pending_signatures, partially_signed, fully_signed]
+              next_signers:
+                type: array
+                description: Parties still need to sign
+                items:
+                  type: string
+                  enum: [student, employer, university]
+              message:
+                type: string
+                example: "Agreement signed successfully. Awaiting signatures from employer and university."
+    '400':
+      description: Invalid signature request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Already signed"
+              message:
+                type: string
+                example: "You have already signed this agreement."
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      description: Not authorized to sign this agreement
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Forbidden"
+              message:
+                type: string
+                example: "You are not authorized to sign on behalf of this party."
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

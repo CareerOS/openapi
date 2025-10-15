@@ -3,17 +3,150 @@ openapi: 3.1.0
 info:
   title: CareerOS API
   description: |
-    CareerOS API documentation for the career development platform.
+    # Welcome to the CareerOS API
 
-    ## API Versions
-    - **Public API V1**: Public endpoints for company, job, and event discovery
-    - **API V1**: Main authenticated API for students and career advisors
-    - **API V2**: Career Advisor application endpoints
-    - **Webhook API**: Endpoints for receiving webhooks from external services
+    The CareerOS API is a comprehensive, modern RESTful API platform designed for career development and student success.
+    Our API-first architecture enables universities, career centers, and integration partners to build exceptional
+    experiences for students, advisors, and employers.
 
-    [Learn more about CareerOS](https://thecareeros.com)
+    ## 🚀 Quick Start
+
+    **New to CareerOS?** Get started in minutes:
+    1. Review our [Getting Started Guide](./GETTING_STARTED.md)
+    2. Authenticate using JWT tokens ([Authentication Guide](./AUTHENTICATION.md))
+    3. Make your first API call to `/api/v1/users/self`
+    4. Explore our comprehensive endpoint documentation below
+
+    ## 📚 API Organization
+
+    ### Core API Versions
+    - **Public API V1** (`/public/v1/*`) - Public endpoints for discovery and authentication (no auth required)
+    - **API V1** (`/api/v1/*`) - Main authenticated API with 100+ endpoints for students and advisors
+    - **API V2** (`/api/v2/*`) - Enhanced career advisor tools with advanced analytics
+    - **Webhook API** (`/webhook/*`) - Real-time notifications from external services
+
+    ### Feature Modules
+
+    **Stable Modules:**
+    - **Resume OS** - AI-powered resume building, scoring, and review workflow
+    - **EventOS** - Career event discovery, registration, and calendar integration
+    - **AlumniOS** - Alumni networking and mentorship connections
+    - **Jobs & Companies** - Advanced search, tracking, and application management
+    - **AI Features** - Intelligent job extraction and content analysis
+
+    **BETA Modules** (Production-ready, evolving based on feedback):
+    - **CalendarOS** - Complete appointment scheduling with confirmation and attendance tracking
+    - **Agreements** - Three-way internship agreement management with electronic signatures
+    - **Employers** - Employer registration, profile management, and team collaboration
+    - **Custom Fields** - Institution-specific field definitions and picklist management
+
+    **PROPOSAL:**
+    - **Reports API** - Comprehensive analytics with multi-format export (JSON, CSV, PDF)
+      > 💡 We're actively seeking partner feedback to refine reporting capabilities!
+
+    ## 🎯 Key Capabilities
+
+    ### For Students
+    - Search jobs, companies, and events
+    - Build and score resumes with AI
+    - Track applications and networking
+    - Connect with alumni mentors
+    - Schedule advisor appointments
+    - Access personal progress reports
+
+    ### For Career Advisors
+    - View student progress across cohorts
+    - AI-generated student summaries
+    - Manage appointment scheduling
+    - Access cohort-level analytics
+    - Track engagement metrics
+    - Export comprehensive reports
+
+    ### For Administrators
+    - Configure custom fields for all entities
+    - Manage picklist values (similar to Symplicity)
+    - Oversee internship agreement workflows
+    - Handle employer registration and onboarding
+    - Access university-wide analytics
+
+    ### For Integration Partners
+    - API key authentication for server-to-server
+    - Webhook support for real-time updates
+    - ATS integrations (Greenhouse, Lever, Workday, Taleo)
+    - Calendar integrations (Google, Outlook)
+
+    ## 🔐 Authentication
+
+    CareerOS supports multiple authentication methods:
+    - **JWT Bearer Tokens** (Auth0) - For student and advisor applications
+    - **API Keys** - For integration partners and webhooks
+
+    See our [Authentication Guide](./AUTHENTICATION.md) for detailed implementation.
+
+    ## 📖 Documentation Resources
+
+    - **[Getting Started Guide](./GETTING_STARTED.md)** - Step-by-step onboarding with code examples
+    - **[Authentication Guide](./AUTHENTICATION.md)** - Security, tokens, and best practices
+    - **[API Improvements Summary](./API_IMPROVEMENTS_SUMMARY.md)** - Why CareerOS stands out
+    - **OpenAPI Specification** - Complete machine-readable API documentation (this document)
+
+    ## 💬 BETA Features & Feedback
+
+    Several advanced features are in **BETA** status. These are fully functional and production-ready,
+    but may evolve based on partner feedback:
+
+    - **CalendarOS** - Appointment scheduling and calendar management
+    - **Agreements API** - Internship agreement workflow
+    - **Employers API** - Employer onboarding and management
+    - **Custom Fields API** - Institution-specific extensions
+
+    **We welcome your feedback!**
+    - Technical feedback: api-feedback@thecareeros.com
+    - Feature requests: product@thecareeros.com
+    - Integration support: api-support@thecareeros.com
+
+    ## 🌟 What Makes CareerOS Different
+
+    ✅ **Comprehensive** - 100+ endpoints covering the complete career development lifecycle
+    ✅ **Modern** - Built on OpenAPI 3.1.0 with industry-standard practices
+    ✅ **Intelligent** - AI-powered resume scoring, job extraction, and student insights
+    ✅ **Flexible** - Custom fields and picklist values for institution-specific needs
+    ✅ **Integrated** - ATS and calendar integrations out of the box
+    ✅ **Developer-Friendly** - Extensive documentation, code examples, and responsive support
+    ✅ **Production-Ready** - Stable API with clear versioning and deprecation policies
+
+    ## 📊 API Statistics
+
+    - **100+ Total Endpoints**
+    - **9 Feature Modules** (5 stable, 4 BETA, 1 proposal)
+    - **Multi-Format Exports** (JSON, CSV, PDF)
+    - **Real-Time Capabilities** (WebSockets, Webhooks)
+    - **Enterprise Integrations** (ATS, Calendar, SSO)
+
+    ## 🚦 Rate Limits
+
+    | Endpoint Type | Rate Limit | Window |
+    |---------------|------------|--------|
+    | Public API | 100 requests | 1 minute |
+    | Authenticated API | 300 requests | 1 minute |
+    | Search Endpoints | 60 requests | 1 minute |
+    | Advisor V2 API | 500 requests | 1 minute |
+
+    ## 🔗 Learn More
+
+    - **Website**: [https://thecareeros.com](https://thecareeros.com)
+    - **API Support**: api-support@thecareeros.com
+    - **Status Page**: https://status.thecareeros.com
+    - **API Feedback**: api-feedback@thecareeros.com
+
+    ---
+
+    **Ready to build something great?** Start with our [Getting Started Guide](./GETTING_STARTED.md)
+    and make your first API call today! 🚀
+
   contact:
     name: CareerOS API Support
+    email: api-support@thecareeros.com
     url: https://thecareeros.com
   version: 2.0.0
   license:
@@ -42,15 +175,70 @@ tags:
   - name: Resume
     description: Resume creation, editing, and management (Resume OS module)
   - name: Events
-    description: Event discovery, registration, and management
+    description: |
+      Event discovery, registration, and management (EventOS module).
+
+      EventOS provides comprehensive event management including career fairs,
+      networking events, workshops, and employer presentations. Features include
+      event search, registration, speaker information, and calendar integration.
   - name: Universities
     description: University and cohort management
+  - name: Alumni
+    description: |
+      Alumni networking and directory (AlumniOS module).
+
+      AlumniOS connects current students with successful alumni for mentorship,
+      networking, and career guidance. Search alumni by cohort, university, or
+      industry to build valuable professional connections.
   - name: Advisor
     description: Career advisor-specific endpoints
   - name: AI
     description: AI-powered features and insights
   - name: Webhooks
     description: Webhook endpoints for external services
+  - name: Reports (PROPOSAL)
+    description: |
+      **[PROPOSAL]** Comprehensive reporting and analytics endpoints.
+
+      Unified reporting API providing student activity reports, progress tracking,
+      and cohort-level analytics. Supports multiple export formats (JSON, CSV, PDF)
+      for integration with institutional systems and stakeholder reporting.
+  - name: CalendarOS (BETA)
+    description: |
+      **[BETA]** Appointment scheduling and calendar management (CalendarOS module).
+
+      CalendarOS provides a complete appointment booking workflow including availability
+      checking, appointment creation, confirmation, attendance tracking, and calendar
+      management. Supports both student-initiated and advisor-initiated scheduling with
+      email confirmations, meeting platform integration, and comprehensive scheduling analytics.
+  - name: Agreements (BETA)
+    description: |
+      **[BETA]** Three-way internship agreement management system.
+
+      Comprehensive workflow for creating, signing, and managing internship agreements between
+      students, employers, and universities. Features include electronic signatures from all
+      three parties, agreement modification with signature reset, notification system for all
+      parties, complete audit trail, and document management. Supports the full lifecycle from
+      draft creation through execution and completion.
+  - name: Employers (BETA)
+    description: |
+      **[BETA]** Employer registration and organization management.
+
+      Complete employer onboarding and management system including organization registration,
+      profile management, multi-user access control, and account settings. Enables employers to
+      register their organization, add team members with role-based permissions, manage company
+      branding and public profile, configure notification preferences, and set up integrations
+      with ATS and calendar systems. Supports the full employer lifecycle from initial registration
+      through ongoing account management.
+  - name: Custom Fields (BETA)
+    description: |
+      **[BETA]** Custom field definitions and picklist management.
+
+      Similar to Symplicity's custom fields and picklist management, this system allows university
+      administrators to extend standard CareerOS entities with institution-specific fields. Create
+      custom text fields, dropdowns, date pickers, and other input types for students, jobs,
+      applications, and more. Manage picklist values for dropdown fields to ensure consistent data
+      entry. Custom fields are fully searchable and can be used in filters, reports, and exports.
 
 paths:
   # ==========================================
@@ -81,6 +269,12 @@ paths:
     $ref: paths/users/self.yaml
   /api/v1/users/self/profile:
     $ref: paths/users/self_profile.yaml
+  /api/v1/users/self/appointments:
+    $ref: paths/users/self_appointments.yaml
+  /api/v1/users/self/reports/activity:
+    $ref: paths/users/self_reports_activity.yaml
+  /api/v1/users/self/reports/progress:
+    $ref: paths/users/self_reports_progress.yaml
 
   # Companies
   /api/v1/companies:
@@ -195,6 +389,71 @@ paths:
     $ref: paths/alumni/by_id.yaml
 
   # ==========================================
+  # REPORTS API (PROPOSAL)
+  # ==========================================
+
+  /api/v1/reports/student/activity:
+    $ref: paths/reports/student_activity.yaml
+  /api/v1/reports/student/progress:
+    $ref: paths/reports/student_progress.yaml
+  /api/v1/reports/cohort:
+    $ref: paths/reports/cohort.yaml
+
+  # ==========================================
+  # APPOINTMENTS API (BETA) - CalendarOS
+  # ==========================================
+
+  /api/v1/appointments:
+    $ref: paths/appointments/index.yaml
+  /api/v1/appointments/{id}:
+    $ref: paths/appointments/by_id.yaml
+  /api/v1/appointments/{id}/confirm:
+    $ref: paths/appointments/confirm.yaml
+  /api/v1/appointments/{id}/mark-attendance:
+    $ref: paths/appointments/mark_attendance.yaml
+  /api/v1/appointments/availability:
+    $ref: paths/appointments/availability.yaml
+
+  # ==========================================
+  # INTERNSHIP AGREEMENTS API (BETA)
+  # ==========================================
+
+  /api/v1/agreements/internship:
+    $ref: paths/agreements/internship_index.yaml
+  /api/v1/agreements/internship/{id}:
+    $ref: paths/agreements/internship_by_id.yaml
+  /api/v1/agreements/internship/{id}/sign:
+    $ref: paths/agreements/internship_sign.yaml
+  /api/v1/agreements/internship/{id}/notify:
+    $ref: paths/agreements/internship_notify.yaml
+  /api/v1/agreements/internship/{id}/signatures:
+    $ref: paths/agreements/internship_signatures.yaml
+
+  # ==========================================
+  # EMPLOYERS API (BETA)
+  # ==========================================
+
+  /api/v1/employers/register:
+    $ref: paths/employers/register.yaml
+  /api/v1/employers/profile:
+    $ref: paths/employers/profile.yaml
+  /api/v1/employers/users:
+    $ref: paths/employers/users.yaml
+  /api/v1/employers/users/{user_id}:
+    $ref: paths/employers/users_by_id.yaml
+  /api/v1/employers/settings:
+    $ref: paths/employers/settings.yaml
+
+  # ==========================================
+  # CUSTOM FIELDS API (BETA)
+  # ==========================================
+
+  /api/v1/custom-fields:
+    $ref: paths/custom_fields/index.yaml
+  /api/v1/custom-fields/{id}:
+    $ref: paths/custom_fields/by_id.yaml
+
+  # ==========================================
   # API V2 - Career Advisor Application
   # ==========================================
 
@@ -212,6 +471,8 @@ paths:
     $ref: paths/advisor_v2/analytics_companies.yaml
   /api/v2/university/advisors/with-cohorts:
     $ref: paths/advisor_v2/advisors_cohorts.yaml
+  /api/v2/advisor/reports/cohort:
+    $ref: paths/advisor_v2/reports_cohort.yaml
   /api/v2/applications:
     $ref: paths/applications/v2_get.yaml
 

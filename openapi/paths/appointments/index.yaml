@@ -1,0 +1,263 @@
+get:
+  tags:
+    - CalendarOS (BETA)
+  summary: List appointments
+  description: |
+    **[BETA - CalendarOS]** Retrieve appointments with flexible filtering.
+
+    **Access**:
+    - Students: See their own appointments
+    - Advisors: See all appointments for students in their cohorts
+  operationId: listAppointments
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: status
+      in: query
+      description: Filter by appointment status
+      schema:
+        type: string
+        enum: [pending, confirmed, scheduled, completed, cancelled, no_show]
+    - name: student_id
+      in: query
+      description: Filter by specific student (advisors only)
+      schema:
+        type: string
+        format: uuid
+    - name: advisor_id
+      in: query
+      description: Filter by specific advisor
+      schema:
+        type: string
+        format: uuid
+    - name: start_date
+      in: query
+      description: Filter appointments starting from this date
+      schema:
+        type: string
+        format: date
+    - name: end_date
+      in: query
+      description: Filter appointments until this date
+      schema:
+        type: string
+        format: date
+    - name: type
+      in: query
+      description: Filter by appointment type
+      schema:
+        type: string
+        enum: [career_counseling, resume_review, mock_interview, job_search_strategy, networking_advice, general, other]
+    - name: limit
+      in: query
+      description: Maximum number of results
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 100
+    - name: offset
+      in: query
+      description: Number of results to skip
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+  responses:
+    '200':
+      description: Appointments retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              appointments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    student:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        name:
+                          type: string
+                        email:
+                          type: string
+                          format: email
+                    advisor:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        name:
+                          type: string
+                        email:
+                          type: string
+                          format: email
+                    scheduled_at:
+                      type: string
+                      format: date-time
+                      description: Appointment date and time
+                    duration_minutes:
+                      type: integer
+                      example: 30
+                    type:
+                      type: string
+                      enum: [career_counseling, resume_review, mock_interview, job_search_strategy, networking_advice, general, other]
+                    status:
+                      type: string
+                      enum: [pending, confirmed, scheduled, completed, cancelled, no_show]
+                    confirmation_code:
+                      type: string
+                      description: Unique booking confirmation code
+                      example: "APT-2025-ABC123"
+                    location:
+                      type: string
+                      description: Meeting location or video call link
+                    meeting_platform:
+                      type: string
+                      enum: [in_person, zoom, teams, google_meet, phone, other]
+                    notes:
+                      type: string
+                      description: Advisor's notes about the appointment
+                    student_notes:
+                      type: string
+                      description: Student's reason for appointment
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+              total:
+                type: integer
+              limit:
+                type: integer
+              offset:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+
+post:
+  tags:
+    - CalendarOS (BETA)
+  summary: Book appointment
+  description: |
+    **[BETA - CalendarOS]** Create a new appointment booking.
+
+    **Student booking**: Creates appointment with `pending` status, awaiting advisor confirmation
+    **Advisor booking**: Creates appointment with `confirmed` status automatically
+  operationId: createAppointment
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - scheduled_at
+            - duration_minutes
+            - type
+          properties:
+            student_id:
+              type: string
+              format: uuid
+              description: Required when advisor is creating appointment, omit for self-booking
+            advisor_id:
+              type: string
+              format: uuid
+              description: Required when student is booking, omit when advisor creates
+            scheduled_at:
+              type: string
+              format: date-time
+              example: "2025-10-20T14:00:00Z"
+            duration_minutes:
+              type: integer
+              example: 30
+              minimum: 15
+              maximum: 120
+            type:
+              type: string
+              enum: [career_counseling, resume_review, mock_interview, job_search_strategy, networking_advice, general, other]
+            meeting_platform:
+              type: string
+              enum: [in_person, zoom, teams, google_meet, phone, other]
+              default: zoom
+            location:
+              type: string
+              description: Meeting location or video call link
+            student_notes:
+              type: string
+              description: Reason for appointment or topics to discuss
+            send_confirmation_email:
+              type: boolean
+              default: true
+              description: Send email confirmation to both parties
+  responses:
+    '201':
+      description: Appointment created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              confirmation_code:
+                type: string
+                description: Unique booking confirmation code
+                example: "APT-2025-ABC123"
+              student_id:
+                type: string
+                format: uuid
+              advisor_id:
+                type: string
+                format: uuid
+              scheduled_at:
+                type: string
+                format: date-time
+              duration_minutes:
+                type: integer
+              type:
+                type: string
+              status:
+                type: string
+                enum: [pending, confirmed]
+              meeting_platform:
+                type: string
+              location:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '409':
+      description: Scheduling conflict - time slot not available
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Conflict"
+              message:
+                type: string
+                example: "Selected time slot is not available"

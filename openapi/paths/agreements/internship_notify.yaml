@@ -1,0 +1,96 @@
+post:
+  tags:
+    - Agreements (BETA)
+  summary: Send agreement notifications
+  description: |
+    **[BETA]** Send notifications about the agreement to specified parties.
+
+    **Use cases**:
+    - Request signatures from parties who haven't signed
+    - Send reminders about pending signatures
+    - Notify about agreement updates or cancellations
+    - Share final signed agreement with all parties
+
+    **Access**: University staff have full notification capabilities. Students and employers
+    can send limited notifications.
+  operationId: notifyAgreementParties
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Agreement ID
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - recipients
+            - notification_type
+          properties:
+            recipients:
+              type: array
+              description: Which parties to notify
+              items:
+                type: string
+                enum: [student, employer, university, all]
+              example: ["student", "employer"]
+            notification_type:
+              type: string
+              enum: [signature_request, signature_reminder, agreement_update, agreement_signed, agreement_cancelled, final_agreement]
+              description: Type of notification to send
+            subject:
+              type: string
+              description: Custom email subject (optional, defaults based on notification type)
+            message:
+              type: string
+              description: Custom message to include in notification
+            include_agreement_pdf:
+              type: boolean
+              default: true
+              description: Attach PDF version of agreement
+            due_date:
+              type: string
+              format: date
+              description: Signature deadline (for signature requests/reminders)
+  responses:
+    '200':
+      description: Notifications sent successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              notifications_sent:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    recipient:
+                      type: string
+                      enum: [student, employer, university]
+                    email:
+                      type: string
+                    sent_at:
+                      type: string
+                      format: date-time
+                    status:
+                      type: string
+                      enum: [sent, queued, failed]
+              message:
+                type: string
+                example: "Notifications sent to 2 parties successfully."
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
