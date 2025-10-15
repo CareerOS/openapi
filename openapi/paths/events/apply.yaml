@@ -1,0 +1,48 @@
+post:
+  tags:
+    - Events
+  summary: Apply to event
+  description: Register for an event
+  operationId: applyToEvent
+  security:
+    - BearerAuth: []
+  parameters:
+    - $ref: ../../components/parameters/EventIDPath.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            answers:
+              type: array
+              description: Answers to event registration questions
+              items:
+                type: object
+                properties:
+                  question_id:
+                    type: string
+                    format: uuid
+                  answer:
+                    type: string
+  responses:
+    '201':
+      description: Successfully registered for event
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                enum: [registered, waitlisted]
+              message:
+                type: string
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+    '409':
+      description: Already registered for this event

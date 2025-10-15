@@ -1,0 +1,46 @@
+patch:
+  tags:
+    - Resume
+  summary: Update base resume status
+  description: Update the status of a base resume (e.g., submit for review, publish)
+  operationId: updateBaseResumeStatus
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Base resume ID
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum: [draft, in_review, needs_revision, approved, published]
+  responses:
+    '200':
+      description: Resume status updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              status:
+                type: string
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

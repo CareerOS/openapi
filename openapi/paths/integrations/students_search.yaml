@@ -1,0 +1,58 @@
+get:
+  tags:
+    - Integrations
+  summary: Search students
+  description: Search for student profiles (for authorized partners)
+  operationId: searchStudents
+  security:
+    - ApiKeyAuth: []
+  parameters:
+    - name: query
+      in: query
+      description: Search query
+      schema:
+        type: string
+    - name: university_id
+      in: query
+      description: Filter by university
+      schema:
+        type: string
+        format: uuid
+    - name: cohort_id
+      in: query
+      description: Filter by cohort
+      schema:
+        type: string
+        format: uuid
+    - name: skills
+      in: query
+      description: Filter by skills (comma-separated)
+      schema:
+        type: string
+    - name: graduation_year
+      in: query
+      description: Filter by graduation year
+      schema:
+        type: integer
+    - $ref: ../../components/parameters/Limit.yaml
+    - $ref: ../../components/parameters/Offset.yaml
+  responses:
+    '200':
+      description: Students retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              students:
+                type: array
+                items:
+                  $ref: ../../components/schemas/Student.yaml
+              total:
+                type: integer
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml

@@ -1,0 +1,32 @@
+get:
+  tags:
+    - Resume
+  summary: Get resume review counts
+  description: Get statistics about resume reviews (for career advisors)
+  operationId: getResumeReviewCounts
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Review counts retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              pending:
+                type: integer
+                description: Number of resumes pending review
+              in_review:
+                type: integer
+                description: Number of resumes currently being reviewed
+              completed:
+                type: integer
+                description: Number of completed reviews
+              my_assignments:
+                type: integer
+                description: Number of reviews assigned to me
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml

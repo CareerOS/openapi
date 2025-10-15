@@ -1,0 +1,47 @@
+get:
+  tags:
+    - Advisor
+  summary: Get student AI summary
+  description: Get AI-generated summary of a student's profile and activities
+  operationId: getStudentAISummary
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Student ID
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Student summary retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              summary:
+                type: string
+                description: AI-generated summary of student profile
+              key_achievements:
+                type: array
+                items:
+                  type: string
+              recommendations:
+                type: array
+                items:
+                  type: string
+              activity_level:
+                type: string
+                enum: [low, medium, high]
+              last_updated:
+                type: string
+                format: date-time
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

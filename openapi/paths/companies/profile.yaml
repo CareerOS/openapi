@@ -1,0 +1,101 @@
+get:
+  tags:
+    - Companies
+  summary: Get company profile
+  description: Retrieve detailed company profile with additional information
+  operationId: getCompanyProfile
+  security:
+    - BearerAuth: []
+  parameters:
+    - $ref: ../../components/parameters/CompanyIDPath.yaml
+  responses:
+    '200':
+      description: Company profile retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              logo_url:
+                type: string
+                format: uri
+              cover_image_url:
+                type: string
+                format: uri
+              overview:
+                type: string
+              industry:
+                type: string
+              company_size:
+                type: string
+              founded_year:
+                type: integer
+              headquarters:
+                type: string
+              website_url:
+                type: string
+                format: uri
+              linkedin_url:
+                type: string
+                format: uri
+              culture:
+                type: object
+                properties:
+                  description:
+                    type: string
+                  values:
+                    type: array
+                    items:
+                      type: string
+              office_locations:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    city:
+                      type: string
+                    country:
+                      type: string
+                    address:
+                      type: string
+              media:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [image, video]
+                    url:
+                      type: string
+              testimonials:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    author:
+                      type: string
+                    role:
+                      type: string
+                    content:
+                      type: string
+              events:
+                type: array
+                items:
+                  type: object
+                  description: Upcoming events hosted by the company
+              jobs_count:
+                type: integer
+                description: Number of active job postings
+              is_saved:
+                type: boolean
+                description: Whether user has saved this company
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

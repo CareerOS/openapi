@@ -1,0 +1,38 @@
+get:
+  tags:
+    - Gamification
+  summary: Get available paths
+  description: Retrieve all available career development paths
+  operationId: getAllPaths
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Paths retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+                description:
+                  type: string
+                levels:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      level:
+                        type: integer
+                      name:
+                        type: string
+                      xp_required:
+                        type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

@@ -1,0 +1,58 @@
+get:
+  tags:
+    - Advisor
+  summary: Get students by university
+  description: Retrieve all students in the advisor's university with filtering options
+  operationId: getStudentsByUniversity
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: cohort_ids
+      in: query
+      description: Filter by cohort IDs (comma-separated)
+      schema:
+        type: string
+    - name: search
+      in: query
+      description: Search by student name or email
+      schema:
+        type: string
+    - name: tags
+      in: query
+      description: Filter by tags (comma-separated)
+      schema:
+        type: string
+    - name: graduation_year
+      in: query
+      description: Filter by graduation year
+      schema:
+        type: integer
+    - name: program
+      in: query
+      description: Filter by program
+      schema:
+        type: string
+    - $ref: ../../components/parameters/Limit.yaml
+    - $ref: ../../components/parameters/Offset.yaml
+  responses:
+    '200':
+      description: Students retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              students:
+                type: array
+                items:
+                  $ref: ../../components/schemas/Student.yaml
+              total:
+                type: integer
+              limit:
+                type: integer
+              offset:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml

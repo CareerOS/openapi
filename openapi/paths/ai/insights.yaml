@@ -1,0 +1,51 @@
+post:
+  tags:
+    - AI
+  summary: Get company insights
+  description: Get AI-generated insights about a company
+  operationId: getCompanyInsights
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - company_id
+          properties:
+            company_id:
+              type: string
+              format: uuid
+              description: ID of the company to analyze
+  responses:
+    '200':
+      description: Insights generated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              culture:
+                type: string
+                description: Company culture insights
+              growth:
+                type: string
+                description: Growth trajectory insights
+              opportunities:
+                type: array
+                items:
+                  type: string
+                description: Potential opportunities
+              challenges:
+                type: array
+                items:
+                  type: string
+                description: Potential challenges
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

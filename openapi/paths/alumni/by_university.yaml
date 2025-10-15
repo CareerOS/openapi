@@ -1,0 +1,75 @@
+get:
+  tags:
+    - Universities
+  summary: Get alumni by university
+  description: Retrieve all alumni profiles for a specific university
+  operationId: getAlumniByUniversityID
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: universityID
+      in: path
+      required: true
+      description: University ID
+      schema:
+        type: string
+        format: uuid
+    - name: company
+      in: query
+      description: Filter by current company
+      schema:
+        type: string
+    - name: industry
+      in: query
+      description: Filter by industry
+      schema:
+        type: string
+    - name: graduation_year
+      in: query
+      description: Filter by graduation year
+      schema:
+        type: integer
+    - $ref: ../../components/parameters/Limit.yaml
+    - $ref: ../../components/parameters/Offset.yaml
+  responses:
+    '200':
+      description: Alumni retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              alumni:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                    profile_picture:
+                      type: string
+                      format: uri
+                    current_company:
+                      type: string
+                    current_title:
+                      type: string
+                    linkedin_url:
+                      type: string
+                      format: uri
+                    graduation_year:
+                      type: integer
+                    cohort_name:
+                      type: string
+                    tags:
+                      type: array
+                      items:
+                        type: string
+              total:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

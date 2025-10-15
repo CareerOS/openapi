@@ -1,0 +1,26 @@
+post:
+  tags:
+    - Events
+  summary: Cancel event participation
+  description: Cancel the user's registration for an event
+  operationId: cancelEventParticipation
+  security:
+    - BearerAuth: []
+  parameters:
+    - $ref: ../../components/parameters/EventIDPath.yaml
+  responses:
+    '200':
+      description: Participation cancelled successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+    '409':
+      description: Not registered for this event or cannot cancel

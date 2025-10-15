@@ -1,0 +1,63 @@
+get:
+  tags:
+    - Events
+  summary: Get event details
+  description: Retrieve detailed information about a specific event
+  operationId: getEvent
+  security:
+    - BearerAuth: []
+  parameters:
+    - $ref: ../../components/parameters/EventIDPath.yaml
+  responses:
+    '200':
+      description: Event details retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              title:
+                type: string
+              description:
+                type: string
+              type:
+                type: string
+              start_time:
+                type: string
+                format: date-time
+              end_time:
+                type: string
+                format: date-time
+              location:
+                type: string
+              is_virtual:
+                type: boolean
+              virtual_link:
+                type: string
+                format: uri
+              max_participants:
+                type: integer
+              registered_count:
+                type: integer
+              waitlist_count:
+                type: integer
+              organizer:
+                type: object
+              speakers:
+                type: array
+                items:
+                  type: object
+              questions:
+                type: array
+                items:
+                  type: object
+              user_registration_status:
+                type: string
+                enum: [not_registered, registered, waitlisted, attended]
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

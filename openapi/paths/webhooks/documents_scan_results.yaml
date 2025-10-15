@@ -1,0 +1,52 @@
+post:
+  tags:
+    - Webhooks
+  summary: Receive document scan results
+  description: Webhook endpoint to receive scan results from document scanning service
+  operationId: handleDocumentScanResult
+  security:
+    - ApiKeyAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - document_id
+            - status
+          properties:
+            document_id:
+              type: string
+              format: uuid
+              description: ID of the scanned document
+            status:
+              type: string
+              enum: [clean, infected, error]
+              description: Scan result status
+            threat_details:
+              type: object
+              description: Details if threats were found
+              properties:
+                threats:
+                  type: array
+                  items:
+                    type: string
+                severity:
+                  type: string
+                  enum: [low, medium, high, critical]
+  responses:
+    '200':
+      description: Webhook processed successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              received:
+                type: boolean
+                example: true
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

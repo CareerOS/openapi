@@ -1,0 +1,24 @@
+post:
+  tags:
+    - Authentication
+  summary: Issue Firebase custom token
+  description: Generate a Firebase custom token for the authenticated user
+  operationId: issueFirebaseToken
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Firebase token issued successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                description: Firebase custom token
+                example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '500':
+      description: Failed to generate token

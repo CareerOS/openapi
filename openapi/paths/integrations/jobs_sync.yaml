@@ -1,0 +1,81 @@
+post:
+  tags:
+    - Integrations
+  summary: Sync provider jobs
+  description: Synchronize job postings from an external provider (bulk operation)
+  operationId: syncProviderJobs
+  security:
+    - ApiKeyAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - provider_id
+            - jobs
+          properties:
+            provider_id:
+              type: string
+              description: Unique identifier for the job provider
+            jobs:
+              type: array
+              items:
+                type: object
+                required:
+                  - provider_job_id
+                  - title
+                  - company_name
+                properties:
+                  provider_job_id:
+                    type: string
+                    description: External job ID from provider
+                  title:
+                    type: string
+                  company_name:
+                    type: string
+                  description:
+                    type: string
+                  location:
+                    type: string
+                  job_type:
+                    type: string
+                  experience_level:
+                    type: string
+                  salary_min:
+                    type: number
+                  salary_max:
+                    type: number
+                  currency:
+                    type: string
+                  posted_at:
+                    type: string
+                    format: date-time
+                  expires_at:
+                    type: string
+                    format: date-time
+                  application_url:
+                    type: string
+                    format: uri
+  responses:
+    '200':
+      description: Jobs synchronized successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              created:
+                type: integer
+                description: Number of new jobs created
+              updated:
+                type: integer
+                description: Number of existing jobs updated
+              archived:
+                type: integer
+                description: Number of jobs archived (no longer in sync)
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

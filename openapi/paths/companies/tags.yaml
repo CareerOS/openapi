@@ -1,0 +1,20 @@
+get:
+  tags:
+    - Companies
+  summary: Get company tags
+  description: Retrieve list of available company tags for filtering
+  operationId: getCompanyTags
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: Company tags retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["startup", "fortune-500", "remote-first", "tech", "fintech", "sustainable"]
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

@@ -1,0 +1,80 @@
+get:
+  tags:
+    - Users
+  summary: Get user profile
+  description: Retrieve the authenticated user's profile information
+  operationId: getUserProfile
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      description: User profile retrieved successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Student.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+put:
+  tags:
+    - Users
+  summary: Update user profile
+  description: Update the authenticated user's profile information
+  operationId: updateUserProfile
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/Student.yaml
+  responses:
+    '200':
+      description: Profile updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Student.yaml
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+
+patch:
+  tags:
+    - Users
+  summary: Partially update user profile
+  description: Update specific fields of the authenticated user's profile
+  operationId: patchUserProfile
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            headline:
+              type: string
+            bio:
+              type: string
+            location:
+              type: string
+            linkedin_url:
+              type: string
+  responses:
+    '200':
+      description: Profile updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Student.yaml
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml

@@ -1,0 +1,36 @@
+get:
+  tags:
+    - Companies
+  summary: Get company locations
+  description: Retrieve list of available company locations for filtering
+  operationId: getCompanyLocations
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: company_id
+      in: query
+      description: Get locations for a specific company
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Locations retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                city:
+                  type: string
+                country:
+                  type: string
+                region:
+                  type: string
+                company_count:
+                  type: integer
+                  description: Number of companies in this location (if not company-specific)
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
