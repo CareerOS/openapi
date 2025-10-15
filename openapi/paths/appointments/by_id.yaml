@@ -1,0 +1,231 @@
+get:
+  tags:
+    - CalendarOS (BETA)
+  summary: Get appointment details
+  description: |
+    **[BETA - CalendarOS]** Retrieve detailed information about a specific appointment.
+  operationId: getAppointmentById
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Appointment ID
+  responses:
+    '200':
+      description: Appointment details retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              confirmation_code:
+                type: string
+                example: "APT-2025-ABC123"
+              student:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  phone:
+                    type: string
+              advisor:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  title:
+                    type: string
+                  office_location:
+                    type: string
+              scheduled_at:
+                type: string
+                format: date-time
+              duration_minutes:
+                type: integer
+              type:
+                type: string
+                enum: [career_counseling, resume_review, mock_interview, job_search_strategy, networking_advice, general, other]
+              status:
+                type: string
+                enum: [pending, confirmed, scheduled, completed, cancelled, no_show]
+              meeting_platform:
+                type: string
+                enum: [in_person, zoom, teams, google_meet, phone, other]
+              location:
+                type: string
+              notes:
+                type: string
+              student_notes:
+                type: string
+              attendance_marked_at:
+                type: string
+                format: date-time
+              attended:
+                type: boolean
+              cancellation_reason:
+                type: string
+              cancelled_by:
+                type: string
+                enum: [student, advisor, system]
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+put:
+  tags:
+    - CalendarOS (BETA)
+  summary: Update appointment
+  description: |
+    **[BETA - CalendarOS]** Update appointment details.
+
+    **Students** can update: student_notes
+    **Advisors** can update: all fields
+  operationId: updateAppointment
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Appointment ID
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            scheduled_at:
+              type: string
+              format: date-time
+            duration_minutes:
+              type: integer
+              minimum: 15
+              maximum: 120
+            type:
+              type: string
+              enum: [career_counseling, resume_review, mock_interview, job_search_strategy, networking_advice, general, other]
+            meeting_platform:
+              type: string
+              enum: [in_person, zoom, teams, google_meet, phone, other]
+            location:
+              type: string
+            notes:
+              type: string
+            student_notes:
+              type: string
+  responses:
+    '200':
+      description: Appointment updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              updated_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Appointment updated successfully"
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+delete:
+  tags:
+    - CalendarOS (BETA)
+  summary: Cancel appointment
+  description: |
+    **[BETA - CalendarOS]** Cancel an appointment. Both students and advisors can cancel appointments.
+  operationId: cancelAppointment
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Appointment ID
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            cancellation_reason:
+              type: string
+              description: Reason for cancellation
+            send_notification:
+              type: boolean
+              default: true
+              description: Send cancellation notification to other party
+  responses:
+    '200':
+      description: Appointment cancelled successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              status:
+                type: string
+                example: "cancelled"
+              cancelled_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Appointment cancelled successfully"
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

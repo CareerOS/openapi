@@ -1,0 +1,384 @@
+get:
+  tags:
+    - Public
+  summary: Get filter fields (picklist values)
+  description: |
+    Retrieve all available filter field options (picklist values) for the platform.
+
+    Similar to Symplicity's picklist management, this endpoint provides standardized
+    dropdown values for filtering and searching across entities like companies, jobs,
+    events, students, and applications. These values ensure consistent data entry and
+    enable powerful filtering capabilities.
+
+    **Use cases**:
+    - Populate filter dropdowns in search interfaces
+    - Validate user input against allowed values
+    - Display available options in forms
+    - Build dynamic query builders
+  operationId: getFilterFields
+  parameters:
+    - name: category
+      in: query
+      description: Filter by specific category
+      schema:
+        type: string
+        enum: [companies, jobs, events, students, applications, internships, all]
+        default: all
+    - name: include_counts
+      in: query
+      description: Include entity counts for each value
+      schema:
+        type: boolean
+        default: true
+    - name: active_only
+      in: query
+      description: Only return active/enabled values
+      schema:
+        type: boolean
+        default: true
+  responses:
+    '200':
+      description: Filter fields retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              companies:
+                type: object
+                properties:
+                  locations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "San Francisco, CA"
+                        count:
+                          type: integer
+                          description: Number of companies in this location
+                  sizes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "1-10 employees"
+                        min_employees:
+                          type: integer
+                        max_employees:
+                          type: integer
+                          nullable: true
+                        count:
+                          type: integer
+                  tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Tech"
+                        category:
+                          type: string
+                          example: "Industry"
+                        count:
+                          type: integer
+              jobs:
+                type: object
+                properties:
+                  locations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        count:
+                          type: integer
+                  types:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Full-time"
+                        count:
+                          type: integer
+                  experience_levels:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Entry Level"
+                        count:
+                          type: integer
+              events:
+                type: object
+                properties:
+                  types:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Career Fair"
+                        count:
+                          type: integer
+                  formats:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Virtual"
+                        count:
+                          type: integer
+              students:
+                type: object
+                description: Student-specific filter values
+                properties:
+                  class_years:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Class of 2025"
+                        count:
+                          type: integer
+                  student_levels:
+                    type: array
+                    description: Academic levels
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Junior"
+                        value:
+                          type: string
+                          enum: [freshman, sophomore, junior, senior, graduate, alumni]
+                        count:
+                          type: integer
+                  majors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Computer Science"
+                        department:
+                          type: string
+                          example: "Engineering"
+                        count:
+                          type: integer
+                  minors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Business Administration"
+                        count:
+                          type: integer
+                  gpa_ranges:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "3.5 - 4.0"
+                        min_gpa:
+                          type: number
+                        max_gpa:
+                          type: number
+                        count:
+                          type: integer
+                  work_authorization:
+                    type: array
+                    description: Work authorization status options
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "US Citizen"
+                        value:
+                          type: string
+                          enum: [us_citizen, permanent_resident, f1_visa, opt, cpt, h1b, requires_sponsorship, other]
+                        count:
+                          type: integer
+              applications:
+                type: object
+                description: Application-specific filter values
+                properties:
+                  statuses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Under Review"
+                        value:
+                          type: string
+                          enum: [saved, applied, under_review, interviewing, offered, accepted, rejected, withdrawn]
+                        count:
+                          type: integer
+                  application_sources:
+                    type: array
+                    description: How students found the opportunity
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Career Fair"
+                        count:
+                          type: integer
+              internships:
+                type: object
+                description: Internship-specific filter values
+                properties:
+                  agreement_statuses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Fully Signed"
+                        value:
+                          type: string
+                          enum: [draft, pending_signatures, partially_signed, fully_signed, active, completed, cancelled]
+                        count:
+                          type: integer
+                  compensation_types:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Paid"
+                        value:
+                          type: string
+                          enum: [paid, unpaid, stipend, academic_credit]
+                        count:
+                          type: integer
+                  work_locations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: "Remote"
+                        value:
+                          type: string
+                          enum: [on_site, remote, hybrid]
+                        count:
+                          type: integer
+              custom_fields:
+                type: object
+                description: Institution-specific custom field values
+                properties:
+                  student_custom_fields:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field_id:
+                          type: string
+                          format: uuid
+                        field_name:
+                          type: string
+                          example: "preferred_industry"
+                        display_label:
+                          type: string
+                          example: "Preferred Industry"
+                        field_type:
+                          type: string
+                        picklist_values:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              value:
+                                type: string
+                              label:
+                                type: string
+                              count:
+                                type: integer
+                  job_custom_fields:
+                    type: array
+                    items:
+                      type: object
+                  company_custom_fields:
+                    type: array
+                    items:
+                      type: object
+              metadata:
+                type: object
+                properties:
+                  last_updated:
+                    type: string
+                    format: date-time
+                  cache_ttl:
+                    type: integer
+                    description: Cache time-to-live in seconds
+                    example: 3600
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml

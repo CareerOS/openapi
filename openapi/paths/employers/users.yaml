@@ -1,0 +1,226 @@
+get:
+  tags:
+    - Employers (BETA)
+  summary: List employer users
+  description: |
+    **[BETA]** Retrieve all users associated with the employer organization.
+
+    Returns company recruiters, HR contacts, and other authorized users who can
+    access the employer portal and manage job postings, applications, and events.
+  operationId: listEmployerUsers
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: status
+      in: query
+      description: Filter by user status
+      schema:
+        type: string
+        enum: [active, inactive, pending_invitation]
+    - name: role
+      in: query
+      description: Filter by user role
+      schema:
+        type: string
+        enum: [admin, recruiter, hiring_manager, viewer]
+    - name: limit
+      in: query
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 100
+    - name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+  responses:
+    '200':
+      description: Users retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              users:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    email:
+                      type: string
+                      format: email
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    title:
+                      type: string
+                    department:
+                      type: string
+                    phone:
+                      type: string
+                    role:
+                      type: string
+                      enum: [admin, recruiter, hiring_manager, viewer]
+                      description: |
+                        - admin: Full access to employer account
+                        - recruiter: Can manage jobs and view applications
+                        - hiring_manager: Can view applications for their department
+                        - viewer: Read-only access
+                    status:
+                      type: string
+                      enum: [active, inactive, pending_invitation]
+                    permissions:
+                      type: object
+                      properties:
+                        can_post_jobs:
+                          type: boolean
+                        can_view_applications:
+                          type: boolean
+                        can_message_students:
+                          type: boolean
+                        can_manage_events:
+                          type: boolean
+                        can_manage_users:
+                          type: boolean
+                    last_login:
+                      type: string
+                      format: date-time
+                    created_at:
+                      type: string
+                      format: date-time
+              total:
+                type: integer
+              limit:
+                type: integer
+              offset:
+                type: integer
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+
+post:
+  tags:
+    - Employers (BETA)
+  summary: Add employer user
+  description: |
+    **[BETA]** Add a new user to the employer organization.
+
+    Sends an invitation email to the new user with account activation link.
+    Only employer admins can add new users.
+  operationId: addEmployerUser
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - email
+            - first_name
+            - last_name
+            - role
+          properties:
+            email:
+              type: string
+              format: email
+              example: "john.doe@techinnovations.com"
+            first_name:
+              type: string
+              example: "John"
+            last_name:
+              type: string
+              example: "Doe"
+            title:
+              type: string
+              example: "Senior Recruiter"
+            department:
+              type: string
+              example: "Human Resources"
+            phone:
+              type: string
+              example: "+1-415-555-0199"
+            role:
+              type: string
+              enum: [admin, recruiter, hiring_manager, viewer]
+              default: recruiter
+            permissions:
+              type: object
+              description: Custom permissions (optional, defaults based on role)
+              properties:
+                can_post_jobs:
+                  type: boolean
+                can_view_applications:
+                  type: boolean
+                can_message_students:
+                  type: boolean
+                can_manage_events:
+                  type: boolean
+                can_manage_users:
+                  type: boolean
+            send_invitation_email:
+              type: boolean
+              default: true
+            custom_message:
+              type: string
+              description: Custom message to include in invitation email
+  responses:
+    '201':
+      description: User added successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+              first_name:
+                type: string
+              last_name:
+                type: string
+              role:
+                type: string
+              status:
+                type: string
+                example: "pending_invitation"
+              invitation_sent:
+                type: boolean
+              invitation_url:
+                type: string
+                format: uri
+              created_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "User added successfully. Invitation email sent."
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '409':
+      description: User already exists
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "User exists"
+              message:
+                type: string
+                example: "A user with this email is already associated with your organization."

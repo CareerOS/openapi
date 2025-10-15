@@ -1,0 +1,223 @@
+get:
+  tags:
+    - Advisor
+  summary: Get cohort-level report
+  description: |
+    Retrieve comprehensive analytics and reports for a specific cohort.
+
+    This report provides advisors with detailed insights into cohort performance,
+    including engagement metrics, application statistics, networking activities,
+    resume development, and top targeted companies. Ideal for identifying at-risk
+    students, measuring program effectiveness, and data-driven decision making.
+
+    Supports multiple export formats (JSON, CSV, PDF) for presentations,
+    stakeholder reporting, and integration with institutional analytics systems.
+  operationId: getCohortReport
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: cohort_id
+      in: query
+      required: true
+      description: Cohort ID to generate report for
+      schema:
+        type: string
+        format: uuid
+      example: "123e4567-e89b-12d3-a456-426614174000"
+    - name: start_date
+      in: query
+      description: Start date for report period (defaults to semester start if not specified)
+      schema:
+        type: string
+        format: date
+      example: "2025-09-01"
+    - name: end_date
+      in: query
+      description: End date for report period (defaults to today if not specified)
+      schema:
+        type: string
+        format: date
+      example: "2025-10-15"
+    - name: format
+      in: query
+      description: Response format for the report
+      schema:
+        type: string
+        enum: [json, csv, pdf]
+        default: json
+      example: json
+    - name: include_student_details
+      in: query
+      description: Include anonymized student-level details in CSV/PDF exports
+      schema:
+        type: boolean
+        default: false
+    - name: compare_to_previous_period
+      in: query
+      description: Include comparison with previous period (JSON format only)
+      schema:
+        type: boolean
+        default: false
+  responses:
+    '200':
+      description: Cohort report retrieved successfully
+      headers:
+        Content-Disposition:
+          description: Attachment header for CSV and PDF formats
+          schema:
+            type: string
+          example: "attachment; filename=cohort_report_class-of-2025_2025-10-15.pdf"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              cohort:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  total_students:
+                    type: integer
+              period:
+                type: object
+                properties:
+                  start_date:
+                    type: string
+                    format: date
+                  end_date:
+                    type: string
+                    format: date
+              engagement_metrics:
+                type: object
+                properties:
+                  active_students:
+                    type: integer
+                    description: Students active in the period
+                  total_logins:
+                    type: integer
+                  avg_session_duration_minutes:
+                    type: number
+                    format: float
+              application_metrics:
+                type: object
+                properties:
+                  total_applications:
+                    type: integer
+                  students_with_applications:
+                    type: integer
+                  avg_applications_per_student:
+                    type: number
+                    format: float
+                  applications_by_status:
+                    type: object
+                    properties:
+                      applied:
+                        type: integer
+                      interviewing:
+                        type: integer
+                      offered:
+                        type: integer
+                      accepted:
+                        type: integer
+              networking_metrics:
+                type: object
+                properties:
+                  total_contacts:
+                    type: integer
+                  students_networking:
+                    type: integer
+                  avg_contacts_per_student:
+                    type: number
+                    format: float
+                  events_attended:
+                    type: integer
+              resume_metrics:
+                type: object
+                properties:
+                  students_with_resumes:
+                    type: integer
+                  total_resumes:
+                    type: integer
+                  avg_resume_score:
+                    type: number
+                    format: float
+                    nullable: true
+                  resumes_reviewed:
+                    type: integer
+              top_companies:
+                type: array
+                description: Most targeted companies by cohort
+                items:
+                  type: object
+                  properties:
+                    company_name:
+                      type: string
+                    applications:
+                      type: integer
+                    students_applied:
+                      type: integer
+              appointment_metrics:
+                type: object
+                properties:
+                  total_appointments:
+                    type: integer
+                  students_with_appointments:
+                    type: integer
+                  avg_appointments_per_student:
+                    type: number
+                    format: float
+        text/csv:
+          schema:
+            type: string
+            format: binary
+          example: |
+            Cohort Report
+            Cohort Name,Total Students,Period Start,Period End
+            Class of 2025,150,2025-09-01,2025-10-15
+
+            Engagement Metrics
+            Active Students,Total Logins,Avg Session Duration (min)
+            120,1450,18.5
+
+            Application Metrics
+            Total Applications,Students with Applications,Avg per Student,Applied,Interviewing,Offered,Accepted
+            342,95,3.6,250,45,30,17
+
+            Networking Metrics
+            Total Contacts,Students Networking,Avg Contacts per Student,Events Attended
+            480,78,6.2,125
+
+            Resume Metrics
+            Students with Resumes,Total Resumes,Avg Resume Score,Resumes Reviewed
+            130,185,78.5,92
+
+            Appointment Metrics
+            Total Appointments,Students with Appointments,Avg per Student
+            215,88,2.4
+
+            Top Companies
+            Company Name,Applications,Students Applied
+            Google,45,32
+            Microsoft,38,28
+            Amazon,35,25
+        application/pdf:
+          schema:
+            type: string
+            format: binary
+            description: |
+              PDF formatted cohort report with comprehensive visualizations including:
+              - Engagement trends over time
+              - Application funnel metrics
+              - Top companies chart
+              - Student activity heatmap
+              - Comparison with previous periods (if requested)
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

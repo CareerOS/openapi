@@ -1,0 +1,86 @@
+post:
+  tags:
+    - CalendarOS (BETA)
+  summary: Confirm appointment booking
+  description: |
+    **[BETA - CalendarOS]** Confirm a pending appointment booking.
+
+    When a student books an appointment, it starts in `pending` status. The advisor
+    must confirm the booking to change status to `confirmed`.
+
+    **Access**: Advisors only
+  operationId: confirmAppointment
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Appointment ID
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            location:
+              type: string
+              description: Confirm or update meeting location/link
+            notes:
+              type: string
+              description: Advisor notes to include in confirmation
+            send_confirmation_email:
+              type: boolean
+              default: true
+              description: Send confirmation email to student
+  responses:
+    '200':
+      description: Appointment confirmed successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              confirmation_code:
+                type: string
+                example: "APT-2025-ABC123"
+              status:
+                type: string
+                example: "confirmed"
+              scheduled_at:
+                type: string
+                format: date-time
+              location:
+                type: string
+              confirmed_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Appointment confirmed and student has been notified"
+    '400':
+      description: Invalid request - appointment cannot be confirmed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid status"
+              message:
+                type: string
+                example: "Only pending appointments can be confirmed"
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

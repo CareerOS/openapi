@@ -1,0 +1,453 @@
+get:
+  tags:
+    - Agreements (BETA)
+  summary: Get internship agreement details
+  description: |
+    **[BETA]** Retrieve complete details of a specific internship agreement.
+
+    Returns full agreement content, signature status, and audit trail.
+  operationId: getInternshipAgreement
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Agreement ID
+  responses:
+    '200':
+      description: Agreement details retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              agreement_number:
+                type: string
+                example: "AGR-2025-001234"
+              status:
+                type: string
+                enum: [draft, pending_signatures, partially_signed, fully_signed, active, completed, cancelled, expired]
+              student:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  phone:
+                    type: string
+                  student_id_number:
+                    type: string
+                  cohort:
+                    type: string
+              employer:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  organization_name:
+                    type: string
+                  contact_person:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type: string
+                      title:
+                        type: string
+                      email:
+                        type: string
+                      phone:
+                        type: string
+                  address:
+                    type: string
+              university:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  department:
+                    type: string
+                  coordinator:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+              internship_details:
+                type: object
+                properties:
+                  position_title:
+                    type: string
+                  position_description:
+                    type: string
+                  department:
+                    type: string
+                  start_date:
+                    type: string
+                    format: date
+                  end_date:
+                    type: string
+                    format: date
+                  hours_per_week:
+                    type: number
+                  total_hours:
+                    type: number
+                  compensation:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum: [paid, unpaid, stipend, academic_credit]
+                      amount:
+                        type: number
+                      currency:
+                        type: string
+                      frequency:
+                        type: string
+                  work_location:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      country:
+                        type: string
+                  learning_objectives:
+                    type: array
+                    items:
+                      type: string
+                  supervisor:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      title:
+                        type: string
+                      email:
+                        type: string
+                      phone:
+                        type: string
+              signatures:
+                type: object
+                properties:
+                  student:
+                    type: object
+                    properties:
+                      signed:
+                        type: boolean
+                      signed_at:
+                        type: string
+                        format: date-time
+                      signature_method:
+                        type: string
+                        enum: [electronic, digital, wet_signature]
+                      ip_address:
+                        type: string
+                  employer:
+                    type: object
+                    properties:
+                      signed:
+                        type: boolean
+                      signed_by_name:
+                        type: string
+                      signed_by_title:
+                        type: string
+                      signed_at:
+                        type: string
+                        format: date-time
+                      signature_method:
+                        type: string
+                      ip_address:
+                        type: string
+                  university:
+                    type: object
+                    properties:
+                      signed:
+                        type: boolean
+                      signed_by_name:
+                        type: string
+                      signed_by_title:
+                        type: string
+                      signed_at:
+                        type: string
+                        format: date-time
+                      signature_method:
+                        type: string
+                      ip_address:
+                        type: string
+              additional_terms:
+                type: string
+              audit_trail:
+                type: array
+                description: Complete history of agreement changes
+                items:
+                  type: object
+                  properties:
+                    timestamp:
+                      type: string
+                      format: date-time
+                    action:
+                      type: string
+                      enum: [created, modified, signed, notified, cancelled, completed]
+                    performed_by:
+                      type: string
+                    party:
+                      type: string
+                      enum: [student, employer, university, system]
+                    details:
+                      type: string
+              documents:
+                type: array
+                description: Attached supporting documents
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    filename:
+                      type: string
+                    type:
+                      type: string
+                      enum: [agreement_pdf, resume, offer_letter, supporting_document, other]
+                    uploaded_by:
+                      type: string
+                      enum: [student, employer, university]
+                    uploaded_at:
+                      type: string
+                      format: date-time
+                    url:
+                      type: string
+                      format: uri
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+              expires_at:
+                type: string
+                format: date-time
+                description: Agreement expiration if not fully signed
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+put:
+  tags:
+    - Agreements (BETA)
+  summary: Update internship agreement
+  description: |
+    **[BETA]** Modify internship agreement content.
+
+    **Rules**:
+    - Only `draft` or `pending_signatures` agreements can be modified
+    - Once fully signed, agreements cannot be modified (create new version instead)
+    - University staff can modify any field
+    - Students/employers can only modify specific fields
+
+    Modifying a partially signed agreement will reset all signatures.
+  operationId: updateInternshipAgreement
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Agreement ID
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            position_title:
+              type: string
+            position_description:
+              type: string
+            department:
+              type: string
+            start_date:
+              type: string
+              format: date
+            end_date:
+              type: string
+              format: date
+            hours_per_week:
+              type: number
+            compensation:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: [paid, unpaid, stipend, academic_credit]
+                amount:
+                  type: number
+                currency:
+                  type: string
+                frequency:
+                  type: string
+            work_location:
+              type: object
+              properties:
+                type:
+                  type: string
+                address:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+            learning_objectives:
+              type: array
+              items:
+                type: string
+            supervisor:
+              type: object
+              properties:
+                name:
+                  type: string
+                title:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+            additional_terms:
+              type: string
+            reset_signatures:
+              type: boolean
+              default: true
+              description: Whether to reset signatures after modification
+  responses:
+    '200':
+      description: Agreement updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              updated_at:
+                type: string
+                format: date-time
+              signatures_reset:
+                type: boolean
+              message:
+                type: string
+                example: "Agreement updated successfully. All signatures have been reset."
+    '400':
+      description: Cannot modify agreement in current state
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid operation"
+              message:
+                type: string
+                example: "Cannot modify fully signed agreements. Create a new version instead."
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+delete:
+  tags:
+    - Agreements (BETA)
+  summary: Cancel internship agreement
+  description: |
+    **[BETA]** Cancel or void an internship agreement.
+
+    **Rules**:
+    - Draft agreements can be deleted
+    - Pending/partially signed agreements can be cancelled
+    - Fully signed active agreements require cancellation reason and notification to all parties
+  operationId: cancelInternshipAgreement
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Agreement ID
+  requestBody:
+    required: false
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            cancellation_reason:
+              type: string
+              description: Reason for cancellation
+            notify_parties:
+              type: boolean
+              default: true
+              description: Send cancellation notification to all parties
+  responses:
+    '200':
+      description: Agreement cancelled successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              status:
+                type: string
+                example: "cancelled"
+              cancelled_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "Agreement cancelled and all parties have been notified."
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml

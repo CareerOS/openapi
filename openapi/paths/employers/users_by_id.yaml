@@ -1,0 +1,224 @@
+get:
+  tags:
+    - Employers (BETA)
+  summary: Get employer user details
+  description: |
+    **[BETA]** Retrieve detailed information about a specific employer user.
+  operationId: getEmployerUser
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: User ID
+  responses:
+    '200':
+      description: User details retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+              first_name:
+                type: string
+              last_name:
+                type: string
+              title:
+                type: string
+              department:
+                type: string
+              phone:
+                type: string
+              role:
+                type: string
+                enum: [admin, recruiter, hiring_manager, viewer]
+              status:
+                type: string
+                enum: [active, inactive, pending_invitation]
+              permissions:
+                type: object
+                properties:
+                  can_post_jobs:
+                    type: boolean
+                  can_view_applications:
+                    type: boolean
+                  can_message_students:
+                    type: boolean
+                  can_manage_events:
+                    type: boolean
+                  can_manage_users:
+                    type: boolean
+              activity:
+                type: object
+                properties:
+                  jobs_posted:
+                    type: integer
+                  applications_reviewed:
+                    type: integer
+                  students_messaged:
+                    type: integer
+                  last_login:
+                    type: string
+                    format: date-time
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+put:
+  tags:
+    - Employers (BETA)
+  summary: Update employer user
+  description: |
+    **[BETA]** Update employer user information and permissions.
+
+    Admins can update any user. Users can update their own profile (limited fields).
+  operationId: updateEmployerUser
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: User ID
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            first_name:
+              type: string
+            last_name:
+              type: string
+            title:
+              type: string
+            department:
+              type: string
+            phone:
+              type: string
+            role:
+              type: string
+              enum: [admin, recruiter, hiring_manager, viewer]
+              description: Admin only
+            status:
+              type: string
+              enum: [active, inactive]
+              description: Admin only
+            permissions:
+              type: object
+              description: Admin only
+              properties:
+                can_post_jobs:
+                  type: boolean
+                can_view_applications:
+                  type: boolean
+                can_message_students:
+                  type: boolean
+                can_manage_events:
+                  type: boolean
+                can_manage_users:
+                  type: boolean
+  responses:
+    '200':
+      description: User updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              updated_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "User updated successfully"
+    '400':
+      $ref: ../../components/responses/ValidationError.yaml
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
+
+delete:
+  tags:
+    - Employers (BETA)
+  summary: Remove employer user
+  description: |
+    **[BETA]** Remove a user from the employer organization.
+
+    User's access is immediately revoked. This action cannot be undone.
+    Admins only. Cannot remove the last admin user.
+  operationId: removeEmployerUser
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: User ID
+  responses:
+    '200':
+      description: User removed successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              removed_at:
+                type: string
+                format: date-time
+              message:
+                type: string
+                example: "User removed from organization successfully"
+    '400':
+      description: Cannot remove user
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Cannot remove user"
+              message:
+                type: string
+                example: "Cannot remove the last admin user from the organization"
+    '401':
+      $ref: ../../components/responses/UnauthorizedError.yaml
+    '403':
+      $ref: ../../components/responses/ForbiddenError.yaml
+    '404':
+      $ref: ../../components/responses/NotFoundError.yaml
